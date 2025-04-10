@@ -1,0 +1,1454 @@
+<!-- snippets/wholesale-get-options.liquid -->
+{%- assign delayDiscount = false -%}
+{%- assign mergeSplitBy = 'womens-' -%}
+{%- assign splitTitles = 'Womens,Mens' | split: ',' -%}
+{%- assign splitSize = 'W,M' | split: ',' -%}
+{%- capture image_size_placeholder -%}_{width}x.{%- endcapture -%}
+
+{%- if settings.product_info_show_title -%}
+  <div class="product-page-info__title mb-15 text-center">
+    {%- if is_quick_view -%}
+      <a href="{{ url }}">{{ title }}</a>
+    {%- else -%}
+      <h1 class="m-0">{{ title }}</h1>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+{%- assign tags = customer.tags | join: ',' | downcase -%}
+{%- if tags contains 'wholesale' -%}
+  {%- if ptags contains 'split-unisex' -%}
+    {%- assign split-unisex = true -%}
+    {% comment %} <div>split-unisex: {{ split-unisex }}</div> {% endcomment %}
+  {%- endif -%}
+  {% comment %} <form action="/cart" method="post" novalidate> {% endcomment %}
+  {% comment %}  form 'product', product, id: 'wholesale', class: 'm-0', data-js-product-form: '' -%} {% endcomment %}
+  {%- form 'cart', cart, id: 'wholesale', class: 'm-0', data-js-product-form: '' -%}
+    {%- unless product.has_only_default_variant -%}
+      {%- liquid
+        assign firstoption = option.values | first
+        assign mov = ['']
+        assign sskus = ''
+        assign cskus = ''
+        assign allInv = ['']
+        if product.metafields.furnace.product_name_override
+          assign productName = product.metafields.furnace.product_name_override
+        else
+          assign productName = product.title
+        endif
+        if split-unisex
+          assign mphA = product.metafields.furnace.product_merge_list | replace: " ", ""
+          assign mphAll = mphA | append: '***' | append: mphA | split: '***' 
+        else
+          for mph in merge_list
+            if mph contains mergeSplitBy
+              assign mph0 = mph0 | append: mph | append: ','
+            else
+              assign mph1 = mph1 | append: mph | append: ','
+            endif
+          endfor
+          assign mphAll = mph0 | append: '***' | append: mph1 | split: '***'
+        endif
+
+        echo '<div class="tabs-wrapper">'
+        assign checked = 'checked'
+        for ml in mphAll
+          if forloop.index > 1
+            assign checked = ''
+          endif
+          echo '<input class="d-none" name="group" type="radio" id="tab' | append: forloop.index | append: '" '
+          echo checked | append: '></input>'
+        endfor
+
+        echo '<div class="tabs-group">'
+        for ml in mphAll
+          echo '<label class="tab h4 text-center py-20" id="tab-' | append: forloop.index | append: '" for="tab' | append: forloop.index | append: '">'
+          echo splitTitles[forloop.index0] | append: '</label>'
+        endfor
+        echo '</div>'
+
+        echo '<div class="tab-panels">'
+        for ml in mphAll
+          assign mov = ['']
+          assign sskus = ''
+          assign cskus = ''
+          assign inv = ''
+          assign sizes = ''
+          assign mlArray = ml | split: ',' | uniq
+          assign mlIndex = forloop.index0
+
+          for mph in mlArray
+            assign pinv = ''
+            for variant in all_products[mph].variants
+              assign skuParts = variant.sku | replace_first: '-', '***' | split: '***'
+              if skuParts[0].size > 3  
+                assign sskus = sskus | append: skuParts[1] | append: ','
+                assign cskus = cskus | append: skuParts[0] | append: ','
+              else 
+                assign skuParts = variant.sku | split: '-'
+                assign sskus = sskus | append: skuParts[2] | append: ','
+                assign cskus = cskus | append: skuParts[0] | append: "-" | append: skuParts[1] | append: ','
+              endif
+
+              assign jsku = '"sku":"' | append: variant.sku | append: '"'
+              assign jinv = '"inventory":' | append: variant.inventory_quantity
+              assign jpolicy = '"inventory_policy":"' | append: variant.inventory_policy | append: '"'
+              assign jid = '"id":"' | append: variant.id | append: '"'
+              assign vprice = variant.price | money_without_currency
+              assign jprice = '"price":"' | append: vprice | append: '"'
+              assign jsize = '"size":"' | append: variant.option2 | append: '"'
+              assign pinv = pinv | append: '{' | append: jsku | append: ',' | append: jid | append: ',' | append: jinv | append: ',' | append: jprice | append: ',' | append: jsize | append: ',' | append: jpolicy | append: '}'
+              assign sizes = sizes | append: variant.option2 | append: ','
+              unless forloop.last
+                assign pinv = pinv | append: '&&'
+              endunless
+            endfor
+            assign inv = inv | append: pinv
+            unless forloop.last
+              assign inv = inv | append: '&&'
+            endunless
+            assign mpov = all_products[mph].options_with_values[0].values
+            assign mov = mov | concat: mpov | uniq
+            if split-unisex and false
+              echo "<br>merge " | append: option.name | append: " options for " | append: mph | append: ": " | append: mpov
+            endif
+          endfor
+          assign invArray = inv | split: '&&' | uniq
+          assign allInv = allInv | concat: invArray | uniq
+
+          assign skuSizes = sskus | split: ',' | uniq
+          assign sizesSize = skuSizes.size
+          assign skuColors = cskus | split: ',' | uniq
+          assign sizes = sizes | split: ',' | uniq
+          assign splitTitle = splitTitles[mlIndex]
+
+          echo '<div class="tab-panel" id="panel' | append: forloop.index | append: '">'
+          echo '<h4 class="h4 text-center mb-10 mt-20">' | append: productName | append: " " | append: splitTitle | append: '</h4>'
+          echo '<div class="split-merge split' | append: forloop.index | append: '">'
+          assign splitSizeCode = splitSize[mlIndex]
+
+          include 'wholesale-table'
+          echo '</div>'
+          echo '</div>'
+        endfor
+        echo '</div>'
+        capture inv_var
+          echo '['
+          for invItem in allInv
+            echo invItem | replace: '\"', '"'
+            unless forloop.last
+              echo ','
+            endunless
+          endfor
+          echo ']'
+        endcapture
+        if split-unisex and false
+          echo "<br>COLORS: " | append: mov
+          echo "<br>Inventory: " | append: inv
+          echo "<br>"
+          echo "Sizes: " | append: skuSizes | json
+          echo "<br>sizesSize: " | append: sizesSize
+
+          echo "<br>Inventory: " | append: inv_var
+        endif
+      -%}
+    {%- else -%}
+        {%- assign inv_var = product.variants[0].inventory_quantity -%}
+    {%- endunless -%}
+
+    <div class="d-flex cart-buttons">
+      <div>
+        <table id="totals" class="wtotals">
+          <tr>
+            <td><h5 class="mb-3 no-letter-spacing">{{ productName }} {{ 'wholesale.bulk.quantity' | t }}</h5></td>
+            <td><h5 id="wholesalePageQty" class="totalQty mb-0 no-letter-spacing"></h5></td>
+          </tr>
+          {% comment %} <tr class="d-none">
+            <td><h5 class="mb-3 no-letter-spacing">Cart Quantity</h5></td>
+            <td>
+              <h5 id="wholesaleCartQty" class="mb-0 no-letter-spacing">{{ cart.item_count }}</h5>
+            </td>
+          </tr> {% endcomment %}
+          <tr id="backorderTotal" class="d-none">
+            <td><h5 class="mb-3 no-letter-spacing">{{ productName }} Backordered</h5></td>
+            <td>
+              <h5 id="backorderTotalQty" class="mb-0 no-letter-spacing">{{ cart.item_count }}</h5>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h5 class="mb-3 no-letter-spacing">{{ productName }} {{ 'wholesale.bulk.subtotal' | t }}</h5>
+            </td>
+            <td>
+              <h5 id="wholesaleSubtotal" class="mb-0 no-letter-spacing">{{ cart.total_price | money }}</h5>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h5 class="mb-3 no-letter-spacing">{{ 'wholesale.bulk.discount' | t }}<span id="discountPercent"> ( 0%)</span></h5>
+            </td>
+            <td class="pos-relative">
+              <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <h5 id="wholesaleDiscount" class="mb-0 no-letter-spacing">--</h5>
+            </td>
+          </tr>
+          <tr class="totalRow">
+            <td><h5 class="mb-3 no-letter-spacing">{{ productName }} {{ 'wholesale.bulk.total' | t }}</h5></td>
+            <td><h5 id="wholesaleTotal" class="mb-0 no-letter-spacing float-right">--</h5></td>
+          </tr>
+        </table>
+      </div>
+      <div {% if cart.item_count == 0 %}class="d-none"{% endif %}>
+        {% include 'wholesale-totals' %}
+      </div>
+      <div>
+        <table>
+          <tr>
+            <td>
+              <button
+                id="updateCart"
+                type="button"
+                onclick="wholesaleUpdate()"
+                class="btn btn--text text-left ml-auto no-letter-spacing disabled"
+              >
+                <i class="mb-4 mr-4">{%- render 'icon-theme-010' -%}</i>{{ 'cart.general.update' | t }}
+              </button>
+            </td>
+            <td>
+              <button
+                id="clearCart"
+                type="button"
+                onclick="wholesaleClear(event)"
+                class="btn btn--text text-left ml-auto no-letter-spacing"
+              >
+                <i class="mb-4 mr-4">{%- render 'icon-theme-010' -%}</i>Clear All
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th colspan="2" class="popup-cart__buttons pt-20">
+              <input id="submit" type="submit" class="btn btn--full btn--primary checkout-button" name="checkout" value="{{ 'cart.general.checkout' | t }}">
+              {% comment %} <div id="submit" type="submit" class="d-none btn btn--full btn--primary" name="checkout">
+                <span>{{ 'cart.general.checkout' | t }}</span>
+                <div class="lds-ellipsis">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div> {% endcomment %}
+            </th>
+          </tr>
+          <tr>
+            <th colspan="2">
+              <div class="updating-cart" style="opacity: 0">
+                <span>
+                  <span>Updating Cart</span>
+                  <span class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </span>
+                </span>
+              </div>
+            </th>
+          </tr>
+        </table>
+      </div>
+      
+    </div>
+  {%- endform -%}    
+  {% comment %} {% render 'wholesale-submit-form' %}
+  <div id="warningModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h5 class="h5">WARNING:</h5>
+      <p>Your cart has some items not shown on this page.</p>
+      <p>We recommend that you clear the cart and only add products from this page.</p>
+      <button
+        id="clearCart"
+        type="button"
+        onclick="wholesaleClear(event)"
+        class="btn btn--primary d-flex ml-auto mr-auto no-letter-spacing"
+      >
+        <i class="mb-4 mr-4">{%- render 'icon-theme-010' -%}</i>Clear Cart
+      </button>
+    </div>
+  </div> {% endcomment %}
+  <div id="touchModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h4 class="touchModalTitle text-center mb-15"></h4>
+      <div class="pr-30" style="float: left;">
+        {%- for color in mov -%}
+          {%- include 'product-get-options-res-image' with value: color -%}
+          <div class="product-options__color d-none" data-option-sku="{{ option_sku }}" data-value="{{ color }}">
+            {{ option_variant | image_url: width: 140 | image_tag: alt: color }}
+          </div>
+        {%- endfor -%}
+      </div>
+      <div
+        class="product-options__value product-options__value--large-text border active{% if disabled_value %} disabled{% endif %}"
+        data-value="0"
+      >
+        <span class="touchSize">0</span>
+      </div>
+      <div>
+        <div id="touchInput" class="input-quantity mt-30 d-flex align-items-center">
+          <div
+            onclick="changeQuantity(this.parentNode.querySelector('input.quantity'), -1)"
+            class="pl-30 pr-20 cursor-pointer"
+            data-control="-"
+          >
+            <span>&mdash;</span>
+          </div>
+          <input
+            class="quantity"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            size="2"
+            name="quantity"
+            data-sku=""
+            data-inv=""
+            data-policy=""
+            value=""
+            id=""
+            data-price=""
+            autocomplete="off"
+          >
+          <div
+            onclick="changeQuantity(this.parentNode.querySelector('input.quantity'), 1)"
+            class="pr-30 pl-20 cursor-pointer"
+            data-control="+"
+          >
+            <span>+</span>
+          </div>
+        </div>
+        <div class="backorderQty">
+          <div class="tip d-none">
+            <span class="units"></span> Unit<span class="plural">s</span> will be Backordered
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+{% comment %} {% render 'wholesale-loggedin' with apply: true %} {% endcomment %}
+<script>
+  // window.dev_debug = true;
+  const pdc_debug = true;
+  const delayDiscount = {{ delayDiscount }}; // delay showing the discount while cart is updated
+  const pdcStart = Date.now();
+  const form = document.querySelector('form#wholesale');
+  const inputs = form.querySelectorAll(".number-input input.quantity");
+  const inputsTouch = form.querySelectorAll(".number-input");
+  const tableTotalQty = form.querySelectorAll(".split-merge .totalQty")
+  // const grandTotalQty = form.querySelector("table.wtotals .totalQty");
+  const wholesalePageQty = form.querySelector("#wholesalePageQty");
+  const cartTotals = form.querySelector("table#wholesale-totals");
+  const formCartQty = cartTotals.querySelector("#wholesaleCartQty");
+  const formCartSubtotal = cartTotals.querySelector("#wholesaleCartSubtotal");
+  const formCartDiscount = cartTotals.querySelector("#wholesaleCartDiscount");
+  const formCartTotal = cartTotals.querySelector("#wholesaleCartTotal");
+
+  const formBackorder = form.querySelector("#backorderTotal");
+  const formBackorderQty = formBackorder.querySelector("#backorderTotalQty");
+  const colors = form.querySelectorAll('.table_colors tbody');
+  const sizes = form.querySelectorAll('.table_container thead tr')
+
+  const updateCartButton = form.querySelector("#updateCart");
+  const checkoutButton = form.querySelector( "#submit");
+  const wholesaleSubtotal = form.querySelector("#wholesaleSubtotal");
+  const wholesaleDiscount = form.querySelector("#wholesaleDiscount");
+  const wholesaleTotal = form.querySelector("#wholesaleTotal");
+  const wholesaleDiscountPercent = form.querySelector("#discountPercent");
+  const discountEllipsis = form.querySelector(".lds-ellipsis");
+  const updatingCart = form.querySelector(".updating-cart");
+  let updatingCartInProgress = false;
+  
+  
+
+  let touchPos;
+  let touchMove = false;
+  const inventory = {{ inv_var }};
+  window.dev_debug && console.log("inventory:", inventory);
+
+  inputs.forEach(input => {
+      input.addEventListener('input', () => {changeQuantity(input, 0)});
+      input.addEventListener('focus', () => {selectedInput(input)});
+  })
+  inputsTouch.forEach(input => {
+      input.addEventListener('touchend', (e) => {
+          if (!touchMove) touched(e, input.querySelector('input.quantity'))
+          else touchMove = false;
+      });
+      input.addEventListener('touchmove', (e) => {
+          const newTouchPos = e.changedTouches[0];
+          const dist = Math.abs(newTouchPos.clientX - touchPos.clientX)
+              + Math.abs(newTouchPos.clientY - touchPos.clientY);
+          // console.log("dist:", dist);
+          if (dist > 10) touchMove = true;
+      });
+      input.addEventListener('touchstart', (e) => {
+          touchPos = e.changedTouches[0];
+          // console.log("TouchPos:", touchPos);
+      })
+  })
+  let timer, timerNode, changeTimer, itemsJson, cartItemsJson, updateCartTimer, previousColor, previousSize;
+
+  const modalTouch = document.querySelector("#touchModal");
+  const modalTouchClose = modalTouch.querySelector(".close");
+  const modalTouchColors = modalTouch.querySelectorAll(".product-options__color");
+  const modalTouchSize = modalTouch.querySelector(".touchSize");
+  const modalQtyInput = modalTouch.querySelector(".quantity");
+  const touchModalTitle = modalTouch.querySelector(".touchModalTitle");
+  modalQtyInput.addEventListener('input', () => {changeQuantity(modalQtyInput, 0)});
+  modalQtyInput.addEventListener("keyup", ({key}) => {if (key === "Enter") closeModalTouch()});
+
+  let touchSource = null;
+  {% render 'wholesale-get-discount' %}
+
+  function selectedInput(input) {
+      window.dev_debug && console.log("clicked:", input);
+      let colorSku = input.dataset.sku.split("-")[0]
+      if (colorSku.length == 3) colorSku = colorSku + "-" + input.dataset.sku.split("-")[1]
+      const size = input.dataset.size.replaceAll(".","").replaceAll(" ", "").toLowerCase();
+      window.dev_debug && console.log("colorSku:", colorSku, "size:", size);
+      const selectedColor = colors[input.dataset.mlIndex].querySelector(`[data-option-sku="${colorSku}"]`);
+      window.dev_debug && console.log("selectedColor:", selectedColor);
+      if (previousColor) previousColor.classList.remove("selected");
+      selectedColor.classList.add("selected");
+      previousColor = selectedColor;
+
+      const selectedSize = sizes[input.dataset.mlIndex].querySelector(`[data-value="${size}"]`);
+      window.dev_debug && console.log("selectedSize:", selectedSize);
+      if (previousSize) previousSize.classList.remove("selected");
+      selectedSize.classList.add("selected");
+      previousSize = selectedSize;
+  }
+  function touched(e, inp) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      touchSource = inp;
+      window.dev_debug && console.log("touched:", e, "input:", touchSource, touchSource.dataset, touchSource.value);
+
+      const dataset = touchSource.dataset;
+      const sku = dataset.sku;
+      // modalQtyInput.dataset = dataset;
+      Object.entries(dataset).forEach(([k, v]) => modalQtyInput.dataset[k] = v);
+      modalQtyInput.value = touchSource.value == "" ? 0 : touchSource.value;
+      modalQtyInput.dataset.id = touchSource.id;
+      changeQuantity(modalQtyInput, 0);
+      const index = sku.indexOf('-');
+      const [touchColor, touchSize] = [sku.slice(0, index), (sku.slice(index + 1)).replace("-","").toLowerCase()];
+      // console.log("color:", touchColor, "touchSize:", touchSize)
+      modalTouchColors.forEach(color => {
+          // console.log("colors:", touchColor, color.dataset.optionSku, touchColor == color.dataset.optionSku);
+          color.style = "display: " + (touchColor == color.dataset.optionSku ? "block !important" : "none");
+      })
+      modalTouchSize.innerText = dataset.size;
+      touchModalTitle.innerText = {{ splitTitles | json }}[dataset.mlIndex];
+      modalTouch.style.display = "block";
+  }
+  modalTouchClose.onclick = function() {
+      modalTouch.style.display = "none";
+      touchSource = null;
+  }
+  const skuQtys = new Map();
+
+  const skuInvUpdate = (inp) => {
+      const sku = inp.dataset.sku;
+      const vid = inp.id;
+      window.dev_debug && console.log("inventory:", inventory, "inp:", inp);
+      const invItem = inventory.find(i => i.sku == sku);
+      let backorderedNode, backorderedNodeValue;
+      let backordered = 0;
+      if (invItem) {
+          invItem.qty = 0;
+          inputs.forEach(function (input){
+              if (input.dataset.sku == sku) {
+                  invItem.qty += +input.value;
+                  window.dev_debug && console.log("inv input:", input, input.parentNode.querySelector(".backorderQty").innerText);
+                  if (input.id != vid) {
+                      backorderedNode = input.parentNode.querySelector(".backorderQty");
+                      backorderedNodeValue = +backorderedNode.querySelector(".qty").innerText;
+                      backordered += +backorderedNodeValue;
+                      window.dev_debug && console.log("inv backorderedNodeValue:", backorderedNodeValue, "backordered:", backordered);
+                  }
+              }
+          });
+      }
+      const backorder = Math.min(invItem.qty - invItem.inventory - backordered, inp.value);
+
+      window.dev_debug && console.log("backorder:", backorder, "backorderedNodeValue:", backorderedNodeValue);
+
+      if (backorder < 0) backorderedNodeValue += +backorder;
+      window.dev_debug && console.log("backorder:", backorder, "backorderedNodeValue:", backorderedNodeValue);
+      if (backorderedNodeValue <= 0) backorderedNodeValue = "";
+      window.dev_debug && console.log("backorder:", backorder, "backorderedNodeValue:", backorderedNodeValue);
+      if (backorderedNode) {
+          backorderedNode.querySelector(".qty").innerText = backorderedNodeValue;
+
+          backorderedNode.querySelector("span.units").innerText = backorderedNodeValue;
+          if (backorderedNodeValue == 1)  backorderedNode.querySelector("span.plural").innerText = "";
+          else  backorderedNode.querySelector("span.plural").innerText = "s";
+      }
+
+      skuQtys.set(sku, {qty: invItem.qty, inventory: invItem.inventory, inventory_policy: invItem.inventory_policy});
+      window.dev_debug && console.log("invItem:", invItem, "skuQtys:", skuQtys, "backordered:", backordered, "backorder:", backorder);
+      return [invItem.qty, invItem.inventory, backorder];
+  }
+  function changeQuantity(input, change) {
+      window.dev_debug && console.log("ChangeQuantity:", input.value, input, change);
+      selectedInput(input);
+      let parent = input.parentNode;
+      const touch = parent.id == "touchInput";
+      // console.log(input, parent);
+      // console.log("touchSource:", touchSource);
+      if (touch) parent = parent.parentNode;
+
+      if (input.value.includes("-")) change = -1;
+      if (input.value.includes("+")) change = 1;
+      let newValue = input.value.replace(/[^0-9.]/g, '') * 1 + change;
+      if (newValue <= 0) newValue = "";
+      if (touch) {
+          input.value = newValue ? newValue : 0;
+          touchSource.value = newValue ? newValue: "";
+      } else input.value = newValue;
+
+      const [skuQty, skuInv, backorderQty] = skuInvUpdate(touch ? touchSource : input);
+      window.dev_debug && console.log("inv skuQty:", skuQty, "skuInv:", skuInv, "backorderQty:", backorderQty);
+      if (backorderQty > 0) {
+          if (input.dataset.policy == "deny") {
+              input.value = newValue - backorderQty;
+              if (touch) touchSource.value = newValue - backorderQty;
+              window.dev_debug && console.log("inv input.value:", input.value);
+          } else {
+              // console.log("backorder:", backorderQty);
+              parent.querySelector(".backorderQty span.units").innerText = backorderQty;
+              if (backorderQty == 1)  parent.querySelector(".backorderQty span.plural").innerText = "";
+              else  parent.querySelector(".backorderQty span.plural").innerText = "s";
+
+              if (!touch) {
+                  window.dev_debug && console.log("touch:", touch, "backorderQty:", backorderQty, "parent:", parent);
+                  parent.querySelector(".backorderQty .tip").classList.add("showtip");
+                  parent.querySelector(".backorderQty span.qty").innerText = backorderQty;
+                  if (timerNode && timerNode != input) timerNode.parentNode.querySelector(".backorderQty .tip").classList.remove("showtip");
+                  timerNode = input;
+                  if (timer) clearTimeout(timer);
+                  timer = setTimeout(() => {
+                      input.parentNode.querySelector(".backorderQty .tip").classList.remove("showtip");
+                  }, 3000);
+              } else {
+                  parent.querySelector(".backorderQty .tip").classList.remove("d-none");
+                  window.dev_debug && console.log("touchSource:", touchSource);
+                  touchSource.parentNode.querySelector(".backorderQty span.units").innerText = backorderQty;
+                  if (backorderQty == 1)  touchSource.parentNode.querySelector(".backorderQty span.plural").innerText = "";
+                  else  touchSource.parentNode.querySelector(".backorderQty span.plural").innerText = "s";
+                  touchSource.parentNode.querySelector(".backorderQty span.qty").innerText = backorderQty;
+              }
+          }
+      } else  {
+          if (!touch) {
+              parent.querySelector(".backorderQty span.qty").innerText = "";
+              if (timer) {
+                  clearTimeout(timer);
+                  parent.querySelector(".backorderQty .tip").classList.remove("showtip");
+              }
+          } else {
+              parent.querySelector(".backorderQty .tip").classList.add("d-none");
+              touchSource.parentNode.querySelector(".backorderQty span.qty").innerText = "";
+          }
+      }
+      checkoutButton.classList.add("disabled");
+      updatingCart.style.opacity = "1";
+      updatingCartInProgress = true;
+      cartTotals.classList.add('blur');
+      if (changeTimer) clearTimeout(changeTimer);
+      changeTimer = setTimeout(() => {
+          getTotals();
+      }, 150);
+  }
+
+  function itemsData() {
+      let items = {};
+      let itemsArray = [];
+      let itemsCount = 0;
+      inputs.forEach(function (input, index){
+          const qty = input.value;
+          items[input.id] = qty > 0 ? qty : 0;
+          itemsCount += +qty;
+          itemsArray.push({id: input.id, properties: {Size: input.dataset["sizeAttribute"]}, quantity: input.value ? input.value : 0 })
+      });
+      window.dev_debug && console.log("itemsCount:", itemsCount);
+      return [items, itemsCount, itemsArray] ;
+  }
+  let pricetotal = 0;
+  let grandTotal = 0;
+  let intervalId;
+  function getTotals() {
+      window.dev_debug && console.log("In getTotals");
+      const totals = {};
+      const tableTotals = [];
+      grandTotal = 0;
+      pricetotal = 0;
+      let backordertotal = 0;
+      skuQtys.clear();
+      inputs.forEach(function (input){
+          //console.log("id:",id);
+          let qty = +input.value;
+          const sku = input.dataset.sku;
+          const price = +input.dataset.price;
+          const mlIndex = +input.dataset.mlIndex;
+          const splitSku = sku.split("-");
+          let color, size;
+          if (splitSku[0].length > 3) {
+            color = splitSku[0];
+            size = splitSku.slice(1).join("-")
+          } else {
+            color = splitSku[0] + "-" + splitSku[1];
+            size = splitSku.slice(2).join("-")
+          }
+          totals[color+"_"+mlIndex] = (totals[color+"_"+mlIndex] ? totals[color+"_"+mlIndex] : 0) + qty;
+          totals[size+"_"+mlIndex] = (totals[size+"_"+mlIndex] ? totals[size+"_"+mlIndex] : 0) + qty;
+          tableTotals[mlIndex] = (tableTotals[mlIndex] ? tableTotals[mlIndex] : 0) + qty;
+          grandTotal += qty;
+          pricetotal += qty * price;
+          //console.log(color, size, ":", qty, totals[color], totals[size]);
+          if (skuQtys.has(sku)) qty = qty + skuQtys.get(sku).qty;
+          skuQtys.set(sku, {qty: qty, inventory: input.dataset.inv, inventory_policy: input.dataset.policy});
+
+      });
+      skuQtys.forEach(sq => {
+          backordertotal += Math.max(0, sq.qty - Math.max(0, sq.inventory));
+      })
+      window.dev_debug && console.log("skuQtys:", skuQtys, backordertotal);
+      /*console.log("grandTotal", grandTotal, "pricetotal:", pricetotal, "totals:", totals,
+          "backordered:", backordertotal); */
+      window.dev_debug && console.log("totals:", totals, "tableTotals:", tableTotals, "grandTotal:", grandTotal);
+      tableTotalQty.forEach(tq => {
+          window.dev_debug && console.log("tq dataset: ", tq.dataset);
+          tq.innerText = tableTotals[tq.dataset.mlIndex]
+      })
+      wholesalePageQty.innerText = grandTotal;
+      formBackorderQty.innerText = backordertotal;
+      if (backordertotal > 0) formBackorder.classList.remove("d-none");
+      else formBackorder.classList.add("d-none");
+      wholesaleSubtotal.innerText =
+          new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(pricetotal);
+      if (delayDiscount) {
+        wholesaleDiscount.style.opacity = "0";
+        discountEllipsis.style.opacity = "1";
+        wholesaleTotal.style.opacity = "0";
+      } else {
+        // updateDiscount({total_price: pricetotal * 100, item_count: grandTotal });
+        // updateDiscount();
+        intervalId = setInterval(checkCartAndCallUpdateDiscount, 100);
+        // if (grandTotal) checkoutButton.classList.remove("disabled");
+        // else checkoutButton.classList.add("disabled");
+      }
+
+      Object.keys(totals).forEach(sku => {
+          form.querySelector(`[id="${sku}"]`).innerText = totals[sku];
+      });
+      updateCartButtonEnable();
+  }
+
+  function checkCartAndCallUpdateDiscount() {
+    if (theme.Cart !== null) {
+      clearInterval(intervalId);
+      updateDiscount();
+    }
+  }
+  function updateCartButtonEnable() {
+      window.dev_debug && console.log("In updateCartButtonEnable");
+      const itemsJson = JSON.stringify(itemsData()[2]);
+      //console.log("itemsJson:", itemsJson);
+      //console.log("cartItemsJson:", cartItemsJson);
+      //console.log("cartItemsJson:", cartItemsJson == itemsJson);
+      if (updateCartTimer) clearTimeout(updateCartTimer);
+      if (itemsJson == cartItemsJson) {
+          updateCartButton.classList.add("disabled");
+          updatingCart.style.opacity = "0";
+          updatingCartInProgress = false;
+          cartTotals.classList.remove('blur');
+          if (itemsCount > 0) checkoutButton.classList.remove("disabled");
+          else checkoutButton.classList.add("disabled");
+          wholesaleDiscount.style.opacity = "1";
+          wholesaleTotal.style.opacity = "1";
+          discountEllipsis.style.opacity = "0";
+      } else {
+          updateCartButton.classList.remove("disabled");
+          if (delayDiscount) checkoutButton.classList.add("disabled")
+          updateCartTimer = setTimeout(() => {
+              updateCartButton.classList.add("disabled");
+              updatingCart.style.opacity = "0";
+              updatingCartInProgress = false;
+              cartTotals.classList.remove('blur');
+              wholesaleUpdate();
+          }, 5000);
+      }
+  }
+  function wholesaleUpdate() {
+      window.dev_debug && console.log("In wholesaleUpdate");
+      if (updateCartTimer) clearTimeout(updateCartTimer);
+      updateCartButton.classList.add("disabled");
+      const [items, itemsCount, itemsArray] = itemsData();
+      window.dev_debug && console.log("items:", items, itemsCount, itemsArray);
+      const addItems = [];
+      const updateItems = {};
+      itemsArray.filter(item => {
+        const found = theme.Cart.currentData.items.find(citem => 
+          citem.id == item.id && 
+            (Object(citem.properties).hasOwnProperty("Size") ?
+              citem.properties.Size == item.properties.Size : true));
+        // console.log("find:", item, "found:", found);
+        if (found) {
+          updateItems[found.key] = item.quantity;
+        }
+        else if (item.quantity > 0) addItems.push(item);
+      })
+
+      window.dev_debug && console.log("addItems:", addItems);
+      window.dev_debug && console.log("updateItems:", updateItems);
+
+      function updateCart(requestParams) {
+        fetch("{{ routes.root | append: routes.cart_update_url | append: '.js' }}", requestParams)
+        .then(response => response.json())
+        .then(data => {
+          cartItemsJson = JSON.stringify(items);
+          // console.log("wholesaleUpdate response:", data);
+          theme.Cart.setCurrentData(data)
+          theme.Cart.updateCart();
+          window.dev_debug && console.log("Cart:", theme.Cart.currentData);
+          formCartQty.innerText = theme.Cart.currentData.item_count;
+          formCartSubtotal.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(theme.Cart.currentData.items_subtotal_price / 100);
+          {% comment %} cartCountWarning(itemsCount); {% endcomment %}
+          window.dev_debug && console.log("calling updateDiscount after wholesaleUpdate fetch");
+          updateDiscount();
+          if (itemsCount > 0) checkoutButton.classList.remove("disabled");
+        })
+        .catch(error => console.error('Error:', error)); 
+      }
+
+      {% if split-unisex %}
+        const requestParamsUpdate = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ updates: updateItems})
+        };
+
+        if (addItems.length) {
+          const requestParamsAdd = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ items: addItems})
+          };
+
+        fetch("{{ routes.root | append: routes.cart_add_url | append: '.js' }}", requestParamsAdd)
+          .then(response => response.json())
+          .then(data => {
+            cartItemsJson = JSON.stringify(items);
+            window.dev_debug && console.log("wholesaleUpdate response:", data);
+            updateCart(requestParamsUpdate);
+          })
+          .catch(error => console.error('Error:', error)); 
+        } else {
+          updateCart(requestParamsUpdate);
+        }
+      
+
+
+      {% else %}
+        const requestParamsUpdate = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ updates: items})
+        };
+        updateCart(requestParamsUpdate);
+        
+      {% endif %}
+  }
+
+  {% comment %} let firstLoad = true;
+  let warningEnable = false;
+  function cartCountWarning(count) {
+      const cartItemCount = theme && theme.Cart ? theme.Cart.currentData.item_count : {{ cart.item_count }}
+      console.log("cartItemCount: ", cartItemCount, "itemCount:", count);
+      if (cartItemCount == count) {
+          wholesalePageQty.classList.remove("warning")
+          warningEnable = false;
+      } else {
+          wholesalePageQty.classList.add("warning");
+          modalWarning.style.display = firstLoad ? "block" : "none";
+          warningEnable = true;
+      }
+      firstLoad = false;
+  } {% endcomment %}
+  function wholesaleClear(e) {
+      fetch("{{ routes.root | append: routes.cart_clear_url | append: '.js' }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (e != "noreload") location.reload();
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  let currentDiscount = "";
+
+  function updateDiscount(cartData = null) {
+      if (!cartData) cartData = theme.Cart?.currentData;
+      window.dev_debug && console.log("In updateDiscount", cartData);
+      let code = ""
+      let discountPercent = 0;
+      let discountAmount = 0;
+      let total = cartData?.total_price || 0;
+      for (const dcode of defaultDiscounts) {
+          if (cartData?.item_count || 0 >= dcode.minQty) {
+              code = dcode.code;
+              discountPercent = dcode.discountPercent;
+              discountAmount = (total * (discountPercent / 100)).toFixed(0);
+              total = total - discountAmount;
+              break;
+          }
+      }
+      window.dev_debug && console.log("found discount:", code, discountPercent, cartData);
+      if (code != currentDiscount) {
+          fetch("/discount/" + code) 
+          .then((response) => {
+              //console.log("fetch response:", response);
+              currentDiscount = code;
+              //checkout();
+          });
+      }
+      
+      window.dev_debug && console.log("grandTotal:", grandTotal, "item_count:", cartData?.item_count)
+      if (!updatingCartInProgress) {
+        if (grandTotal == cartData?.item_count || cartData?.item_count == 0) {
+          cartTotals.parentElement.classList.add('d-none');
+        } else {
+          cartTotals.parentElement.classList.remove('d-none');
+        }
+      }
+
+      wholesaleDiscount.innerText = String.fromCharCode("8211") +   // 8211 = n-dash
+          new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+              .format((pricetotal * discountPercent / 100).toFixed(2));
+      formCartDiscount.innerText = String.fromCharCode("8211") +   // 8211 = n-dash
+          new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+              .format((discountAmount / 100).toFixed(2));
+      {% comment %} wholesaleTotal.innerText = discount.subtotalFormatted; {% endcomment %}
+      wholesaleTotal.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+        .format((pricetotal * (1 - (discountPercent / 100))).toFixed(2));
+      formCartTotal.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total / 100)
+      const spacer = discountPercent < 10 ? " " : "";
+      wholesaleDiscountPercent.innerText = " (" + spacer + parseInt(discountPercent) + "%)";
+      wholesaleDiscount.style.opacity = "1";
+      wholesaleTotal.style.opacity = "1";
+      if (typeof discountEllipsis == "object") discountEllipsis.style.opacity = "0";
+      {% comment %} getWholesaleDiscount({"discount":
+                              {"code": code, "value": discountPercent, "amount": discountAmount / 100},
+                          "subtotalFormatted": new Intl.NumberFormat('en-US', 
+                              { style: 'currency', currency: 'USD' }).format(total / 100)
+                          }) {% endcomment %}
+      return discountPercent;
+  }
+
+  {% comment %} function getWholesaleDiscount(discount) {
+      console.log("in getWholesaleDiscount", discount);
+      
+  } {% endcomment %}
+  document.addEventListener('keydown', (event) => {
+      const keyName = event.key;
+      if (event.target.tagName == "INPUT" && event.target.classList.contains("quantity"))
+      if (keyName === 'ArrowUp') {
+        changeQuantity(event.target.parentNode.querySelector('input.quantity'), 1)
+        return;
+      } else if (keyName === 'ArrowDown') {
+          changeQuantity(event.target.parentNode.querySelector('input.quantity'), -1)
+          return;
+      }
+  }, false);
+
+  {% comment %} const modalWarning = document.querySelector("#warningModal");
+  const modalWarningClose = modalWarning.querySelector(".close");
+  // When the user clicks on the button, open the modal
+  wholesalePageQty.onclick = function() {
+      if (warningEnable) modalWarning.style.display = "block";
+  }
+  // When the user clicks on <span> (x), close the modal
+  modalWarningClose.onclick = function() {
+      modalWarning.style.display = "none";
+  }
+  const closeModalTouch = () => {
+      modalTouch.style.display = "none";
+      touchSource = null;
+  }
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+      if (event.target == modalWarning && modalWarning.style.display == "block") modalWarning.style.display = "none";
+      if (event.target == modalTouch && modalTouch.style.display == "block") {
+          closeModalTouch();
+      }
+  } {% endcomment %}
+
+  const [items, itemsCount, itemsArray] = itemsData();
+  {% comment %} cartCountWarning(itemsCount); {% endcomment %}
+  cartItemsJson = JSON.stringify(itemsArray);
+  getTotals();
+  // Set initial backorder quantities on pageload
+  skuQtys.forEach((sq, sku) => {
+      if (sq.qty > 0 && sq.inventory_policy == "continue") {
+          const entries = form.querySelectorAll(`input.quantity[data-sku="${sku}"]`);
+          window.dev_debug && console.log("entries:", entries)
+          let qty = 0;
+          entries.forEach(e => qty += +e.value);
+          window.dev_debug && console.log("qty:", qty);
+          let bo = qty - entries[0].dataset.inv;
+          if (bo > 0) {
+              Object.values(entries).reverse().forEach(e => {
+                  const boe = Math.min(bo, e.value);
+                  if (boe > 0) {
+                      const parent = e.parentNode
+                      parent.querySelector(".qty").innerText = boe;
+                      parent.querySelector("span.units").innerText = boe;
+                      if (boe == 1)  parent.querySelector("span.plural").innerText = "";
+                      else  parent.querySelector("span.plural").innerText = "s";
+                      bo -= boe;
+                  }
+              })
+          }
+
+      }
+  })
+
+  if (delayDiscount) {
+    wholesaleDiscount.style.opacity = "0";
+    discountEllipsis.style.opacity = "1";
+    wholesaleTotal.style.opacity = "0";
+    const themeCartTimer = setInterval(() => {
+      if(typeof theme.Cart == "object") {
+        window.dev_debug && console.log(theme.Cart);
+        clearInterval(themeCartTimer);
+        updateDiscount();
+      }
+    }, 500);
+  }
+</script>
+<style>
+  .footbar {
+      display: none !important;
+  }
+  .pos-relative {
+      position: relative;
+  }
+  span#discountPercent {
+    min-width: 60px;
+    display: inline-block;
+  }
+  .wholesale-product {
+      border-collapse: separate;
+      border-spacing: 5px;
+  }
+  .split-merge {
+      display: flex;
+      justify-content: center;
+  }
+  .wholesale-product .product-options__value.product-options__value--large-text {
+      height: 41px;
+      width: 41px;
+      min-width: 41px;
+      max-width: 41px;
+      max-height: 41px;
+      min-height: 41px;
+      font-weight: normal;
+      text-align: center;
+      padding: 0;
+  }
+  #touchModal .product-options__value.product-options__value--large-text {
+      display: flex;
+      align-items: center;
+      max-height: 82px !important;
+      max-width: 82px !important;
+      height: 82px;
+      width: 82px;
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: normal;
+      text-align: center;
+      border-width: 2px !important;
+      border-radius: 10px;
+      margin: 0;
+  }
+  .colorcolumn .product-options__value.product-options__value--square {
+      height: 41px;
+      border-color: var(--theme) !important;
+      overflow: hidden;
+      position: relative;
+  }
+  .colorcolumn img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+  }
+  .colorcolumn .product-options__value > div {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      font-weight: 600;
+      background: #3338;
+      color: #fff;
+  }
+  .colorcolumn .product-options__value:hover > div, .colorcolumn .product-options__value.selected > div {
+      display: block;
+  }
+  .colorcolumn .product-options__value > div > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+}
+.product-options__value.product-options__value--large-text.selected {
+      background: #3338;
+      color: white;
+      font-weight: 600;
+  }
+  #touchModal img {
+      height: 82px;
+      width: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid var(--theme);
+  }
+  .wholesale-product.product-options input[type="text"] {
+      height: 100%;
+      width: 100%;
+      margin-right: unset;
+      padding: 0;
+      text-align: center;
+      background: unset;
+      border: unset;
+  }
+  th.colorcolumn, .wholesale-product .totalcolumn, td.totalcolumn {
+      border: unset !important;
+  }
+  .table_colors .wholesale-product {
+      box-shadow: black 3px 0px 3px -4px;
+      padding-bottom: 14px;
+  }
+  .table_totals .wholesale-product {
+      box-shadow: black -3px 0px 3px -4px;
+      padding-bottom: 14px;
+      text-align: center;
+  }
+  .wholesale-product td, .wholesale-product  th, .table_totals th {
+      min-width: 41px;
+      min-height: 41px;
+      height: 41px;
+      width: 41px;
+      text-align: center;
+  }
+  .table_colors .wholesale-product th.colorcolumn, thead th.totalcolumn {
+      height: 41px;
+      padding: 0;
+  }
+  .wholesale-product td, .wholesale-product thead th {
+      border-radius: 5px;
+      border: 1px solid var(--product-options-bd);
+      background: #f8f8f8;
+  }
+  .wholesale-product td.td-disabled {
+      overflow: clip;
+  }
+  .wholesale-product td:hover {
+      background: white;
+  }
+  .wholesale-product td.td-disabled:hover {
+      background: #f8f8f8;
+  }
+  .table_container {
+      overflow-x: scroll;
+      overflow-y: clip;
+      padding-bottom: 10px;
+  }
+  .wholesale-product .colorcolumn {
+      background: white;
+  }
+  .wholesale-product .totalcolumn {
+      background: white;
+  }
+  div.footbar div.product-options__section {
+      display: none !important;
+  }
+  div.footbar-product__options label span:first-child {
+      font-weight: normal;
+  }
+  div.footbar-product__options label span:last-child {
+      margin-left: 0 !important;
+      display: block;
+  }
+  div.footbar div.product-options label {
+      text-align: center;
+  }
+  .wholesale-product .minus, .wholesale-product .plus {
+      position: absolute;
+      display: none;
+      height: 50%;
+      cursor: pointer;
+      width: 20px;
+  }
+  .wholesale-product .minus {
+      bottom: -3px;
+      right: -3px;
+  }
+  .wholesale-product .plus {
+      top: -3px;
+      right: -3px;
+  }
+  .wholesale-product .number-input {
+      position: relative;
+  }
+  .wholesale-product .number-input input, .wholesale-product .product-options__value {
+      margin-bottom: 0;
+  }
+  .wholesale-product .number-input:hover i {
+      display: block;
+  }
+  @media (max-width: 767px) {
+      form#wholesale .cart-buttons {
+          display: block !important;
+      }
+  }
+  .wholesale-product .backorderQty {
+      position: absolute;
+      left: 3px;
+      bottom: 0;
+      font-size: 8pt;
+      color: red;
+      cursor: pointer;
+  }
+  .wholesale-product .backorderQty .qty {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+  }
+  .wholesale-product .tooltip {
+      display:inline-block;
+      border-bottom:1px dotted red;
+      text-align:left;
+      margin-bottom: -1px;
+      line-height: 10px;
+  }
+  #backorderTotalQty {
+      color: red;
+      display: inline;
+  }
+  #wholesalePageQty.warning {
+      border-bottom: 2px dotted red;
+      cursor: pointer;
+      color: red;
+      display: inline;
+  }
+  .tooltip .bottom {
+      min-width:220px;
+      top:9px;
+      left:50%;
+      transform:translate(-50%, 0);
+      padding:10px;
+      line-height: 16px;
+      color:#444444;
+      background-color:#EEEEEE;
+      font-weight:normal;
+      font-size:13px;
+      border-radius:8px;
+      position:absolute;
+      z-index:99999;
+      box-sizing:border-box;
+      text-align: center;
+  }
+  .tooltip .bottom.col1 {
+      transform: translate(-10px, 0);
+  }
+  .tooltip .bottom.col2 {
+      transform: translate(-60px, 0);
+  }
+  .tooltip .bottom.col3 {
+      transform: translate(-45%, 0);
+  }
+
+  .tooltip .bottom.col{{ sizesSize }} {
+      transform: translate(32px, 0);
+      right: 0;
+      left: unset;
+  }
+  .tooltip .bottom.col{{ sizesSize | minus: 1 }} {
+      transform: translate(60px, 0);
+      right: 0;
+      left: unset;
+  }
+
+  .tooltip:hover .tip, .tooltip .tip.showtip {
+      visibility:visible;
+      opacity:1;
+  }
+  .tooltip .tip {
+      filter: drop-shadow(0 0 5px gray);
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out, visibility 0.4s;
+  }
+  .tooltip i {
+      position:absolute;
+      margin-left:-8px;
+      width:24px;
+      height:10px;
+      overflow:hidden;
+  }
+
+  .tooltip i::after {
+      content:'';
+      position:absolute;
+      width:12px;
+      height:12px;
+      left:25%;
+      top: 50%;
+      transform: rotate(45deg);
+      background-color:#EEEEEE;
+  }
+
+  .number-input.disabled-input {
+      pointer-events: none;
+  }
+  .number-input.disabled-input::before, .number-input.disabled-input::after {
+      content: "";
+      display: block;
+      position: absolute;
+      height: 1px;
+      top: 50%;
+      left: 50%;
+      background-color: #cbcbcb;
+      width: 60px;
+  }
+  .number-input.disabled-input::before {
+      transform: translate3d(-50%, 0, 0) rotate(45deg);
+  }
+  .number-input.disabled-input::after {
+      transform: translate3d(-50%, 0, 0) rotate(-45deg);
+  }
+  form#wholesale .wtotals {
+    text-align: right;
+    filter: blur(0px);
+    transition: .5s filter ease-in-out;
+  }
+  form#wholesale .wtotals.blur {
+    filter: blur(3px);
+  }
+  form#wholesale .cart-buttons {
+      flex-wrap: wrap;
+      width: 100%;
+  }
+  form#wholesale .cart-buttons > div {
+      {% comment %} flex: 1; {% endcomment %}
+      padding: 10px 15px;
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+  }
+  form#wholesale .wtotals td:first-child {
+      margin-right: 50px;
+      display: block;
+  }
+  form#wholesale .wtotals td:last-child {
+      min-width: 100px;
+  }
+  .totalRow {
+      border-top: 2px solid var(--theme-head-c);
+  }
+  {% if delayDiscount %}
+    form#wholesaleDiscount {
+      transition: .5s opacity ease-in-out;
+      opacity: 0;
+    }
+    #wholesaleTotal {
+        transition: .5s opacity ease-in-out;
+        opacity: 0;
+    }
+  {% endif %}
+    /* LOADING ELIPSIS ANIMATION */
+    .lds-ellipsis {
+        display: inline-block;
+        position: absolute;
+        width: 80px;
+        height: 30px;
+        right: 0;
+        transition: .5s opacity ease-in-out;
+        opacity: 0;
+    }
+    .lds-ellipsis div {
+      position: absolute;
+      top: 6px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--theme-head-c);
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+    .lds-ellipsis div:nth-child(1) {
+      left: 8px;
+      animation: lds-ellipsis1 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(2) {
+      left: 8px;
+      animation: lds-ellipsis2 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(3) {
+      left: 32px;
+      animation: lds-ellipsis2 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(4) {
+      left: 56px;
+      animation: lds-ellipsis3 0.6s infinite;
+    }
+
+    .updating-cart {
+      text-align: center;
+      {% comment %} height: calc(var(--body-line-height) * 1em); {% endcomment %}
+      transition: .5s opacity ease-in-out;
+    }
+    .updating-cart span {
+      font-weight: 400;
+    }
+    .updating-cart .lds-ellipsis {
+      opacity: 1;
+      right: unset;
+      height: 14px;
+      position: relative;
+    }
+    .updating-cart .lds-ellipsis div {
+      width: 3px;
+      height: 3px;
+      top: 8px;
+      padding-left: 3px;
+    }
+
+
+
+
+    @keyframes lds-ellipsis1 {
+      0% {
+        transform: scale(0);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes lds-ellipsis3 {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(0);
+      }
+    }
+    @keyframes lds-ellipsis2 {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(24px, 0);
+      }
+    }
+
+  /* WHOLESALE TABS */
+  .tabs-wrapper {
+      {% comment %} display: flex;
+      flex-direction: column;
+      align-items: center; {% endcomment %}
+  }
+  .tabs-group {
+      max-width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+  }
+  .tab {
+      border: 1.5px solid var(--theme-head-c);
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+      margin-left: -1.5px !important;
+      cursor: pointer;
+      flex: 1;
+      margin: 0;
+      background: #ddd;
+  }
+  .tabs-group > label:first-child {
+      margin-left: 0px !important;
+  }
+  .tab-panels {
+      width: 100%;
+      border-bottom-left-radius: 25px;
+      border-bottom-right-radius: 25px;
+      overflow: hidden;
+      padding: 20px;
+      border: 1.5px solid var(--theme-head-c);
+      border-top: 0;
+  }
+  .tab-panel {
+      display: none;
+      animation: fadein 0.8s;
+  }
+  @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 1; }
+  }
+  {% for ml in mphAll %}
+      {% assign index = forloop.index %}
+      #tab{{ index }}:checked ~ .tab-panels #panel{{ index }},
+  {% endfor %} #nada {
+      display: block;
+  }
+  {% for ml in mphAll %}
+      {% assign index = forloop.index %}
+      #tab{{ index }}:checked ~ .tabs-group #tab-{{ index }},
+  {% endfor %} #nada {
+      background: #fff;
+      border-bottom: 0;
+
+  }
+  {%- capture iconplus -%}
+      {%- render 'icon-theme-188' -%}
+  {%- endcapture -%}
+  .svg-plus {
+      background-image: url("data:image/svg+xml,{{ iconplus | replace: "<svg", "<svg xmlns='http://www.w3.org/2000/svg'" | strip | strip_newlines | url_param_escape }}")
+  }
+  {%- capture iconminus -%}
+      {%- render 'icon-theme-189' -%}
+  {%- endcapture -%}
+  .svg-minus {
+      background-image: url("data:image/svg+xml,{{ iconminus | replace: "<svg", "<svg xmlns='http://www.w3.org/2000/svg'" | strip | strip_newlines | url_param_escape }}")
+  }
+</style>

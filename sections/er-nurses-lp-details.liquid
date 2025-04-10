@@ -1,0 +1,64 @@
+{% style %}
+  .er-nurses-lp-details__wrapper.section-{{ section.id }} {
+    background: {{ section.settings.bg_color }};
+  }
+  .er-nurses-lp-details__text ul li::before {
+    background: url('{{ "blue_check.svg" | asset_url }}');
+    background-size: cover;
+    background-position: center;
+  }
+{% endstyle %}
+
+<div class="er-nurses-lp-details__wrapper section-{{ section.id }}">
+  <div class="container">
+    <div class="er-nurses-lp-details__content">
+      <div class="er-nurses-lp-details__image">
+        <img src="{{ section.settings.image | image_url: width: 488 }}" loading="lazy" width="488" height="488" />
+      </div>
+      <div class="er-nurses-lp-details__text">
+        {% if section.settings.title != blank %}
+          <h3>{{ section.settings.title }}</h3>
+        {% endif %}
+        {% if section.settings.content != blank %}
+          <div>{{ section.settings.content }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ER Nurses LP Details",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Gales aren't your average nursing shoes"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "content",
+      "default": "<p>Nursing is physically demanding. Nurses walk 4-5 miles/day. Common issues that come along with not wearing quality footwear are:</p><ul><li>Peripheral neuropathy</li><li>Plantar fasciitis</li><li>Heel spurs</li><li>Inflammation</li></ul><p>Gales was founded to give back to the healthcare community through innovation with Smart PPE Footwear™ technology, offering the highest level of affordability, safety, cleanability, comfort and style in its class.</p><p>Common footwear worn in medical facilities puts our frontline nurses at risk, leaving 59 million providers exposed to infectious fluids and disease, so we led the charge to be the first to complete the bio-safe uniform.</p>"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#F9F9F9"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER Nurses LP Details"
+    }
+  ]
+}
+{% endschema %}

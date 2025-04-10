@@ -1,0 +1,75 @@
+<!-- snippet/collection-for-gempages.liquid -->
+{% include 'global-variables' %}
+<div class="page-width collection-filters" id="main-collection-filters" data-id="{{ section.id }}">
+  <div class="collections">
+      <div class="mt-10 mt-lg-{{ offset_collection_page_content_margin_top_d }} overflow-hidden">
+            <div class="{% if section.settings.container == 'fullwidth' %}container-fluid{% else %}container{% endif %}">
+                <div class="row">
+                    <div class="collections__body col">
+                        <div class="collection-body{% if section.settings.view_grid_visibility != 'hide' %} js-collection-grid{% endif %}"{% if grid_attrs %}{{ grid_attrs }}{% endif %}>
+                            <div id="CollectionBuilder"></div>
+                            <div id="CollectionProducts" class="collection-products{{ list_wrapper_classes }}{{ centered_classes }}">
+                                {% comment %} collection: {{ collection }} {% endcomment %}
+                                    <div id="main-collection-product-grid" data-id="{{ section.id }}">
+                                        <div id="CollectionProductGrid" class="row collection-product-grid{% if collection.products.size == 0 %} collection-product-grid--empty{% endif %}">
+                                            {%- if collection.products.size == 0 -%}
+                                                <div class="col">
+                                                    <div class="d-flex flex-column align-items-center py-40 py-md-100 my-100">
+                                                        <h2 class="h3">{{ 'collection_template.empty_title' | t }}</h1>
+                                                        <p>{{ 'collection_template.empty_paragraph' | t }}</p>
+                                                        <a href="{{ collection.url }}" class="btn empty-btn mt-20">{{ 'collection_template.use_fewer_filters' | t }}</a>
+                                                    </div>
+                                                </div>
+                                            {%- else -%}
+                                                {%- for product in collection.products -%}
+                                                    {%- capture div_grid -%}
+                                                        <div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                                    {%- endcapture -%}
+                                                    {% comment %} {% include 'product-collection' product_margin_bottom: offset_collection_page_product_margin_bottom_d %} {% endcomment %}
+                                                    {% liquid
+                                                    assign collection_split = product.metafields.furnace.collection_page_split_option | downcase
+                                                    assign product_split_option = product.options_by_name[collection_split]
+                                                    assign product_split_option_position = product_split_option.position | minus: 1
+                                                    if collection_split and product_split_option
+                                                        comment
+                                                        echo "<div>collection_split: " | append: collection_split | append: "</div>"
+                                                        echo product.options | json
+                                                        echo "<div>product_split_option: "
+                                                        echo product_split_option | json | append: "</div>"
+                                                        endcomment
+                                                        for current_option in product.options_by_name[collection_split].values
+                                                            comment
+                                                            echo "<div>current_option: " | append: current_option  | append: "</div>"
+                                                            echo "<div>" | append: product.options[product_split_option_position] | append: "</div>"
+                                                            endcomment
+                                                            echo div_grid
+                                                            include 'product-collection' product_margin_bottom: offset_collection_page_product_margin_bottom_d
+                                                            echo "</div>"
+                                                        endfor
+                                                    else
+                                                        echo div_grid
+                                                        include 'product-collection' product_margin_bottom: offset_collection_page_product_margin_bottom_d
+                                                        echo "</div>"
+                                                    endif
+                                                    %}
+                                                {%- endfor -%}
+                                            {%- endif -%}
+                                        </div>
+                                        <collection-pagination class="d-block" data-pagination-type="{{ settings.layout_pagination_type }}">
+                                            <div id="CollectionPagination">
+                                                {%- if paginate.pages > 1 -%}
+                                                    {% render 'pagination', paginate: paginate, anchor: '', type: settings.layout_pagination_type %}
+                                                {%- endif -%}
+                                            </div>
+                                        </collection-pagination>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="CollectionHeadingBottom"></div>
+    </div>
+</div>

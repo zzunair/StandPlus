@@ -1,0 +1,42 @@
+ADD ORDER TAGS RULE on ORDER CREATION
+
+AutomaticDiscountApplication: (tag orders that used an auto discount. e.g. BOGO)
+    {% for discountApplications_item in order.discountApplications %} {{discountApplications_item.AutomaticDiscountApplication.title}}, {% endfor %}
+
+Payment Gateway used:
+    {% for transactions_item in order.transactions %}{% if transactions_item.status != "FAILURE" and transactions_item.gateway != blank %}paygate_{{transactions_item.gateway}}, {% endif %}{% endfor %}
+
+Free Orders:
+    {% if order.totalPriceSet.shopMoney.amount < 10 %}free_order{% endif %}
+    {% if order.app.name == "TikTok" and order.totalReceivedSet.shopMoney.amount < 10 %}free_order{% endif %}
+
+Free Shipping:
+    {% if order.requiresShipping == true and order.shippingLine.originalPriceSet.shopMoney.amount == 0 %}free_shipping{% endif %}
+    {% if order.requiresShipping == true and order.totalShippingPriceSet.shopMoney.amount == 0 %}free_shipping{% endif %}
+
+International Shipping:
+    {% if order.requiresShipping == true and order.shippingLine.code == "epacketDdp" %}international_shipping{% endif %}
+
+Appname where the order came from:
+    appname_{{order.app.name}}
+
+Pre-Orders:
+    {% for li in order.lineItems %}{% for attr in li.customAttributes %}{% if attr.key == "Pre-order" %}pre-order, preorder{% endif %}{% endfor %}{% endfor %}
+
+Repeat Customers:
+    {% if order.customer.ordersCount > 1 %}repeat_customers{% endif %}
+
+---------------------------------------------------
+{% for discountApplications_item in order.discountApplications %} {{discountApplications_item.AutomaticDiscountApplication.title}}, {% endfor %}
+{% for transactions_item in order.transactions %}{% if transactions_item.status != "FAILURE" and transactions_item.gateway != blank %}paygate_{{transactions_item.gateway}}, {% endif %}{% endfor %}
+{% if order.totalPriceSet.shopMoney.amount < 10 %}free_order{% endif %}
+{% if order.app.name == "TikTok" and order.totalReceivedSet.shopMoney.amount < 10 %}free_order{% endif %}
+{% if order.requiresShipping == true and order.shippingLine.originalPriceSet.shopMoney.amount == 0 %}free_shipping{% endif %}
+{% if order.requiresShipping == true and order.totalShippingPriceSet.shopMoney.amount == 0 %}free_shipping{% endif %}
+{% if order.requiresShipping == true and order.shippingLine.code == "epacketDdp" %}international_shipping{% endif %}
+appname_{{order.app.name}}
+{% for li in order.lineItems %}{% for attr in li.customAttributes %}{% if attr.key == "Pre-order" %}pre-order, preorder{% endif %}{% endfor %}{% endfor %}
+{% if order.customer.ordersCount > 1 %}repeat_customers{% endif %}
+
+
+{% for customAttributes_item in order.customAttributes %}{% if customAttributes_item.key contains "shoplift" %}shoplift_{{customAttributes_item.value | remove: "+" | remove: " "}},{% endif %}{% endfor %}

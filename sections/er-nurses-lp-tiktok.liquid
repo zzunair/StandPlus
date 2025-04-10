@@ -1,0 +1,103 @@
+<style>
+  .css-1hcx8jb {
+    display: none;
+  }
+</style>
+<div class="er-nurses-lp-tiktok section-{{ section.id }}">
+  <p class="er-nurses-lp-tiktok-title">{{ section.settings.title }}</p>
+  <p class="er-nurses-lp-tiktok-subtitle">{{ section.settings.subtitle }}</p>
+  <div class="er-nurses-lp-tiktok-videos">
+    {% comment %}
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.link }}" target="_blank" class="er-nurses-lp-tiktok-videos-thumb">
+          <img
+            src="{{ block.settings.image |  img_url: 'master' }}"
+            loading="lazy"
+            alt="{{ block.settings.name }}"
+          >
+        </a>
+      {% endfor %}
+    {% endcomment %}
+    <blockquote
+      class="er-nurses-lp-tiktok-videos-thumb  tiktok-embed"
+      cite="https://www.tiktok.com/@weargales/video/7222043598919896363"
+      data-video-id="7222043598919896363"
+      data-embed-from="embed_page"
+    >
+      <section>
+        <a target="_blank" title="@weargales" href="https://www.tiktok.com/@weargales?refer=embed">@weargales</a>
+        <p>
+          We asked a nurse to try on Gales for the first time and this happened…
+          <a title="weargales" target="_blank" href="https://www.tiktok.com/tag/weargales?refer=embed">#weargales</a>
+        </p>
+      </section>
+    </blockquote>
+    <blockquote
+      class="er-nurses-lp-tiktok-videos-thumb  tiktok-embed"
+      cite="https://www.tiktok.com/@weargales/video/7234628222623698219"
+      data-video-id="7234628222623698219"
+      style="max-width: 605px;min-width: 325px;"
+    >
+      <section>
+        <a target="_blank" title="@weargales" href="https://www.tiktok.com/@weargales?refer=embed">@weargales</a>
+        Comfortable, waterproof and easy to slip on shoes are just one click away! Shop Gales all white Frontline shoes
+        today 🤍
+      </section>
+    </blockquote>
+    <blockquote
+      class="er-nurses-lp-tiktok-videos-thumb  tiktok-embed"
+      cite="https://www.tiktok.com/@weargales/video/7226102243668282667"
+      data-video-id="7226102243668282667"
+      style="max-width: 605px;min-width: 325px;"
+    >
+      <section>
+        <a target="_blank" title="@weargales" href="https://www.tiktok.com/@weargales?refer=embed">@weargales</a> Send
+        this to someone who could use a pair of Gales 👟☺️
+      </section>
+    </blockquote>
+  </div>
+</div>
+<script async src="https://www.tiktok.com/embed.js"></script>
+{% schema %}
+{
+  "name": "ER Nurses LP TikTok",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Real nurses, real comfort:"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Hear what your colleagues love about our shoes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER Nurses LP TikTok",
+      "category": "2) Video"
+    }
+  ]
+}
+{% endschema %}

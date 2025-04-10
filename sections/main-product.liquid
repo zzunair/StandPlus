@@ -1,0 +1,692 @@
+<!-- main-product section -->
+{% comment %} {% if content_for_header contains 'furnace-brook' %}{% render 'made2order-gales-use-this-one' %}{% endif %} {% endcomment %}
+{% include 'global-variables' %}
+{%- assign template_layout = settings.product_info_layout -%}
+{%- if product.tags contains 'gallery-layout-1' -%}
+  {%- assign template_layout = '1' -%}
+{%- elsif product.tags contains 'gallery-layout-2' -%}
+  {%- assign template_layout = '2' -%}
+{%- elsif product.tags contains 'gallery-layout-3' -%}
+  {%- assign template_layout = '3' -%}
+{%- elsif product.tags contains 'gallery-layout-4' -%}
+  {%- assign template_layout = '4' -%}
+{%- elsif product.tags contains 'gallery-layout-5' -%}
+  {%- assign template_layout = '5' -%}
+{%- endif -%}
+{%- if template contains 'quick-view' -%}
+  {%- assign is_quick_view = true -%}
+{%- endif -%}
+{%- if is_quick_view -%}
+  <!-- quickview -->
+  {% include 'product-res-variables' %}
+  {%- assign sidebar = 'off' -%}
+  {%- if settings.product_quick_view_layout != 'inherit' -%}
+    {%- assign template_layout = settings.product_quick_view_layout -%}
+  {%- endif -%}
+  {% include 'product-page-get-main' %}
+{%- else -%}
+  {%- assign sidebar = section.settings.sidebar -%}
+  {%- if template_layout == '3' or template_layout == '4' -%}
+    {%- assign enable_sticky_sidebar = true -%}
+  {%- else -%}
+    {%- assign enable_sticky_sidebar = section.settings.enable_sticky_sidebar -%}
+  {%- endif -%}
+  {% capture container_class %}{% if sidebar != 'off' %} product-page__container--with-sidebar{% endif %}{% if sidebar == 'left' %} order-xl-1{% endif %}{% endcapture %}
+  {% capture sidebar_class %}{% if sidebar == 'left' %} product-page__sidebar--left pr-xl-30 mr-xl-30{% elsif sidebar == 'right' %} product-page__sidebar--right pl-xl-30 ml-xl-30{% endif %}{% endcapture %}
+  {% capture sidebar_html %}
+      	{%- if sidebar != 'off' -%}
+          	<div class="product-page__sidebar{{ sidebar_class }}{% if enable_sticky_sidebar %} sticky-sidebar-xl js-sticky-sidebar{% endif %}" data-js-sticky-sidebar-media-xl>
+              	{%- if enable_sticky_sidebar -%}
+                  	<div data-js-sticky-sidebar-body>
+              	{%- endif -%}
+					<div data-js-position-desktop="sidebar">
+						{% include 'product-page-get-sidebar' %}
+					</div>
+              	{%- if enable_sticky_sidebar -%}
+                	</div>
+              	{%- endif -%}
+         	 </div>
+      	{%- endif -%}
+  	{% endcapture %}
+  <!-- NOT quickview -->
+  {% include 'product-res-variables' %}
+  {% include 'breadcrumbs' %}
+  {% capture content_margins %}mt-{{ offset_product_page_content_margin_top_d }} pb-{{ offset_product_page_content_margin_bottom_d }}{% endcapture %}
+  <div class="product-page {{ content_margins }} product-handle-{{ product.handle }}">
+    <div class="container{% if sidebar != 'off' %} d-xl-flex{% endif %}">
+      {%- if template_layout == '1' or template_layout == '5' -%}
+        <div class="product-page__container{{ container_class }}">
+          <div class="product-page__main">
+            {% include 'product-page-get-main' %}
+          </div>
+          {%- if section.settings.show_tabs -%}
+            <div class="product-page__tabs mt-30">
+              {% include 'product-page-get-tabs' %}
+            </div>
+          {%- endif -%}
+        </div>
+        {{ sidebar_html }}
+      {%- else -%}
+        <div class="product-page__container{{ container_class }}">
+          <div class="product-page__main">
+            {% include 'product-page-get-main' %}
+          </div>
+        </div>
+        {{ sidebar_html }}
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if enable_sticky_sidebar -%}
+    <script>
+      theme.AssetsLoader.require('scripts', 'sticky_sidebar');
+    </script>
+  {%- endif -%}
+  {%- if section.settings.tabs_type == 'tabs' -%}
+    <script>
+      theme.AssetsLoader.onUserAction(function () {
+        theme.AssetsLoader.require('scripts', 'tabs');
+      });
+    </script>
+  {%- endif -%}
+  {% comment %} ADD Average Rating before Stars {% endcomment %}
+  {% assign reviewsRating = product.metafields.reviews.rating %}
+  </div>
+  <style>
+    .jdgm-rev-widg__summary-stars:before {
+        content: "{{ reviewsRating.value }}";
+        font-weight: bold;
+        padding-right: 10px;
+    }
+    {%- if section.settings.product_images_arrows == "none" or section.settings.product_images_arrows == "mobile" -%}
+      .product-page.product-handle-{{ product.handle }} .product-gallery__main_arrows {
+        display: none;
+      }
+    {%- endif -%}
+    {%- if section.settings.product_images_bullets == "none" or section.settings.product_images_bullets == "mobile" -%}
+      .product-page.product-handle-{{ product.handle }} .slider .slick-dots {
+        display: none !important;
+      }
+    {%- endif -%}
+    @media (max-width: 767.5px) {
+      {%- if section.settings.product_images_arrows == "mobile" -%}
+        .product-page.product-handle-{{ product.handle }} .product-gallery__main_arrows {
+          display: unset;
+        }
+      {%- endif -%}
+      {%- if section.settings.product_images_bullets == "mobile" -%}
+        .product-page.product-handle-{{ product.handle }} .slider .slick-dots {
+          display: flex !important;
+        }
+      {%- endif -%}
+      {%- if section.settings.product_images_arrows == "desktop" -%}
+        .product-page.product-handle-{{ product.handle }} .product-gallery__main_arrows {
+          display: none;
+        }
+      {%- endif -%}
+      {%- if section.settings.product_images_bullets == "desktop" -%}
+        .product-page.product-handle-{{ product.handle }} .slider .slick-dots {
+          display: none !important;
+        }
+      {%- endif -%}
+    }
+  </style>
+  <script type="application/ld+json">
+    {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ shop.url | append: product.url | json }},
+    {%- if product.featured_media -%}
+    	{%- assign media_size = product.featured_media.preview_image.width | append: 'x' -%}
+    	"image": [
+    	{{ product.featured_media | img_url: media_size | prepend: "https:" | json }}
+    	],
+    {%- endif -%}
+    "description": {{ product.description | strip_html | json }},
+    {%- if current_variant.sku != blank -%}
+    	"sku": {{ current_variant.sku | json }},
+    {%- endif -%}
+    "brand": {
+    	"@type": "Brand",
+    	"name": {{ product.vendor | json }}
+    },
+    "offers": [
+    	{%- for variant in product.variants -%}
+    		{%- if prices -%}
+    			{%- assign prices = prices -%}
+    			{%- if prices contains variant.price -%}
+    				{%- continue -%}
+    			{%- endif -%}
+    		,
+    		{%- endif -%}
+    		{
+    			"@type" : "Offer",
+    			{%- if variant.sku != blank -%}
+    			"sku": {{ variant.sku | json }},
+    			{%- endif -%}
+    			"availability" : "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+    			"price" : {{ price | divided_by: 100.00 | json }},
+    			"priceCurrency" : {{ cart.currency.iso_code | json }},
+    			"url" : {{ shop.url | append: variant.url | json }}
+    		}
+    		{% capture prices %}{{ prices }}{% if prices %}|{% endif %}{{ variant.price }}{% endcapture %}
+    	{%- endfor -%}
+    ]
+    }
+  </script>
+{%- endif -%}
+
+{% render 'klaviyo-add-to-cart-tracking' %}
+{% render 'klaviyo-backinstock-slj', product %}
+{% schema %}
+{
+  "name": "Product page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "checkbox",
+      "id": "product_info_gallery_height_override",
+      "label": "Override theme settings of Gallery images height",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "product_images_group_keep_index",
+      "label": "Keep Image index when changing color option",
+      "info": "Only applies to grouped images. For example: if the 3rd image is displayed and a new color is selected, the 3rd image of those newly displayed images will be displayed",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "product_images_arrows",
+      "label": "Arrows",
+      "default": "both",
+      "options": [
+        {
+          "value": "desktop",
+          "label": "Desktop Only"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "both",
+          "label": "Both"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "product_images_bullets",
+      "label": "Bullets",
+      "default": "none",
+      "options": [
+        {
+          "value": "desktop",
+          "label": "Desktop Only"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile Only"
+        },
+        {
+          "value": "both",
+          "label": "Both"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "product_info_gallery_height_percent",
+      "min": 50,
+      "max": 150,
+      "step": 1,
+      "label": "Gallery images heights",
+      "info": "100 - square image. Less than 100 - landscape. More than 100 - portrait. Doesn't work for 'Image resize = Auto'.",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "select",
+      "id": "gallery_size",
+      "label": "Gallery size",
+      "default": "6",
+      "options": [
+        {
+          "value": "4",
+          "label": "4/12"
+        },
+        {
+          "value": "5",
+          "label": "5/12"
+        },
+        {
+          "value": "6",
+          "label": "6/12"
+        },
+        {
+          "value": "7",
+          "label": "7/12"
+        },
+        {
+          "value": "8",
+          "label": "8/12"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "sidebar",
+      "label": "Sidebar position",
+      "info": "Settings for the sidebar in the Product pages -> Sections -> 'Product page' section",
+      "default": "off",
+      "options": [
+        {
+          "value": "off",
+          "label": "Off"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_sidebar",
+      "label": "Enable sticky sidebar",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Unisex Listing"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fit_selector",
+      "label": "Show 'Fit' Selector",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Multi-Style Listing"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_selected_style",
+      "label": "Show selected style & price",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Positioning"
+    },
+    {
+      "type": "checkbox",
+      "id": "top_title_price_mobile",
+      "label": "Title & Price Above Images (MOBILE)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "top_description",
+      "label": "Description Above Selectors",
+      "info": "Will override 'Show tab for Description' setting",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Tabs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tabs",
+      "label": "Show tabs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_tab",
+      "label": "Open first tab on page load",
+      "default": true
+    },
+    
+    {
+      "type": "checkbox",
+      "id": "show_tab_description",
+      "label": "Show tab for Description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_reviews",
+      "label": "Show tab for Reviews",
+      "info": "Be sure you configure the reviews app at the Theme settings -> Reviews.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "scrolling_to_opened_tab",
+      "label": "Scrolling to opened tab",
+      "info": "Only for vertical tabs on desktop and on mobile tabs",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "tabs_type",
+      "label": "Tabs type",
+      "default": "tabs",
+      "info": "In this section you can select one of the options: \"Default tabs\" or \"Sheet of tabs\". Once you select the option \"Sheet of tabs\" the Reviews and Description blocks will be displayed without a tab, but all other tabs will be hidden using this combination.",
+      "options": [
+        {
+          "value": "tabs",
+          "label": "Default tabs"
+        },
+        {
+          "value": "sheet",
+          "label": "Sheet of tabs"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Click '+ Add block' to add tabs or content for sidebar"
+    },
+    {
+      "type": "header",
+      "content": "User manual"
+    },
+    {
+      "type": "paragraph",
+      "content": "[Product Page](https:\/\/mpthemes.net\/shella-shopify-theme\/documentation-version4\/doc03-01-product-section.php#product-page-section)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "klarna_app",
+      "name": "Klarna App content",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Klarna settings are located in Theme settings -> Apps & Language -> Klarna App"
+        },
+        {
+          "type": "text",
+          "id": "class_name",
+          "label": "Class name",
+          "default": "klarna-message-info"
+        }
+      ]
+    },
+    {
+      "type": "tab_custom",
+      "name": "Tab for Custom content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Custom tab"
+        },
+        {
+          "type": "html",
+          "id": "content",
+          "label": "HTML",
+          "default": "<p>Text content of Tab goes here!</p><p>You can make&nbsp;text <strong>bold</strong>, <em>italic</em> or add <a href=\"\/blogs\/news\" title=\"News\">link</a> using rich text editor.</p><p></p>"
+        },
+        {
+          "type": "paragraph",
+          "content": "OR SELECT"
+        },
+        {
+          "type": "page",
+          "id": "page_content",
+          "label": "Page content",
+          "info": "Default page: 'Include Product Tab Custom HTML'"
+        }
+      ]
+    },
+    {
+      "type": "tab_klarna_app",
+      "name": "Tab for Klarna App",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Klarna settings are located in Theme settings -> Apps & Language -> Klarna App"
+        },
+        {
+          "type": "text",
+          "id": "class_name",
+          "label": "Class name",
+          "default": "klarna-message-tab"
+        }
+      ]
+    },
+    {
+      "type": "sidebar_custom_html",
+      "name": "Custom HTML",
+      "settings": [
+        {
+          "type": "select",
+          "id": "location",
+          "label": "Location",
+          "options": [
+            {
+              "value": "sidebar",
+              "label": "Sidebar"
+            },
+            {
+              "value": "below_price",
+              "label": "Below Price"
+            },
+            {
+              "value": "below_colorselectors",
+              "label": "Below Color Selectors"
+            },
+            {
+              "value": "sizeguide_help",
+              "label": "Below Size Selectors"
+            },
+            {
+              "value": "below_addtocart",
+              "label": "Below Add to Cart Button"
+            }
+          ],
+          "default": "below_addtocart"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "html",
+          "id": "content",
+          "label": "HTML",
+          "default": "<p>Text content of Tab goes here!</p><p>You can make&nbsp;text <strong>bold</strong>, <em>italic</em> or add <a href=\"\/blogs\/news\" title=\"News\">link</a> using rich text editor.</p><p></p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "overlay",
+          "label": "Overlay Text on Image",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#000000"
+        },
+        {
+          "type": "select",
+          "id": "text_align_vert",
+          "label": "Text Vertical Alignment",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "middle",
+              "label": "Middle"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ],
+          "default": "top"
+        },
+        {
+          "type": "select",
+          "id": "text_align_horiz",
+          "label": "Text Horizontal Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "padding_horiz",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Left/Right Padding",
+          "default": 26
+        },
+        {
+          "type": "range",
+          "id": "padding_vert",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Top/Bottom Padding",
+          "default": 26
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image Link"
+        },
+        {
+          "type": "paragraph",
+          "content": "Customization"
+        },
+        {
+          "type": "text",
+          "id": "customization_class",
+          "label": "Customization class"
+        },
+        {
+          "type": "header",
+          "content": "OR SELECT"
+        },
+        {
+          "type": "page",
+          "id": "page_content",
+          "label": "Page content",
+          "info": "Default page: 'Include Product Sidebar Custom HTML'"
+        }
+      ]
+    },
+    {
+      "type": "sidebar_products",
+      "name": "Sidebar products",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "FEATURED PRODUCTS"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "range",
+          "id": "max_count",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "pds",
+          "label": "Max count",
+          "info": "0 is infinite",
+          "default": 3
+        },
+        {
+          "type": "select",
+          "id": "product_type",
+          "label": "Products type",
+          "default": "short",
+          "options": [
+            {
+              "value": "short",
+              "label": "Short"
+            },
+            {
+              "value": "full",
+              "label": "Full"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "iconography",
+      "name": "Iconography",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Icon's name"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

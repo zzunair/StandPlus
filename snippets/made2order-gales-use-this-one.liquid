@@ -1,0 +1,612 @@
+<!-- snippet/made2order-gales-use-this-one.liquid -->
+<!-- UPDATED: Jan 25, 2023 -->
+
+<!-- This file is updated by Scott to correctly work with Gales Product Pages. -->
+
+<script>
+  const SEARCH_KEY = "search: ";
+  
+  let CDN = "apps.furnace-brook.com" + (typeof dev == "boolean" && dev == true ? "/dev" : "");
+  let variantInventory = { {% for vrnt in product.variants %} {{ vrnt.id | json }}: {{ vrnt.inventory_quantity }}{% unless forloop.last %}, {% endunless %}{% endfor %} };
+  const settings = { {% for setting in shop.metafields.made2order.settings %} 
+    {{ setting[0] | json }} : {{ setting[1] | json }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+  };
+  
+  const collections = {{ product.collections | json }}
+  // const collectionHandles = [ {% for col in product.collections %} {{ col.handle | json }}{% unless forloop.last %}, {% endunless %}{% endfor %} ];
+  const product = {{ product | json }};
+  
+  const initialVariant = {{ product.selected_or_first_available_variant.id | json }};
+  const timezone = {{ 'now' | date: '%z' | json }};
+  const timezoneCode = {{ 'now' | date: '%Z' | json }};
+  const timezone2 = {{ 1 | date: '%z' | json }};
+  const timezoneCode2 = {{ 1 | date: '%Z' | json }};
+  const now = {{ 'now' | date: "%A, %b %d, %Y, %I:%M:%S %p %Z %z" | json }};
+  const timezoneOffset = {{ 'now' | date: '%z' | slice: 0, 3 | times: 60 }} + {{ 'now' | date: '%z' | slice: 3, 2 }};
+  const cartValue = {{ cart.total_price }};
+  
+  const themeLocs = ['#m2oText', 'dl.price', 'span.product__price--reg', 'div.product-pricing','[class*="price"]','div.price-container'];
+  const locn2 = "made2order.js:";
+  let loc = null;
+  let direction = null;
+  const sloc = settings.location;
+  
+  let SOS = [];
+  let M2OTEXT = null;
+  let updateTimer = {};
+  let mutationTimer;
+  let mutationTime;
+  const millisecsPerDay = 1000*60*60*24;
+  
+  function debug() {
+    try { 
+      const params = new URLSearchParams(window.location.search);
+      return params.get("dev") || params.get("debug");
+    } catch(e) {
+      return false;
+    }
+  }
+  
+  function pause() {
+    try { 
+      return new URLSearchParams(window.location.search).get("pause");
+    } catch(e) {
+      return false;
+    }
+  }
+  
+  const isDebug = debug() || (typeof dev != "undefined") || window.name == "m2opreview";
+  const pauseTimer = pause();
+  
+  Logger("version July 14 2021");
+  
+  const observer = new MutationObserver((e) => {
+    if (e[0].target != M2OTEXT) {
+      if (mutationTimer) clearTimeout(mutationTimer);
+      const mTimeMs = mutationTime ? (Date.now() - mutationTime) : 0;
+      mutationTime = Date.now();
+      Logger("MutationObserver triggered:", e, "mTime:", mTimeMs+"msec");
+    
+      mutationTimer = setTimeout(()=>{
+        const mTimeMs = mutationTime ? (Date.now() - mutationTime) : 0;
+        Logger("MutationObserver: called variantChanged.  mTime:", mTimeMs+"msec");
+        variantChanged();
+        mutationTime = Date.now();
+      }, 25, mutationTime)
+    }
+  });
+  
+  function setup() {
+    {% if content_for_header contains 'furnace-brook' %}
+      // figure out the location for the messages
+      Logger("window name:", window.name);
+      if (window.cpv) product.variants = window.cpv;
+      if (window.cpvInv) variantInventory = window.cpvInv;
+      // document.querySelector('.product-page-info__availability.mb-5 > p').style.display = 'none';
+      // document.querySelector('.gift-card-link').style.display = 'none';
+      Logger("variantInventory:", variantInventory);
+      const installer = window.name == "installer" || window.name == "m2othemeTest";
+      if (installer) loadInstaller();
+      const locs = sloc && sloc.selector && 
+        (typeof sloc.default == "undefined" || !sloc.default)
+        ? [sloc.selector, ...themeLocs] : themeLocs;
+      Logger("locs:", locs);
+      // loc = locs.find(loc => document.querySelector(loc));
+      // direction = sloc && sloc.selector==loc ? sloc.direction : "after";
+      // Logger("location:", direction, loc, sloc);
+      // if (loc) {
+      //   document.querySelector(loc).insertAdjacentHTML(direction=="before"?"beforebegin":"afterend", '<div id="m2oCustom"><div>');
+      //   M2OTEXT = document.getElementById("m2oCustom");
+      //   M2OTEXT.style.cssText = settings.inlineStyle + "width:-moz-fit-content;width:fit-content;" || "";
+      // } 
+      locs.find(loc => {
+        const visibleLoc = [...document.querySelectorAll(loc)].find(s => s.offsetParent);
+        if (visibleLoc) {
+          direction = sloc && sloc.selector==loc ? sloc.direction : "after";
+          visibleLoc.insertAdjacentHTML(direction=="before"?"beforebegin":"afterend", '<div id="m2oCustom"><div>');
+          M2OTEXT = document.getElementById("m2oCustom");
+          M2OTEXT.style.cssText = settings.inlineStyle + "width:-moz-fit-content;width:fit-content;" || "";
+          return true;
+        } else return false;
+      });
+      Logger("M2OTEXT:", M2OTEXT);
+    
+      // Install Variant Listener
+      SOS = document.querySelectorAll("form[action='/cart/add']");
+      Logger("SOS:", SOS);
+      if (SOS && !installer) {
+        observer.observe(SOS[0], {attributes: true, childList: true, subtree: true});
+        SOS.forEach(selector => {
+          if (selector) {
+            // selector.addEventListener("change", function() {variantChanged()});
+            // selector.addEventListener("blur", function() {variantChanged()});
+            
+            
+            // selector.addEventListener("change", function() {
+            //   setTimeout(()=> { //small delay to allow form to update
+            //     variantChanged();
+            //   }, 10);
+            // });
+          }
+        });
+      }
+      // setTimeout(()=> { //small delay to allow form to update
+      //   variantChanged(initialVariant);  // set it to the default
+      // }, 10);
+      if (!installer) variantChanged(initialVariant); // set it to the default
+      // else variantChanged("none");
+      
+      {% comment %} 
+      // connect to google analytics
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ENRP4ZTB6B'); 
+      {% endcomment %}
+    {% endif %}  
+  }
+  
+  const isRegExp = (testStr) => {
+    const lower = testStr.toLowerCase();
+    if (typeof testStr == "string" && testStr.substr(0,1) == "/" && (testStr.match(/\//g) || "").length > 1) {
+      const options = /[^/]*$/.exec(testStr)[0];
+      const search = testStr.slice(1, -(options.length + 1));
+      Logger("regex inputs:", search, options);
+      try {
+        Logger("check if regex:", testStr);
+        const re = new RegExp(search, options);
+        Logger("it is regex:", re);
+        return re;
+      } catch (e) {
+        Logger("not regex:", testStr);
+        return lower;
+      }
+    }
+    Logger("not regex:", testStr);
+    return lower;
+  };
+  
+  function serializeJS() {
+    let requestArray = [];
+    const form = document.querySelector("form[action='/cart/add']");
+    if (form) {
+      // challenge here in showing messages when button is disabled for other reasons besides soldout or variant doesn't exist. 
+      // for example, custom input field isn't filled in. Currently always showing if the form exists with a variant ID.
+      // But doesn't work for single variant products that are sold out as no variant ID is returned by the form.
+      
+  //     if (!form.querySelector('button[disabled]') && !form.querySelector('input[disabled]')) {
+        form.querySelectorAll('[name]').forEach((elem) => {
+            if (!elem.disabled) requestArray.push(elem.name + '=' + elem.value);
+        });
+        if(requestArray.length > 0) return encodeURI(requestArray.join('&'));
+  //     } else return "disabled=1";
+    } else return false;
+  }
+  
+  function serializeJQ(form) {
+    return window.jQuery ? window.jQuery('form[action="/cart/add"]').serialize() : false;
+  }
+  
+  function variantChanged(value) {
+    if (updateTimer) clearInterval(updateTimer);
+    var variantId;
+  
+    const someIncludes = (g, p) => {
+      Logger("someIncludes: g:", g, "p:", p);
+      return g && (typeof g == "string" 
+        ? g.includes(p) 
+        : g.some(t => p.includes(t))
+      );
+    };
+  
+    const someSearch = (g, p) => {
+      if (g && g.length && p && p.length) {
+        const ss = g.filter(f => f.substr(0,8) == SEARCH_KEY).map(m => isRegExp(m.substr(8)));
+        // Logger("ss:", ss);
+        if (ss && ss.length) {
+          Logger("someSearch: g:", g, "p:", p, "searches:", ss);
+          return (p instanceof Array 
+            ? p.some(c => ss.some(s => (s instanceof RegExp ? c.search(s) : c.toLowerCase().indexOf(s)) > -1 ))
+            : (ss.some(s => (s instanceof RegExp ? p.search(s) : p.toLowerCase().indexOf(s)) > -1))
+          );
+        }
+      }
+      return false;
+    }
+    
+    const findMessage = (id) => settings.messages.find(m => m.id == id).message;
+  
+    if (M2OTEXT) {
+      Logger("M2OTEXT:", M2OTEXT);
+      Logger("variantChanged value:", value);
+      // *** This doesn't work if the selectors allow you to choose variants that don't exist 
+      // *** and then don't change the variant URL parameter
+      // variantId = value ? value : new URLSearchParams(window.location.search).get("variant");
+      
+      if (!variantId) {
+        let cartAdd = null;
+        cartAdd = serializeJS() || serializeJQ();
+        Logger("cartAdd:", cartAdd);
+        if (cartAdd) {
+          if (cartAdd.search("id=") > -1) variantId = cartAdd.split("id=")[1].split('&')[0];
+          else variantId = "disabled";
+        }
+      } 
+      
+      if (!variantId) {
+        if (document.getElementById("SingleOptionSelector-0")) {
+          let variantTitle = document.getElementById("SingleOptionSelector-0").value;
+          if (document.getElementById("SingleOptionSelector-1")) {
+            variantTitle  += " / " + document.getElementById("SingleOptionSelector-1").value;
+            if (document.getElementById("SingleOptionSelector-2")) variantTitle  += " / " + document.getElementById("SingleOptionSelector-2").value;
+          }
+          if (variantTitle) {
+            const variant = product.variants.find(v => v.title == variantTitle)
+            if (variant) variantId = variant.id;
+          }
+        }
+      }
+      if (!variantId) {
+        if (document.getElementById("Option-product-0")) {
+          let variantTitle = document.getElementById("Option-product-0").value;
+          if (document.getElementById("Option-product-1")) {
+            variantTitle  += " / " + document.getElementById("Option-product-1").value;
+            if (document.getElementById("Option-product-2")) variantTitle  += " / " + document.getElementById("Option-product-2").value;
+          }
+          if (variantTitle) {
+            const variant = product.variants.find(v => v.title == variantTitle)
+            if (variant) variantId = variant.id;
+          }
+        }
+      }
+      // if (!variantId) variantId = 
+      Logger("variantId:", variantId);
+      // Logger("raw variantData:", variantData[variantId]);
+      // const varData = variantData[variantId] && variantData[variantId].enabled ? 
+      //     variantData[variantId] : {...settings.disabled, enabled: 1};
+      // Logger("variantData:", varData);
+      Logger("product:", product);
+      Logger("collections:", collections);
+      // Logger("collections2:", collections2);
+      // Logger("optionSelector:", optionSelector);
+      // var variantOptions = document.getElementById("productSelect");
+      // Logger("variantOptions:", variantOptions)
+      // var selectedVariant = variantOptions.options[variantOptions.selectedIndex].value;
+      // Logger(selectedVariant);
+      // const action = !varData.action || !varData.action[0] || varData.action == "default" ? 
+      //      settings.default.action : varData.action[0];
+      // Logger(,"checking action:", action);
+      
+      let message = ""; 
+      Logger("variantId:", variantId);
+      if (variantId && variantId != "disabled") {
+        const vTitle = product.variants.find(v => v.id == variantId).title || null;
+        const pvTitle = product.title + (vTitle && vTitle != "Default Title" ? ": " + vTitle : "");
+        Logger("vTitle:", vTitle, "pvTitle:", pvTitle);
+        
+        var cart = fetch('/cart.js')
+          .then(response => response.json())
+          .then(data => { 
+            Logger("cart: total_price:",data.total_price); 
+            return data.total_price;
+          });
+        let g = null;
+        g = [...settings.groups].reverse().find((g, i) => {
+          return (g.enabled || g.id.substr(0,4)=='solo') 
+            && (someIncludes(g.prodvars, ['gid://shopify/ProductVariant/'+variantId, 'gid://shopify/Product/'+product.id])
+              || someIncludes(g.collections, collections.map(c => "gid://shopify/Collection/" + c.id))
+              || someIncludes(g.tags, product.tags)
+              || someIncludes(g.types, product.type)
+              || someIncludes(g.vendors, product.vendor)
+              || someSearch(g.prodvars, pvTitle)
+              || someSearch(g.collections, collections.map(c => c.title))
+              || someSearch(g.tags, product.tags)
+              || someSearch(g.types, product.type)
+              || someSearch(g.vendors, product.vendor)
+            );
+        });
+        
+        if (!g && settings.groups[0].enabled) g = settings.groups[0];  
+        Logger("group found:", g);
+        Logger("variantInventory:", variantId, ":", variantInventory[variantId]);
+        if (g) {
+          if (g.messages[0].enabled) message = findMessage(g.messages[0].id);
+          if (g.messages[1].enabled && variantInventory[variantId] <= g.messages[1].invLevel) message = findMessage(g.messages[1].id);
+          if (g.messages[2].enabled && variantInventory[variantId] <= 0) message = findMessage(g.messages[2].id);
+        }
+      }
+      Logger("message:", message);
+  
+      if (message == "") {
+        M2OTEXT.innerHTML = "";
+        M2OTEXT.style.display = "none";
+      } else {
+        M2OTEXT.innerHTML = messageSubstitution(message, variantId);
+        tooltipInView(M2OTEXT);
+        M2OTEXT.style.display = "block";
+        M2OTEXT.style.clear = "both";
+      }
+    } else Logger("M2OTEXT not set");
+  }
+  
+  function tooltipInView(m2otext) {
+    const loc = "tooltipInView:"
+    const vw = Math.min(document.documentElement.clientWidth || 1000, window.innerWidth || 1000);
+    const adjVw = parseInt(vw * .96);
+    const newX = (vw - adjVw) / 2;
+    Logger(loc, "vw:", vw, "adjVw:", adjVw, "newX:", newX);
+    [...m2otext.getElementsByClassName('m2otooltiptext')].map(e => {
+      let rect = e.getBoundingClientRect();
+      Logger(loc, 'm2otooltiptext:', e.getBoundingClientRect());
+      if (rect.width > adjVw) {
+        e.style.width = adjVw + "px";
+        rect = e.getBoundingClientRect();
+        Logger(loc, 'e.offsetWidth > adjVw :', 'translateX(calc(-50% + ' + (rect.x - newX) + 'px))', rect.x, newX, rect.x - newX);
+      };
+      Logger(loc, 'm2otooltiptext: rect', rect);
+      if (rect.x < newX) {
+        e.style.transform = 'translateX(calc(-50% + ' + (newX - rect.x) + 'px))';
+        e.style.left = '50%';
+        Logger(loc, 'rect.x < newX:', 'translateX(calc(-50% + ' + (newX - rect.x) + 'px))');
+      } else {
+        const offRight = rect.x + rect.width - adjVw - newX;
+        if (offRight > 0) {
+          e.style.transform = 'translateX(calc(-50% + ' + (-offRight) + 'px))';
+          e.style.left = '50%';
+          Logger(loc, 'offRight > 0 :', 'translateX(calc(-50% + ' + (-offRight) + 'px))');
+        }
+      }    
+    })
+  }
+  
+  function messageSubstitution(message, variantId = null) {
+    const messageDOM = document.createElement("div");
+    messageDOM.innerHTML=message; 
+    // Logger("messageDOM:", messageDOM);
+    const conditionals = messageDOM.getElementsByClassName("m2o_conditional");
+    const conditionalsArray = Array.from(conditionals);
+    // Logger("messageDOM: Conditionals:", conditionals);
+    conditionalsArray.map((c, index) => {
+      // Logger("messageDOM: Conditional:", c);
+      const condition = c.querySelector(".m2o_condition") ? c.querySelector(".m2o_condition").innerText : null;
+      const cond_true = c.querySelector(".m2o_true") ? c.querySelector(".m2o_true").innerHTML : null;
+      const cond_false = c.querySelector(".m2o_false") ? c.querySelector(".m2o_false").innerHTML : null;
+      Logger("messageDOM: Conditional:", c, condition, cond_true, cond_false);
+      let priceText = cond_true;
+      if (typeof product != "undefined" && condition && (cond_true || cond_false)) {
+        const price = product.variants.find(vnt => {return vnt.id == variantId}).price / 100;
+        Logger("messageDOM: Conditional: condition:", condition.replace("[price]", price), eval(condition.replace("[price]", price)));
+        priceText = eval(condition.replace("[price]", price)) ? cond_true : cond_false;
+      }
+      Logger("messageDOM: Conditional: priceText:", priceText);
+      conditionals[index].innerHTML = priceText;
+    })
+    
+    message = messageDOM.innerHTML;
+    Logger("messageDOM: updated Message:", message);
+  
+    const msgSettingPrice = message.match(/\{\{(.*?\[price\].*?)\}\}/);
+    message = message.replace("[inventory]", typeof variantInventory !="undefined" ? variantInventory[variantId] : 3);
+    if (msgSettingPrice) {
+      Logger("Reduce: msgSettingPrice:", msgSettingPrice[1]);
+      const priceSettings = msgSettingPrice[1].split(",");
+      let priceText = priceSettings[1];
+      if (typeof product != "undefined") {
+        const price = product.variants.find(vnt => {return vnt.id == variantId}).price / 100;
+        Logger("Reduce: priceSettings:", priceSettings);
+        const conditionElement = new DOMParser().parseFromString(priceSettings[0], "text/html");
+        Logger("Reduce: condition:", conditionElement.documentElement.textContent);
+        priceText = eval(conditionElement.documentElement.textContent.replace("[price]", price)) ? priceSettings[1] : priceSettings[2];
+      }
+      Logger("Reduce: priceText:", priceText);
+      message = message.replace(/\{\{(.*?\[price\].*?)\}\}/g, priceText.trim().slice(1,-1));
+    }
+    const msgSettingCutoff = message.match(/\{\{(.*?\"cutoff\".*?)\}\}/);
+    message = message.replace(/\{\{(.*?)\}\}/g, "");
+    Logger("Reduce: msgSettingCutoff:", msgSettingCutoff, "timing:", settings.timing);
+    const msg2update = (' ' + message).substr(1); // copy message before it gets modified
+    const msgSetting =  deliveryTiming(msgSettingCutoff ? msgSettingCutoff[0] : null, settings.timing || {});
+    message = updateDelivery(msgSetting, message);
+    if (typeof updateTimer != "undefined" && !pauseTimer && (window.name != "installer")) {
+      updateTimer = setInterval((msgSetting, message) => {
+        Logger("in Timer: message:", message);
+        Logger("in Timer: msgSetting:", msgSetting);
+        M2OTEXT.innerHTML = updateDelivery(msgSetting, message);
+        tooltipInView(M2OTEXT);
+      }, 60000, msgSetting, msg2update);
+    }
+    Logger("Reduce: message:", message);
+    return  message;
+  }
+  
+  function deliveryTiming(deliveryJson, timing) {
+    let delivery = {}
+    if(deliveryJson) {
+      try {
+        delivery = JSON.parse(deliveryJson.slice(1,-1).replaceAll("default", null));
+      } catch(e) {
+        Logger("invalid deliveryJson:", deliveryJson, e);
+      }
+    }
+    Object.keys(delivery).forEach((k) => delivery[k] == null && delete delivery[k]);
+    Logger("delivery:", delivery, timing, {...timing, ...delivery});
+    return {...timing, ...delivery};
+  }
+  
+  function updateDelivery(delivery, message) {
+    const date = new Date();
+    const timeZoneDelta = date.getTimezoneOffset() + (delivery.tzo ? delivery.tzo 
+        : (typeof timezoneOffset != "undefined" ? timezoneOffset : 0) );
+    const storeDate = new Date(date.getTime() + timeZoneDelta*60000);
+    const localCutoffMinutes = delivery.cutoff - timeZoneDelta;
+    Logger("timeZoneDelta:", timeZoneDelta);
+    Logger("storeDate:", storeDate);
+    Logger("now:", date);
+    const minutes = storeDate.getHours()*60 + storeDate.getMinutes();
+    Logger("current store time minutes:", minutes);
+    
+    const shipDate = new Date(storeDate.getTime() + (minutes+1 > delivery.cutoff ? 1 : 0)*millisecsPerDay); // missed cutoff?
+    Logger("shipDate:", shipDate);
+    const adjShipDate = new Date(shipDate.getTime() + ((shipDate.getDay()==0 ? 1 : 0) + (shipDate.getDay()==6 ? 2 : 0))*millisecsPerDay); // don't ship on sat or sunday
+    Logger("adjShipDate:", adjShipDate);
+    
+    const local_cutoff_time = minutesToHHMM(localCutoffMinutes);
+    const local_cutoff_time_24 = minutesToHHMM(localCutoffMinutes, true);
+    const delivery_date = delivery.duration ? calcDeliveryDate(adjShipDate, delivery.duration) : "";
+    const delivery_start = delivery.duration_min ? calcDeliveryDate(adjShipDate, delivery.duration_min) : "";
+    const delivery_end = delivery.duration_max ? calcDeliveryDate(adjShipDate, delivery.duration_max) : "";
+    
+    Logger("delivery_dates:", delivery_date, delivery_start, delivery_end);
+    Logger("local_cutoff_times:", local_cutoff_time, local_cutoff_time_24);
+    
+    const shipDays = (adjShipDate.getTime() - storeDate.getTime())/millisecsPerDay
+    Logger("shipDays:", shipDays);
+    const orderWithinMins = (delivery.cutoff - minutes + shipDays*24*60);
+    const days = parseInt(orderWithinMins/(24*60));
+    const hours = parseInt(orderWithinMins/60) - days*24;
+    const mins = orderWithinMins % 60;
+    message = message.replaceAll("[delivery_date]", delivery_date)
+        .replaceAll("[local_cutoff_time]", local_cutoff_time)
+        .replaceAll("[local_cutoff_time_24]", local_cutoff_time_24)
+        .replaceAll("[time_remaining]",  (days ? (days + " Day" + (days>1 ? "s ":" ")):"")
+                + (hours ? (hours + " Hour" + (hours>1 ? "s ":" ")):"")
+                + (mins && (days==0) ? (mins + " Minute" + (mins>1? "s":"")):""));
+    delivery_start ? message = message.replaceAll("[delivery_start]", delivery_start) : null
+    delivery_end ? message = message.replaceAll("[delivery_end]", delivery_end) : null
+    return message;
+  }
+  
+  function calcDeliveryDate(shipDate, duration) {
+    const deliveryDay = shipDate.getDay()+duration;
+    Logger("deliveryDay:", deliveryDay);
+    const deliveryDate = new Date(shipDate.getTime() + (duration + (deliveryDay > 5 ? 2 : 0))*millisecsPerDay);
+    Logger("deliveryDate:", deliveryDate);
+    const dateTimeFormat = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    const delivery_date = dateTimeFormat.format(deliveryDate);
+    return delivery_date;
+  }
+  
+  function minutesToHHMM (mins, twentyFour = false) {
+    let h = Math.floor(mins / 60);
+    let m = mins % 60;
+    m = m < 10 ? '0' + m : m;
+  
+    if (twentyFour) {
+      h = h < 10 ? '0' + h : h;
+      return `${h}:${m}`;
+    } else {
+      let a = 'am';
+      if (h >= 12) a = 'pm';
+      if (h > 12) h = h - 12;
+      if (m == 0) return `${h}${a}`;
+      else return `${h}:${m} ${a}`;
+    }
+  }
+  
+  function loadInstaller() {
+    // Logger("currentScript:", document.currentScript);
+    // if (document.currentScript) {
+     // CDN = document.currentScript.src.split("/files/")[0];
+    // }
+    Logger("CDN file source:", CDN);
+    var head = document.getElementsByTagName('head')[0];
+    var js = document.createElement("script");
+    js.type = "text/javascript";
+    js.src = "HTTPS://" + CDN + "/files/m2o_install.js";
+    head.appendChild(js);
+  }
+  
+  if (typeof settings != "undefined" && 
+      (settings.app_enabled || window.name == "installer" || window.name == "m2opreview" 
+          || window.name == "m2othemeTest" || isDebug )) {
+    Logger("variantInv:", variantInventory);
+    Logger("settings:", settings);
+    
+    if (document.readyState === 'loading') {  // Loading hasn't finished yet
+      document.addEventListener('DOMContentLoaded', setup);
+    } else {  // `DOMContentLoaded` has already fired
+      setup();
+    }
+  }
+  
+  function Logger(...args) {
+    if (isDebug) console.log(locn2, ...args);
+  }
+  </script>
+  <style title="install-display">
+    div.install-displayall { /* keep this at the top */
+        border: 1px solid #f00;
+        font-size: 0;
+        transition: .3s;
+        transition-delay: .2s;
+        color: #f00;
+        cursor: pointer;
+        padding: 1px;
+        height: 5px;
+        display: none;
+    }
+    
+    .m2otooltip {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .m2otooltip .m2otooltipbase {
+        border-bottom: 1px dotted;
+    }
+    
+    .m2otooltip .m2otooltiptext {
+        visibility: hidden;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        opacity: 0;
+        transition: opacity 0.5s, visibility 0.5s;
+        white-space: normal;
+        
+        transform: translateX(-50%);
+        margin-left: 5px;
+        left: 50%;
+        max-width: 320px;
+        width: max-content;
+    }
+    
+    .m2otooltip .m2otooltipbase::after {
+      content: "";
+      position: absolute;
+      top: -25%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+      z-index: 1;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    
+    .m2otooltip:hover .m2otooltiptext, .m2otooltip:hover .m2otooltipbase::after {
+        visibility: visible;
+        opacity: 1;
+        z-index: 999;
+    }
+    
+    div.install-displayall.install-displayset {
+        display:block;
+        font-size: unset !important;
+        color: unset !important;
+        cursor: unset;
+        height: 2em !important;
+    }
+    
+    div.install-displayall:hover {
+        font-size: unset !important;
+        height: 2em !important;
+    }
+</style>

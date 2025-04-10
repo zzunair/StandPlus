@@ -1,0 +1,119 @@
+{%- assign results_count = 0 -%}
+{%- assign ctags = customer.tags | join: ' ' | downcase -%}
+{%- if ctags contains "wholesale" -%}
+  {%- assign cwholesale = true -%}
+{%- else -%}
+  {%- assign cwholesale = false -%}
+{%- endif -%}
+{%- for item in search.results -%}
+    {%- if item.object_type == 'product' -%}
+      {%- assign ptags = item.tags | join: ' ' | downcase -%}
+      {%- unless ptags contains "hide" -%}        
+        {%- if ptags contains "wholesale" -%}
+          {%- if cwholesale == true -%}
+            {%- assign results_count = results_count | plus: 1 -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- assign results_count = results_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endunless -%}
+
+    {%- elsif settings.search_show_only_products != true -%}
+      {%- assign results_count = results_count | plus: 1 -%}
+    {%- endif -%}
+{%- endfor -%}
+<div class="container">
+  {%- paginate search.results by 12 -%}
+    <div>
+      <h1 class="h3 pt-30 mb-40 text-center">
+        {%- if search.performed -%}
+          {%- if results_count == 0 -%}
+            {{ 'general.search.no_results_html' | t: terms: search.terms }}
+          {%- else -%}
+            {{ 'general.search.results_for_html' | t: terms: search.terms }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'general.search.title' | t }}
+        {%- endif -%}
+      </h1>
+  </div>
+  <div class="container container--sm{% unless search.performed %} pt-lg-80 pb-lg-60{% endunless %}">
+    <form action="{{ routes.search_url }}" method="get" role="search">
+       {%- if settings.search_show_only_products == true -%}
+           <input type="hidden" name="type" value="product" />
+       {%- endif -%}
+      <label for="Search" class="label-hidden">{{ 'general.search.placeholder' | t }}</label>
+      <div class="d-flex">
+            <input type="search"
+                class="mb-0 mr-15"
+                name="q"
+                id="Search"
+                value="{{ search.terms | escape }}"
+                placeholder="{{ 'general.search.placeholder' | t }}">
+            <input type="hidden" name="options[prefix]" value="last" />
+            <button type="submit" class="btn">{{ 'general.search.submit' | t }}</button>
+      </div>
+    </form>
+  </div>
+  <div class="container pb-60">
+    {%- if search.performed -%}
+      <div class="row mt-30">
+        {%- for item in search.results -%}
+          {%- unless item.tags contains "hide" -%}
+            {%- assign item_image = null -%}
+            {%- if item.object_type == 'product' -%}
+              {%- assign ptags = item.tags | join: ' ' | downcase -%}
+              {%- if ptags contains "wholesale" -%}
+                {%- if cwholesale == true -%}
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    {% include 'product-collection', product: item, show_first_product_image: true %}
+                  </div>
+                {%- endif -%}
+              {%- else -%}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    {% include 'product-collection', product: item, show_first_product_image: true %}
+                </div>
+              {%- endif -%}
+            {%- elsif settings.search_show_only_products != true -%}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                  <div class="product-collection__wrapper mb-30 mb-lg-30">
+                    {%- unless item.image -%}
+                      {%- assign item_image = item.content | split: "<img " -%}
+                      {%- assign item_image = item_image[1] | split: ">" | first | split: 'src="' -%}
+                      {%- assign item_image = item_image[1] | split: '"' | first -%}
+                    {%- endunless -%}
+                    <div>
+                      <a href="{{ item.url }}" class="d-block mb-20" title="{{ item.title | escape }}">
+                        {%- if item.image -%}
+                          {% render 'rimage' with image: item.image alt: item.image.alt  height_procent: 100 %}
+                        {%- else -%}
+                        <div class="rimage" style="padding-top:100.0%;">
+                          {%- if item_image -%}<img class="rimage__img" loading="lazy" src="{{ item_image }}">{%- endif -%}
+                        </div>
+                        {%- endif -%}
+                      </a>
+                    </div>
+                    <div class="product-collection__content d-flex flex-column align-items-start mt-15">
+                      {% comment %} <p class="mb-10">{{ item.object_type | capitalize }}:</p> {% endcomment %}
+                      <h4><a href="{{ item.url }}">{{ item.title | escape }}</a></h4>
+                    </div>
+                  </div>
+                </div>
+            {%- endif -%}
+          {% endunless %}
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {%- endif -%}
+    </div>
+  {% endpaginate %}
+</div>
+{% schema %}
+{
+  "name": "Search page",
+  "settings": [
+  ]
+}
+{% endschema %}

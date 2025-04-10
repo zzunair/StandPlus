@@ -1,0 +1,425 @@
+d25e9d1981e6a28ac795de93199ef945e82a9cd895367e56b8d0e210ef81de56: {
+    "__metadata": {
+        "version": 0.1
+    },
+    "root": {
+        "steps": [
+            {
+                "step_id": "1fd54370-7e8e-11ee-b595-8deeb4d35500",
+                "step_position": [
+                    860,
+                    820
+                ],
+                "config_field_values": [],
+                "task_id": "shopify::admin::order_created",
+                "task_version": "0.1",
+                "task_type": "TRIGGER",
+                "description": null,
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "24d66430-7e8e-11ee-b595-8deeb4d35500",
+                "step_position": [
+                    1060,
+                    1460
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "condition",
+                        "value": "{\"uuid\":\"8f6ff903-7e8e-11ee-b595-8deeb4d35500\",\"lhs\":{\"uuid\":\"8f6ff900-7e8e-11ee-b595-8deeb4d35500\",\"parent_uuid\":\"8f6ff903-7e8e-11ee-b595-8deeb4d35500\",\"lhs\":{\"uuid\":\"8f6ff901-7e8e-11ee-b595-8deeb4d35500\",\"parent_uuid\":\"8f6ff900-7e8e-11ee-b595-8deeb4d35500\",\"value\":\"order.currentSubtotalLineItemsQuantity\",\"comparison_value_type\":\"EnvironmentValue\",\"full_environment_path\":\"order.currentSubtotalLineItemsQuantity\"},\"rhs\":{\"uuid\":\"dda66430-d1b1-11ee-84ea-e3016c624bf3\",\"parent_uuid\":\"8f6ff900-7e8e-11ee-b595-8deeb4d35500\",\"value\":\"14\",\"comparison_value_type\":\"LiteralValue\"},\"value_type\":\"EnvironmentScalarDefinition:Int\",\"operator\":\">\",\"operation_type\":\"Comparison\"},\"operator\":\"AND\",\"operation_type\":\"LogicalExpression\"}"
+                    }
+                ],
+                "task_id": "shopify::flow::condition",
+                "task_version": "0.1",
+                "task_type": "CONDITION",
+                "description": "More than 14 items",
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "254ab460-7e8f-11ee-b595-8deeb4d35500",
+                "step_position": [
+                    1380,
+                    1440
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "order_id",
+                        "value": "order.id"
+                    },
+                    {
+                        "config_field_id": "tags",
+                        "value": "[\"FosdickWholesale\"]"
+                    }
+                ],
+                "task_id": "shopify::admin::add_order_tags",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": null,
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "1f95c7a0-13b6-11ef-aa4a-c3c3664cde6b",
+                "step_position": [
+                    1700,
+                    1420
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "address",
+                        "value": "scott@standshoes.com, graham.crawford@standshoes.com, jcardona@fosdickcorp.com "
+                    },
+                    {
+                        "config_field_id": "subject",
+                        "value": "STAND Order {{order.name}} tagged with \"FosdickWholesale\" for Job 95"
+                    },
+                    {
+                        "config_field_id": "message",
+                        "value": "<strong>This is an automated notification to alert you that a wholesale order with 15 or more items has been received and tagged with \"FosdickWholesale\".  \n<br><br>\nThis order should be routed automatically to Job 95 in Deposco. </strong>\n<br>\nOrder: <a href=\"https://weargales.myshopify.com/admin/orders/{{order.legacyResourceId}}\">{{order.name}}</a><br>\nEmail: {{order.customer.email}}<br>\nName: {{order.customer.displayName}}<br>\nCompany: {{order.shippingAddress.company}}<br>\n<br>\nShipping: {% for shippingLines_item in order.shippingLines -%}\n  {{shippingLines_item.title}} -- ${{shippingLines_item.discountedPriceSet.shopMoney.amount}}\n{% endfor %}\n\nTotal Quantity: {{order.subtotalLineItemsQuantity}}\n\n{% for lineItems_item in order.lineItems %}\n{{lineItems_item.currentQuantity}} X {{lineItems_item.product.title}}: {{lineItems_item.variant.title}}<br>\n{%- endfor -%}\n<br>\n<br>\n<strong>ORDER RECEIVED</strong>\n<p>This is a notification email. No other action required.</p>"
+                    }
+                ],
+                "task_id": "shopify::flow::send_email",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": null,
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "1915f510-1485-11ef-9b2b-b9c1bb27301b",
+                "step_position": [
+                    840,
+                    1240
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "input",
+                        "value": "query {\n  order {\n    createdAt\n    updatedAt\n    currentSubtotalLineItemsQuantity\n  }\n  shop {\n    timezoneOffsetMinutes\n    holidays {\n      value\n    }\n    cutoffTime {\n      value\n    }\n  }\n}"
+                    },
+                    {
+                        "config_field_id": "script",
+                        "value": "export default function main({ order, shop }) {\n  // edit the holidays in the Shop Metafield furnacebrook.holidays\n  // https://admin.shopify.com/store/weargales/apps/256-metafields-editor/shop\n  const holidays = JSON.parse(shop.holidays.value); \n  const shopCutoffTime = shop.cutoffTime.value;\n  //console.log(\"order: \", order)\n  // console.log(\"holidays:\", holidays, typeof holidays);\n  console.log(\"shopCutoffTime:\", shopCutoffTime);\n\n  function checkDate(date, add = 0) {\n    const dayAdj = [1, 0, 0, 0, 0, 0, 2][date.getUTCDay()];\n    console.log(\"dayAdj: \", dayAdj);\n    let shipDaily = dayAdj ? new Date(+date + dayAdj * 24 * 60 * 60 * 1000) : date;\n    console.log(\"shipDaily: \", shipDaily.toUTCString());\n    let shipDate = shipDaily.toISOString().split(\"T\")[0];\n    holidays.forEach(holiday => {\n      if (holiday == shipDate) {\n        shipDate = checkDate(new Date(+new Date(shipDate) + 24 * 60 * 60 * 1000));\n      }\n    })\n    console.log(\"shipDate: \", shipDate);\n    if (add > 0) {\n      shipDate = checkDate(new Date(+new Date(shipDate) + 24 * 60 * 60 * 1000), add - 1);\n    }\n    return shipDate;\n  }\n\n  const created = new Date(order.createdAt);\n  const UtcOffset = shop.timezoneOffsetMinutes / 60;   \n  // StoreTime (PST) to UTC: -480/60 = -8 \n  // StoreTime (PDT) to UTC: -420/60 = -7\n  // Order cutoff time is 6:45am ET = 3:45am PT = 3.75 PT\n  // Standard cutoff = 24 + -8 - 3.75 = 12.25\n  // Daylight Savings cutoff = 24 + -7 - 3.75 = 13.25\n  const cutoffTime = 24 + UtcOffset - shopCutoffTime;\n  console.log(\"created: \", created.toString());\n  console.log(\"cutoffTime: \", cutoffTime);\n  let shipDaily = new Date(+created + cutoffTime * 60 * 60 * 1000);\n  console.log(\"shipDaily: \", shipDaily.toUTCString());\n  const shipDate = checkDate(shipDaily, order.currentSubtotalLineItemsQuantity > 14 ? 2 : 0);\n  console.log(\"shipDate: \" + shipDate);\n  return {\n    shipDate: shipDate,\n  };\n}"
+                    },
+                    {
+                        "config_field_id": "output_schema",
+                        "value": "\"The output of Run Code\"\ntype Output {\n  \"Expected Ship Date\"\n  shipDate: String!\n}"
+                    }
+                ],
+                "task_id": "shopify::flow::run_code",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": "Calculate the Expected Ship Date based cutoff time set in shop metafield furnacebrook.cutoff_time",
+                "note": null,
+                "name": "Run code"
+            },
+            {
+                "step_id": "78b5faa0-1486-11ef-9b2b-b9c1bb27301b",
+                "step_position": [
+                    1140,
+                    1240
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "order_id",
+                        "value": "order.id"
+                    },
+                    {
+                        "config_field_id": "tags",
+                        "value": "[\"ExpShip__{{runCode.shipDate}}\"]"
+                    }
+                ],
+                "task_id": "shopify::admin::add_order_tags",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": null,
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "4bcaae30-5029-11ef-854d-5970312f6540",
+                "step_position": [
+                    1460,
+                    1260
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "api_call",
+                        "value": "{\"name\":\"orderUpdate\",\"blob\":\"{\\n  \\\"input\\\": {\\n    \\\"id\\\": \\\"{{order.id}}\\\",\\n    \\\"customAttributes\\\": [\\n      {%- for customAttributes_item in order.customAttributes -%}\\n        {%- if customAttributes_item.key != \\\"SLA\\\" -%}\\n          {\\n            \\\"key\\\": \\\"{{customAttributes_item.key}}\\\",\\n            \\\"value\\\": \\\"{{customAttributes_item.value}}\\\"\\n          },\\n        {%- endif -%}\\n      {%- endfor -%}\\n      {\\n        \\\"key\\\": \\\"SLA\\\",\\n        \\\"value\\\": \\\"{{runCode.shipDate}}\\\"\\n      }\\n    ]\\n  }\\n}\"}"
+                    }
+                ],
+                "task_id": "shopify::admin::admin_api_operation",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": "Add SLA Attribute",
+                "note": null,
+                "name": "Send Admin API request"
+            },
+            {
+                "step_id": "023924c0-58e1-11ef-832e-c350db4b6e0a",
+                "step_position": [
+                    1200,
+                    780
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "order_id",
+                        "value": "order.id"
+                    },
+                    {
+                        "config_field_id": "tags",
+                        "value": "[\"{% for tag in order.tags %}{% if tag contains \\\"ExpShip\\\" %}{{ tag }},{% endif %}{% endfor %}\",\"FosdickWholesale\"]"
+                    }
+                ],
+                "task_id": "shopify::admin::remove_order_tags",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": null,
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "f0bd88d0-5b4c-11ef-8b30-ebe7440855b6",
+                "step_position": [
+                    840,
+                    1040
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "condition",
+                        "value": "{\"uuid\":\"11cac3b2-8b6a-11ef-8619-b76f87f82bed\",\"lhs\":{\"uuid\":\"0ac6ce10-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"11cac3b2-8b6a-11ef-8619-b76f87f82bed\",\"lhs\":{\"uuid\":\"11cac3b0-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"0ac6ce10-8b6a-11ef-8619-b76f87f82bed\",\"value\":\"order.displayFulfillmentStatus\",\"comparison_value_type\":\"EnvironmentValue\",\"full_environment_path\":\"order.displayFulfillmentStatus\"},\"rhs\":{\"uuid\":\"ca46cfb0-a226-11ef-a3b8-2788d0ff7cd7\",\"parent_uuid\":\"0ac6ce10-8b6a-11ef-8619-b76f87f82bed\",\"value\":\"UNFULFILLED\",\"comparison_value_type\":\"LiteralValue\"},\"value_type\":\"EnvironmentEnumDefinition:OrderDisplayFulfillmentStatus\",\"operator\":\"==\",\"operation_type\":\"Comparison\"},\"operator\":\"OR\",\"operation_type\":\"LogicalExpression\"}"
+                    }
+                ],
+                "task_id": "shopify::flow::condition",
+                "task_version": "0.1",
+                "task_type": "CONDITION",
+                "description": null,
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "36713dc0-8b6a-11ef-8619-b76f87f82bed",
+                "step_position": [
+                    1140,
+                    1060
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "condition",
+                        "value": "{\"uuid\":\"575fb8e7-8b6a-11ef-8619-b76f87f82bed\",\"lhs\":{\"uuid\":\"39fad9b0-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"575fb8e7-8b6a-11ef-8619-b76f87f82bed\",\"lhs\":{\"uuid\":\"407a8420-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"39fad9b0-8b6a-11ef-8619-b76f87f82bed\",\"value\":\"order.displayFinancialStatus\",\"comparison_value_type\":\"EnvironmentValue\",\"full_environment_path\":\"order.displayFinancialStatus\"},\"rhs\":{\"uuid\":\"42a441f0-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"39fad9b0-8b6a-11ef-8619-b76f87f82bed\",\"value\":\"PENDING\",\"comparison_value_type\":\"LiteralValue\"},\"value_type\":\"EnvironmentEnumDefinition:OrderDisplayFinancialStatus\",\"operator\":\"==\",\"operation_type\":\"Comparison\"},\"rhs\":{\"uuid\":\"575fb8e0-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"575fb8e7-8b6a-11ef-8619-b76f87f82bed\",\"array_path\":{\"uuid\":\"575fb8e1-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"575fb8e0-8b6a-11ef-8619-b76f87f82bed\",\"value\":\"order.paymentGatewayNames\",\"comparison_value_type\":\"EnvironmentValue\",\"full_environment_path\":\"\"},\"array_item_key\":{\"uuid\":\"575fb8e2-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"575fb8e0-8b6a-11ef-8619-b76f87f82bed\",\"value\":\"paymentGatewayNames_item\",\"comparison_value_type\":\"EnvironmentValue\",\"full_environment_path\":\"\"},\"operation\":{\"uuid\":\"575fb8e3-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"575fb8e0-8b6a-11ef-8619-b76f87f82bed\",\"lhs\":{\"uuid\":\"575fb8e4-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"575fb8e3-8b6a-11ef-8619-b76f87f82bed\",\"lhs\":{\"uuid\":\"575fb8e5-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"575fb8e4-8b6a-11ef-8619-b76f87f82bed\",\"value\":\"paymentGatewayNames_item\",\"comparison_value_type\":\"EnvironmentValue\",\"full_environment_path\":\"paymentGatewayNames_item\"},\"rhs\":{\"uuid\":\"5be1be90-8b6a-11ef-8619-b76f87f82bed\",\"parent_uuid\":\"575fb8e4-8b6a-11ef-8619-b76f87f82bed\",\"value\":\"TrueMed\",\"comparison_value_type\":\"LiteralValue\"},\"value_type\":\"EnvironmentScalarDefinition:String\",\"operator\":\"==\",\"operation_type\":\"Comparison\"},\"operator\":\"AND\",\"operation_type\":\"LogicalExpression\"},\"operator\":\"ANY\",\"operation_type\":\"ArrayExpression\"},\"operator\":\"AND\",\"operation_type\":\"LogicalExpression\"}"
+                    }
+                ],
+                "task_id": "shopify::flow::condition",
+                "task_version": "0.1",
+                "task_type": "CONDITION",
+                "description": "Check if TrueMed Pending Payment",
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "8c1b5350-8b6a-11ef-8619-b76f87f82bed",
+                "step_position": [
+                    1460,
+                    1040
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "order_id",
+                        "value": "order.id"
+                    },
+                    {
+                        "config_field_id": "fulfillment_id",
+                        "value": ""
+                    },
+                    {
+                        "config_field_id": "reason",
+                        "value": "AWAITING_PAYMENT"
+                    },
+                    {
+                        "config_field_id": "reasonNotes",
+                        "value": "TrueMed Awaiting Payment"
+                    },
+                    {
+                        "config_field_id": "notifyMerchant",
+                        "value": "false"
+                    }
+                ],
+                "task_id": "shopify::admin::hold_fulfillment",
+                "task_version": "0.4",
+                "task_type": "ACTION",
+                "description": null,
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "0bb0c370-8b6b-11ef-8619-b76f87f82bed",
+                "step_position": [
+                    1760,
+                    1080
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "api_call",
+                        "value": "{\"name\":\"orderUpdate\",\"blob\":\"{\\n  \\\"input\\\": {\\n    \\\"id\\\": \\\"{{order.id}}\\\",\\n    \\\"customAttributes\\\": [\\n      {%- assign comma = \\\"\\\" -%}\\n      {%- for customAttributes_item in order.customAttributes -%}\\n        {%- if customAttributes_item.key != \\\"SLA\\\" -%}\\n          {{ comma }}\\n          {%- assign comma = \\\",\\\" -%}\\n          {\\n            \\\"key\\\": \\\"{{customAttributes_item.key}}\\\",\\n            \\\"value\\\": \\\"{{customAttributes_item.value}}\\\"\\n          }\\n        {%- endif -%}\\n      {%- endfor -%}\\n    ]\\n  }\\n}\"}"
+                    }
+                ],
+                "task_id": "shopify::admin::admin_api_operation",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": "Remove SLA attribute",
+                "note": null,
+                "name": "Send Admin API request (1)"
+            },
+            {
+                "step_id": "aee14000-9ca1-11ef-9a09-25387945a8e7",
+                "step_position": [
+                    1820,
+                    780
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "message",
+                        "value": "{% for customAttributes_item in order.customAttributes %}\n  {{customAttributes_item.key}}: {{customAttributes_item.value}}\n{% endfor %}\n{{shop.cutoffTime.value}}"
+                    }
+                ],
+                "task_id": "shopify::flow::print",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": null,
+                "note": null,
+                "name": null
+            },
+            {
+                "step_id": "ab767790-a300-11ef-9a7e-4524c719709c",
+                "step_position": [
+                    1520,
+                    820
+                ],
+                "config_field_values": [
+                    {
+                        "config_field_id": "order_id",
+                        "value": "order.id"
+                    },
+                    {
+                        "config_field_id": "tags",
+                        "value": "[\"{% for discountApplications_item in order.discountApplications %} {{discountApplications_item.AutomaticDiscountApplication.title}}, {% endfor %}\",\"{% for transactions_item in order.transactions %}{% if transactions_item.status != \\\"FAILURE\\\" and transactions_item.gateway != blank %}paygate_{{transactions_item.gateway}}, {% endif %}{% endfor %}\",\"{% if order.totalPriceSet.shopMoney.amount < 10 %}free_order{% endif %}\",\"{% if order.app.name == \\\"TikTok\\\" and order.totalReceivedSet.shopMoney.amount < 10 %}free_order{% endif %}\",\"{% if order.requiresShipping == true and order.shippingLine.originalPriceSet.shopMoney.amount == 0 %}free_shipping{% endif %}\",\"{% if order.requiresShipping == true and order.totalShippingPriceSet.shopMoney.amount == 0 %}free_shipping{% endif %}\",\"{% if order.requiresShipping == true and order.shippingLine.code == \\\"epacketDdp\\\" %}international_shipping{% endif %}\",\"appname_{{order.app.name}}\",\"{% for li in order.lineItems %}{% for attr in li.customAttributes %}{% if attr.key == \\\"Pre-order\\\" %}pre-order, preorder{% endif %}{% endfor %}{% endfor %}\",\"{% if order.customer.ordersCount > 1 %}repeat_customers{% endif %}\"]"
+                    }
+                ],
+                "task_id": "shopify::admin::add_order_tags",
+                "task_version": "0.1",
+                "task_type": "ACTION",
+                "description": "Tag Free Order, Free Shipping, Int'l, Repeat Cust, Auto discount, Pay Gateway, appname",
+                "note": null,
+                "name": null
+            }
+        ],
+        "links": [
+            {
+                "from_step_id": "24d66430-7e8e-11ee-b595-8deeb4d35500",
+                "from_port_id": "true",
+                "to_step_id": "254ab460-7e8f-11ee-b595-8deeb4d35500",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "254ab460-7e8f-11ee-b595-8deeb4d35500",
+                "from_port_id": "output",
+                "to_step_id": "1f95c7a0-13b6-11ef-aa4a-c3c3664cde6b",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "f0bd88d0-5b4c-11ef-8b30-ebe7440855b6",
+                "from_port_id": "true",
+                "to_step_id": "36713dc0-8b6a-11ef-8619-b76f87f82bed",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "36713dc0-8b6a-11ef-8619-b76f87f82bed",
+                "from_port_id": "true",
+                "to_step_id": "8c1b5350-8b6a-11ef-8619-b76f87f82bed",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "023924c0-58e1-11ef-832e-c350db4b6e0a",
+                "from_port_id": "output",
+                "to_step_id": "f0bd88d0-5b4c-11ef-8b30-ebe7440855b6",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "1fd54370-7e8e-11ee-b595-8deeb4d35500",
+                "from_port_id": "output",
+                "to_step_id": "023924c0-58e1-11ef-832e-c350db4b6e0a",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "8c1b5350-8b6a-11ef-8619-b76f87f82bed",
+                "from_port_id": "output",
+                "to_step_id": "0bb0c370-8b6b-11ef-8619-b76f87f82bed",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "36713dc0-8b6a-11ef-8619-b76f87f82bed",
+                "from_port_id": "false",
+                "to_step_id": "1915f510-1485-11ef-9b2b-b9c1bb27301b",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "78b5faa0-1486-11ef-9b2b-b9c1bb27301b",
+                "from_port_id": "output",
+                "to_step_id": "4bcaae30-5029-11ef-854d-5970312f6540",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "1915f510-1485-11ef-9b2b-b9c1bb27301b",
+                "from_port_id": "output",
+                "to_step_id": "24d66430-7e8e-11ee-b595-8deeb4d35500",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "1915f510-1485-11ef-9b2b-b9c1bb27301b",
+                "from_port_id": "output",
+                "to_step_id": "78b5faa0-1486-11ef-9b2b-b9c1bb27301b",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "023924c0-58e1-11ef-832e-c350db4b6e0a",
+                "from_port_id": "output",
+                "to_step_id": "ab767790-a300-11ef-9a7e-4524c719709c",
+                "to_port_id": "input"
+            },
+            {
+                "from_step_id": "ab767790-a300-11ef-9a7e-4524c719709c",
+                "from_port_id": "output",
+                "to_step_id": "aee14000-9ca1-11ef-9a09-25387945a8e7",
+                "to_port_id": "input"
+            }
+        ],
+        "patched_fields": [
+            {
+                "id": "72a7c1c0-a243-11ef-ac04-4f24bd060b0c",
+                "handle": "cutoffTime",
+                "field": "metafield",
+                "patched_type": "Shop",
+                "arguments": "{\"key\":\"cutoff_time\",\"namespace\":\"furnacebrook\"}",
+                "merchant_configured": true
+            },
+            {
+                "id": "cdc6b000-147e-11ef-9b2b-b9c1bb27301b",
+                "handle": "expectedshipdate",
+                "field": "metafield",
+                "patched_type": "Shop",
+                "arguments": "{\"key\":\"expectedshipdate\",\"namespace\":\"furnacebrook\"}",
+                "merchant_configured": true
+            },
+            {
+                "id": "2a817710-8f2e-11ef-8a0d-072dbc4e270f",
+                "handle": "holidays",
+                "field": "metafield",
+                "patched_type": "Shop",
+                "arguments": "{\"key\":\"holidays\",\"namespace\":\"furnacebrook\"}",
+                "merchant_configured": true
+            }
+        ],
+        "workflow_name": "New Orders: Add Tags, ExpShip, FosdickWholesale, Hold TrueMed - SJ"
+    }
+}

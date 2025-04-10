@@ -1,0 +1,304 @@
+{% style %}
+   .er-nurses-lp-full-swiper.section-{{ section.id }}{
+     {% if section.settings.bg_image != blank %}
+       background: url('{{ section.settings.bg_image | image_url: width: 1920 }}') top/100% 45% no-repeat,
+    linear-gradient(#F9F9F9,#F9F9F9) bottom/100% 55% no-repeat;
+  height:auto;
+     {% else %}
+       background: {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+       ;
+     {% endif %}
+     padding: 30px 0px;
+   }
+   .er-nurses-lp-swiper-slider-image-slider > div:before {
+     background: url("{{ 'arrow-middle.svg' | asset_url }}");
+   }
+   @media (min-width: 0px) and (max-width: 767px) {
+    .er-nurses-lp-full-swiper.section-{{ section.id }}{
+      background: linear-gradient(#F0F0F0,#F0F0F0) top/100% 47% no-repeat, linear-gradient(#F9F9F9,#F9F9F9) bottom/100% 53% no-repeat;
+    }
+    }
+{% endstyle %}
+<div id="SupportingThoseWhoSupportAll"></div>
+<div class="er-nurses-lp-full-swiper section-{{ section.id }}">
+  <div class="er-nurses-lp-swiper section-{{ section.id }}">
+    <div class="er-nurses-lp-swiper_contentText">
+      <p class="er-nurses-lp-swiper_contentText-title">
+        {{ section.settings.title }}
+      </p>
+      <p class="er-nurses-lp-swiper_contentText-subtitle">
+        {{ section.settings.subtitle }}
+      </p>
+      <div class="er-nurses-lp-swiper_contentText-buttons">
+        <div
+          id="ProLineBtn"
+          class="er-nurses-lp-swiper_contentText-buttons-button"
+          m-active="true"
+          href="{{ section.settings.urlfirstLink }}"
+        >
+          {{ section.settings.firstLink }}
+        </div>
+        <div
+          id="FrontLineBtn"
+          class="er-nurses-lp-swiper_contentText-buttons-button"
+          m-active="false"
+          href="{{ section.settings.urlsecondLink }}"
+        >
+          {{ section.settings.secondLink }}
+        </div>
+      </div>
+    </div>
+    <div class="er-nurses-lp-swiper-slider">
+      <img
+        id="dotSlider"
+        class="er-nurses-lp-swiper-slider-dotImage"
+        src="{{ "arrow-middle.svg" | asset_url }}"
+      >
+      <img
+        class="er-nurses-lp-swiper-slider-img back-img"
+        src="{{ section.settings.secondImage | img_url: 'master' }}"
+      >
+      <img
+        class="er-nurses-lp-swiper-slider-img front-img"
+        src="{{ section.settings.firstImage | img_url: 'master' }}"
+      >
+      <input type="range" min="1" max="100" value="50" class="slider" name="slider" id="slider">
+    </div>
+    <a href="{{ section.settings.lastButton }}" class="er-nurses-lp-swiper-lastbutton">
+      {{- section.settings.lastTextButton -}}
+    </a>
+  </div>
+  <div class="er-nurses-lp-carousel er-infographics__wrapper">
+    {% if section.blocks.size > 0 %}
+      <div class="swiper er-swiper-infography">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide item-{{ block.settings.idCard | replace: ' ', '' }}">
+              <div class="er-infographics__card item-{{ block.settings.idCard | replace: ' ', '' }}">
+                <div class="er-infographics__card--description">
+                  <img
+                    src="{{ block.settings.image | image_url: width: '270' }}"
+                    loading="lazy"
+                    width="270"
+                    height="270"
+                    alt="{{ block.settings.name }}"
+                  >
+                  {{ block.settings.description }}
+                  <div class="er-infographics__see-more js-er-infographics-see-more">
+                    {% render 'er-icon-eye' %}See more
+                  </div>
+                  <div class="er-infographics__see-less js-er-infographics-see-less">
+                    {% render 'er-icon-eye' %}See less
+                  </div>
+                </div>
+                <div class="er-infographics__card--title">{{ block.settings.name }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="swiper-button-next er-swiper-infography"></div>
+      <div class="swiper-button-prev er-swiper-infography"></div>
+      {% comment %} <div class="er-swiper-infography-pagination"></div> {% endcomment %}
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  var settingsCarousel = {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    freeMode: true,
+    allowTouchMove: false,
+    navigation: {
+      nextEl: '.swiper-button-next.er-swiper-infography',
+      prevEl: '.swiper-button-prev.er-swiper-infography',
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 10,
+      },
+      992: {
+        slidesPerView: 3,
+        spaceBetween: 10,
+      },
+      1200: {
+        slidesPerView: 4,
+        spaceBetween: 10,
+      },
+    },
+  };
+
+  let FrontLineBtn = document.getElementById('FrontLineBtn');
+  let proLineBtn = document.getElementById('ProLineBtn');
+  const slider = document.getElementById('slider');
+  const iconReveal = document.getElementById('dotSlider');
+  const frontImage = document.querySelector('.front-img');
+  var ProLine = document.getElementsByClassName('item-ProLine');
+  var FrontLine = document.getElementsByClassName('item-FrontLine');
+  var btnShop = document.querySelector('.er-nurses-lp-swiper-lastbutton');
+  slider.addEventListener('input', function () {
+    //console.log(this.value);
+    frontImage.style.clipPath = `polygon(0 0, ${this.value - 0.5}% 0, ${this.value - 0.5}% 100%, 0% 100%)`;
+    iconReveal.style.left = this.value + '%';
+    if (this.value > 50) {
+      for (var i = 0; i < ProLine.length; i++) {
+        ProLine[i].style.visibility = 'hidden';
+        ProLine[i].style.display = 'none';
+      }
+      for (var i = 0; i < FrontLine.length; i++) {
+        FrontLine[i].style.visibility = 'visible';
+        FrontLine[i].style.display = 'block';
+      }
+      FrontLineBtn.setAttribute('m-active', 'true');
+      proLineBtn.setAttribute('m-active', 'false');
+      btnShop.href = '/products/frontline';
+    } else {
+      for (var i = 0; i < FrontLine.length; i++) {
+        FrontLine[i].style.visibility = 'hidden';
+        FrontLine[i].style.display = 'none';
+      }
+      for (var i = 0; i < ProLine.length; i++) {
+        ProLine[i].style.visibility = 'visible';
+        ProLine[i].style.display = 'block';
+      }
+      FrontLineBtn.setAttribute('m-active', 'false');
+      proLineBtn.setAttribute('m-active', 'true');
+      btnShop.href = '/products/pro-line';
+    }
+    mySwiper = new Swiper('.er-swiper-infography', settingsCarousel);
+  });
+  FrontLineBtn.addEventListener('click', (event) => {
+    slider.value = '99';
+    frontImage.style.clipPath = 'polygon(0 0, 99% 0, 99% 100%, 0% 100%)';
+    iconReveal.style.left = '99%';
+    for (var i = 0; i < ProLine.length; i++) {
+      ProLine[i].style.visibility = 'hidden';
+      ProLine[i].style.display = 'none';
+    }
+    for (var i = 0; i < FrontLine.length; i++) {
+      FrontLine[i].style.visibility = 'visible';
+      FrontLine[i].style.display = 'block';
+    }
+    FrontLineBtn.setAttribute('m-active', 'true');
+    proLineBtn.setAttribute('m-active', 'false');
+    btnShop.href = '/products/frontline';
+    mySwiper = new Swiper('.er-swiper-infography', settingsCarousel);
+  });
+  proLineBtn.addEventListener('click', (event) => {
+    slider.value = '5';
+    frontImage.style.clipPath = 'polygon(0 0, 5% 0, 5% 100%, 0% 100%)';
+    iconReveal.style.left = '5%';
+    for (var i = 0; i < FrontLine.length; i++) {
+      FrontLine[i].style.visibility = 'hidden';
+      FrontLine[i].style.display = 'none';
+    }
+    for (var i = 0; i < ProLine.length; i++) {
+      ProLine[i].style.visibility = 'visible';
+      ProLine[i].style.display = 'block';
+    }
+    FrontLineBtn.setAttribute('m-active', 'false');
+    proLineBtn.setAttribute('m-active', 'true');
+    btnShop.href = '/products/pro-line';
+    mySwiper = new Swiper('.er-swiper-infography', settingsCarousel);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "ER Nurses LP Swiper",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Supporting Those Who Support All"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover the Ultimate Nurse's Comfort"
+    },
+    {
+      "type": "text",
+      "id": "firstLink",
+      "label": "Text First Button",
+      "default": "Pro Line"
+    },
+    {
+      "type": "url",
+      "id": "urlfirstLink",
+      "label": "First button link"
+    },
+    {
+      "type": "text",
+      "id": "secondLink",
+      "label": "Text Second Button",
+      "default": "FrontLine"
+    },
+    {
+      "type": "url",
+      "id": "urlsecondLink",
+      "label": "Second button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "firstImage",
+      "label": "First image"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondImage",
+      "label": "Second image"
+    },
+    {
+      "type": "text",
+      "id": "lastTextButton",
+      "label": "Text Last Button",
+      "default": "Shop Now"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info_card",
+      "name": "Info card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "idCard",
+          "label": "Info Card",
+          "default": "Pro Line"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Info card image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Info card name"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Info card description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER Nurses LP Swiper"
+    }
+  ]
+}
+{% endschema %}

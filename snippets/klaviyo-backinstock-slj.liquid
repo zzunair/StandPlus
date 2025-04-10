@@ -1,0 +1,264 @@
+<div class="d-none klaviyo-bis-popup fadein">
+  <div class="klaviyo-bis-contain klaviyo-bis-close">
+    <div id="klaviyo-bis-modal"> 
+      <div class="" id="container">
+        <button type="button" class="close klaviyo-bis-close" data-dismiss="modal">×</button>
+        <h3 class="modal-title"></h3>
+        <h4 class="variant-title"></h4>
+        <p>Register to receive a notification when this item is available.</p>
+        <form class="bis-form clearfix">
+          <div class="form-group">
+            <div id="variant_select" class="col-sm-12" style="display: none;">
+              <input type="hidden" name="variant" id="variant" value="">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12 form-email">
+              <input type="email" name="email" id="email" placeholder="EMAIL" class="form-control input-lg" value="">
+            </div>
+            <div id="newsletter_subscription" style="display: none;">
+              <p>
+                <input type="checkbox" id="subscribe_for_newsletter" checked="">
+                <label for="subscribe_for_newsletter" style="margin-left:10px;">Add me to your email list.</label>
+              </p>
+            </div>
+          </div>
+          <div class="control-group clearfix submit-container">
+            <button type="submit" class="btn btn-success btn--size-large col-xs-12">Notify me when available</button>
+          </div>
+          <div id="error_message" class="error_message alert alert-danger"></div>
+        </form>
+        <div id="completed_message" class="completed_message alert alert-success d-none">You're in! We'll let you know when it's arrived. 
+          <button class="btn klaviyo-bis-close mt-20">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let bisPopup, bisSumbitForm, bisCloseForm, bisCompleted, submitButton;
+  function BisSubmit(event) {
+    event.preventDefault();
+    {% comment %} console.log("BisSubmit:", event); {% endcomment %}
+    const formData = new FormData(event.target);
+    const bisEmail = formData.get('email');
+    const bisVariant = formData.get('variant');
+    {% comment %} // formData.set("a", "SfKvaB");
+    // formData.set("platform", "shopify");
+    // console.log("formData:", formData); {% endcomment %}
+    if (bisEmail && bisVariant) {
+      const payload = {
+        "data": {
+          "type": "back-in-stock-subscription",
+          "attributes": {
+            "profile": {
+              "data": {
+                  "type": "profile",
+                  "attributes": {
+                      "email": bisEmail
+                  }
+              }
+            },
+            "channels": ["EMAIL"],
+          },
+          "relationships": {
+            "variant": {
+              "data": {
+                "type": "catalog-variant",
+                "id": "$shopify:::$default:::"+bisVariant
+              }
+            }
+          }
+        }
+      }
+      console.log("payload:", payload);
+      const payloadJson = JSON.stringify(payload);
+      console.log("payloadJson:", payloadJson);
+      var requestOptions = {
+          method: 'POST',
+          headers: {"Accept": "application/json", "Content-Type": "application/json", "revision": "2024-02-15"},
+          body: payloadJson
+      };
+      {% comment %} 
+      from: https://developers.klaviyo.com/en/reference/create_client_back_in_stock_subscription 
+      {% endcomment %}
+      fetch("https://a.klaviyo.com/client/back-in-stock-subscriptions/?company_id=SfKvaB",requestOptions)
+          .then(response => {
+            if (response.ok) {
+              console.log("success", response.ok);
+              submitButton.classList.add("d-none");
+              bisCompleted.classList.remove("d-none");
+            } else {
+              console.error('error', response);
+            }
+          })
+          .catch(error => console.error('error', error));
+    } else console.log("no email address");
+    return false; // don't load page
+  }
+  function BisSubscribe(event) {
+    {% comment %} console.log("bis subscribe button clicked0:", event); {% endcomment %}
+    event.preventDefault();
+    {% comment %} console.log("bis subscribe button clicked1:", event); {% endcomment %}
+    const productdata = {{ product | json }};
+    {% comment %} console.log('bis product:', productdata); {% endcomment %}
+    const productTitle = bisPopup.querySelector(".modal-title");
+    const variantTitle = bisPopup.querySelector(".variant-title");
+    const variantIdModal = bisPopup.querySelector("input#variant");
+    const productForm = document.querySelector('form[action*="/add"]');
+    const variantId = productForm.querySelector("input[name='variant_id']")?.value;
+    const variant = productdata.variants.find(v => v.id == variantId);
+    {% comment %} console.log("BisSubmit: variant:", variant); {% endcomment %}
+    const variant_color = productForm.querySelector(".option-color label [data-label-value]")?.textContent;
+    const variant_size = productForm.querySelector("#size_attribute")?.value || productForm.querySelector(".option-size [data-label-value]")?.textContent;
+    productTitle.textContent = productdata.title;
+    variantTitle.textContent = variant_size && variant_color ? variant_color + " - " + variant_size : variant.title;
+    variantIdModal.value = variantId;
+    bisPopup.classList.remove('d-none');
+  }
+  function closeModal(event) {
+    // console.log("closeModal:", event.target, event);
+    if (event.target.classList.contains("klaviyo-bis-close")) {
+      bisPopup.classList.add('d-none');
+      bisCompleted.classList.add("d-none");
+      submitButton.classList.remove("d-none");
+    }
+  }
+  function initBis() {
+    const bisButton = document.querySelector('.klaviyo-bis');
+    // console.log('bisButton', bisButton);
+    bisPopup = document.querySelector(".klaviyo-bis-popup");
+    bisSubmitForm = bisPopup.querySelector('form');
+    bisSubmitForm.addEventListener("submit", BisSubmit);
+    submitButton = bisPopup.querySelector('.submit-container');
+    bisPopup.addEventListener("click", closeModal);
+    bisCompleted = bisPopup.querySelector('#completed_message');
+    if (bisButton) {
+      bisButton.addEventListener("click", BisSubscribe, true)
+    }
+    window.bis = false;
+  }
+  if (document.querySelector('.klaviyo-bis')) {
+    initBis();
+  } else {
+    window.addEventListener("load", (event) => {
+      initBis();
+    });
+  }
+</script>
+
+<style>
+  .klaviyo-bis {
+    width: 100%;
+  }
+  
+  div.fadein {
+    background: rgba(0, 0, 0, 0.65);
+    transition: background-color 0.15s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+    height: 100%;
+  }
+  .klaviyo-bis-trigger.mt-5 {
+    position: absolute;
+    top: 100%;
+    left: 0px;
+    right: 0px;
+  }
+  @media (max-width: 600px) {
+    .klaviyo-bis-trigger.mt-5 {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+.klaviyo-bis-popup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0px;
+  border: 0px none;
+  overflow: hidden;
+  z-index: 999999;
+  background: none;
+}
+.klaviyo-bis-contain {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@media only screen and (min-width: 500px) {
+  #klaviyo-bis-modal {
+    max-width: 460px;
+    margin: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+#container {
+  position: relative;
+  background: white;
+  padding: 12px 18px 40px 18px;
+}
+@media only screen and (min-width: 992px) {
+  #container {
+    
+  }
+}
+@media only screen and (min-width: 500px) {
+  #container {
+    border-radius: 26px;
+    padding: 30px 40px;
+  }
+}
+
+.close {
+  color: #ccc;
+}
+.close {
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  position: absolute;
+  top: 7px;
+  right: 15px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ccc;
+  text-shadow: 0 1px 0 #fff;
+}
+.modal-title {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.5;
+}
+.form-group .form-email {
+	border: 1.4px solid var(--theme);
+	border-radius: 26px;
+	overflow: hidden;
+	padding: 0;
+}
+.form-group .form-email input {
+  margin-bottom: 0;
+}
+.btn.btn-success {
+  width: 100%;
+}
+.completed_message {
+  text-align: center;
+  color: var(--label-pre-order-bg);
+  font-weight: bold;
+  padding-top: 10px;
+  min-height: 35px;
+}
+.clearfix::after {
+  clear: both;
+}
+.clearfix::before, .clearfix::after {
+  content: " ";
+  display: table;
+}
+</style>

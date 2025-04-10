@@ -1,0 +1,120 @@
+{% assign child_products = product.metafields.custom.child_products.value %}
+{% assign product = settings.upsell_product %}
+
+
+
+<div class="product-cart" data-js-product>
+    <div class="d-flex flex-row align-items-start">
+        <a href="{{ product.url }}">
+            <div class="product-cart__image mr-15">
+                {% render 'rimage' with image: product.featured_image size: '150x' format: image_format image_class: 'w-100' %}
+            </div>
+        </a>
+        <div class="product-cart__content d-flex flex-column align-items-start">
+            <div class="product-cart__title-wrapper">
+                <div class="product-cart__title mb-3">
+                    <h3 class="h6 m-0">
+                        <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                </div>
+                <div class="product-cart__price mt-3 mb-10">
+                    <span class="product-cart__price-value font-weight-bold" style="color: #f17849;">
+                        {{ product.price | money_without_trailing_zeros }}  
+                    </span>
+                    {% if product.compare_at_price > product.price %}
+                        <span class="product-cart__compare-price text-muted" style="text-decoration: line-through;">
+                            {{ product.compare_at_price | money_without_trailing_zeros }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if child_products %}
+                <div class="upsell-color-options mb-2">
+                    <label class="mb-1">Select Color:</label>
+                    <div class="d-flex">
+                        {% for child in child_products %}
+                            <div class="color-swatch"
+                                data-color="{{ child.title }}"
+                                data-product-handle="{{ child.handle }}"
+                                style="background-image: url({{ child.featured_image | img_url: '150x150' }}); background-size: cover; width: 24px; height: 24px; border-radius: 50%; margin-right: 5px; cursor: pointer; border: 1px solid #ccc;">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="upsell-row">
+                <div class="upsell-size-options mb-2">
+                    <select class="upsell-size-selector"></select>
+                </div>
+                <button class="upsell-add-to-cart btn btn-primary mt-2" disabled>
+                    Add
+                </button>
+            </div>
+
+            <input type="hidden" class="upsell-variant-selector">
+        </div>
+    </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let selectedVariantId = null;
+    let selectedProductHandle = null;
+
+    document.querySelectorAll('.color-swatch').forEach(swatch => {
+        swatch.addEventListener('click', function() {
+            document.querySelectorAll('.color-swatch').forEach(el => el.style.border = '1px solid #ccc');
+            this.style.border = '2px solid black';
+
+            selectedProductHandle = this.getAttribute('data-product-handle');
+            fetch(`/products/${selectedProductHandle}.js`)
+                .then(response => response.json())
+                .then(product => {
+                    const sizeSelector = document.querySelector('.upsell-size-selector');
+                    sizeSelector.innerHTML = '';
+
+                    if (product.variants.length > 0) {
+                        product.variants.forEach(variant => {
+                            let option = document.createElement('option');
+                            option.value = variant.id;
+                            option.textContent = variant.option1; // Assuming 'Size' is the first option
+                            sizeSelector.appendChild(option);
+                        });
+
+                        selectedVariantId = product.variants[0].id;
+                        document.querySelector('.upsell-variant-selector').value = selectedVariantId;
+                        document.querySelector('.upsell-add-to-cart').removeAttribute('disabled');
+                    } else {
+                        document.querySelector('.upsell-add-to-cart').setAttribute('disabled', 'true');
+                    }
+                });
+        });
+    });
+
+    document.querySelector('.upsell-size-selector')?.addEventListener('change', function() {
+        selectedVariantId = this.value;
+        document.querySelector('.upsell-variant-selector').value = selectedVariantId;
+    });
+
+    document.querySelector('.upsell-add-to-cart').addEventListener('click', function() {
+        if (!selectedVariantId) return;
+
+        fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: selectedVariantId, quantity: 1 })
+        })
+        .then(response => response.json())
+        .then(() => {
+            fetch('/cart.js')
+                .then(res => res.json())
+                .then(() => location.reload());
+        })
+        .catch(error => console.error('Error adding to cart:', error));
+    });
+});
+
+</script>

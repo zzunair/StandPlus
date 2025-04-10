@@ -1,0 +1,164 @@
+<!-- snippets/sc-discount-app.liquid -->
+{% comment %} <style>
+    .sc_install-initialization {
+      position: fixed;
+      background-color: #fff;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 100000000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+</style>
+    {% assign discount_data = shop.metafields.syncube_discount %}
+    <script type="text/javascript">
+        var scLoadingOverlayHtml = '<div class="sc_install-initialization"><div style="width: 80px;"><svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class ="lds-rolling" ><circle cx="50" cy="50" fill="none" stroke-width="7" r="25" stroke-dasharray="117.80972450961724 41.269908169872416" transform="rotate(47.1629 50 50)" style="stroke: #5C6AC4" ><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite" /></circle></svg></div> Please wait. Theme installer is being initialized.</div>';
+        var scDesignData = {{ discount_data.design | json }} || {};
+        window.scIsCartPage = {% if template == 'cart' %}true{% else %}false{% endif %};
+        window.scCartData = {{ cart | json }};
+        window.scMoneyFormat = '{{ shop.money_format | replace: "'", '"' }}';
+        window.scDesignConfig = {
+            style: scDesignData.style || 'simple',
+            position: scDesignData.position || 'right',
+            containerWidth: {
+                width: scDesignData.width || '350px'
+            },
+            codeButton: {
+                color: scDesignData.codeButtonColor || '#fff',
+                backgroundColor: scDesignData.codeButtonBackgroundColor || '#5aaa34',
+                border: '1px solid ' + (scDesignData.codeButtonBorderColor || '#5aaa34')
+            },
+            submitButton: {
+                borderColor: scDesignData.submitButtonBorderColor
+            },
+            loadingBg: {
+                background: scDesignData.loadingBg || '#339933'
+            },
+            spinner: {
+                stroke: scDesignData.spinnerColor || '#ffffff'
+            },
+            codeInput: {
+                borderColor: scDesignData.inputBorder || '#aeaeae',
+                color: scDesignData.inputColor || '#339933',
+                backgroundColor: scDesignData.inputBg || '#ffffff'
+            },
+            discountInfo: {
+                background: scDesignData.discountInfoBg || '#fafafa',
+                border: '1px solid ' + (scDesignData.discountInfoBorder || '#e1e1e1'),
+                color: scDesignData.discountInfoColor || '#535353'
+            }
+        };
+    
+          {% assign currentLocale = shop.locale | slice: 0, 2 %}
+        {% capture primaryLocale %}
+          {% for locale in shop.published_locales %}
+          {% if locale.primary %}{{ locale.iso_code }}{% endif %}
+          {% endfor %}
+        {% endcapture %}
+        window.scTranslationConfig = {{ discount_data.translation[currentLocale] | json }} || {{ discount_data.translation.en | json }};
+          {% assign primaryLocale = primaryLocale | strip | slice: 0, 2 %}
+          window.scPrimaryLocale = '{{ primaryLocale }}';
+        {% if currentLocale != primaryLocale %}
+        window.scPrimaryTranslationConfig = {{ discount_data.translation[primaryLocale] | json }};
+        {% endif %}
+    
+        var scThemeConfig = {
+            "cartDiscountSelector": {
+              "path": "div.cart__subtotal h5",
+              "type": 1
+             },
+            "scThemeTotalSelectors": [],
+            "ajaxDicountSelector": {
+              "path": "div.popup-cart div.popup-cart__subtotal",
+              "type": 1
+            },
+            "ajaxTotalSelector": {}
+          };
+        {% assign scProduct = collections.all.products.first %}
+    
+        {% if scProduct %}
+        var scProduct = {{ scProduct.variants[0].id }};
+        var scProductUrl = '/products/{{ scProduct.handle }}';
+        {% endif %}
+        var cartTotal = {{ cart.total_price }};
+    
+        var __assign = (this && this.__assign) || function () {
+            __assign = Object.assign || function(t) {
+                for (var s, i = 1, n = arguments.length; i < n; i++) {
+                    s = arguments[i];
+                    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                        t[p] = s[p];
+                }
+                return t;
+            };
+            return __assign.apply(this, arguments);
+        };
+        var setValue = function (name, value) {
+            var _a;
+            var data = JSON.parse(sessionStorage.getItem('scInstallInfo'));
+            sessionStorage.setItem('scInstallInfo', JSON.stringify(__assign(__assign({}, data), (_a = {}, _a[name] = value, _a))));
+        };
+        var parseQueryString = function () {
+            var qs = window.location.search.replace('?', '');
+            var items = qs.split('&');
+            return items.reduce(function (data, item) {
+                var _a = item.split('='), key = _a[0], value = _a[1];
+                if (data[key] !== undefined) {
+                    if (!Array.isArray(data[key])) {
+                        data[key] = [data[key]];
+                    }
+                    data[key].push(value);
+                }
+                else {
+                    data[key] = value;
+                }
+                return data;
+            }, {});
+        };
+    
+        var query = parseQueryString();
+        if (query.install) {
+            setValue('theme', query.install);
+        }
+    
+        var scLoadingOverlay;
+    
+        var getValue = function(name) {
+          var data = JSON.parse(sessionStorage.getItem('scInstallInfo'));
+          return data && data[name] !== undefined ? data[name] : null;
+        };
+    
+        var isInstall = function() {
+          var themeId = getValue('theme');
+          var theme = window.Shopify ? window.Shopify.theme : null;
+          var id = theme ? theme.id : null;
+          return themeId === id.toString();
+        };
+    
+        var scAppendLoadOverlay = function() {
+          scLoadingOverlay = document.createElement('div');
+          scLoadingOverlay.innerHTML = scLoadingOverlayHtml;
+          document.body.appendChild(scLoadingOverlay);
+        };
+    
+        var scLoadInstaller = function() {
+          scAppendLoadOverlay();
+          console.log("discount: scLoadInstaller started:", Date.now() - pdcStart, "ms");
+          console.log("discount: scLoadInstaller started:", Date.now());
+          const script = document.createElement('script');
+          script.src = 'https://cart-discount.herokuapp.com/js/installer.min.js';
+          script.onload = function() {
+          scLoadingOverlay.remove();
+          }
+          document.body.appendChild(script);
+        };
+    
+        if (scProduct && isInstall()) {
+           scLoadInstaller();
+        }
+    
+        var scPrimaryCurrency = '{{ shop.currency }}';
+    </script> {% endcomment %}

@@ -1,0 +1,33 @@
+<!-- snippets/url-params.liquid -->
+{% liquid    
+    assign url_cfh = content_for_header | split: '"pageurl":"' | last | split: '"' | first 
+    assign paramsJson = ""
+    assign urlParams = null
+    assign paramsArray = null
+    assign password_check = false
+    
+    if url_cfh contains '?'
+        assign urlParams = url_cfh | split: "?" | last
+        assign paramsArray = urlParams | split: "\u0026"
+
+        comment
+        for param in paramsArray
+            assign keyval = param | split: "="
+            assign key = keyval[0] | json
+            assign val = keyval[1] | json
+            assign paramsJson = paramsJson | append: key | append: ' : ' | append: val
+            unless forloop.last 
+                assign paramsJson = paramsJson | append: ", "
+            endunless
+        endfor
+        endcomment
+
+        if urlParams contains "k=4440ef5dff3d489b3a1ee81977aa9312"
+            assign password_check = true
+            assign url_cfh = url_cfh | replace: "k=4440ef5dff3d489b3a1ee81977aa9312", ""
+        endif
+        if urlParams contains "dev"
+            assign url_dev = true
+        endif
+    endif
+%}

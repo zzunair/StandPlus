@@ -1,0 +1,298 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "16542012657356e2f4": {
+      "type": "home-builder",
+      "blocks": {
+        "bfb3a9f4-e01e-4b74-a5b6-c80240331919": {
+          "type": "promobox",
+          "settings": {
+            "url": "shopify://blogs/job-listings",
+            "svg_file": false,
+            "image": "shopify://shop_images/jobs_header.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "text_line_1": "Join Our Team",
+            "text_line_2": "",
+            "text_line_3": "",
+            "style": "5",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_controls": false,
+            "type": "type-1-2",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "#ffffff",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "bfb3a9f4-e01e-4b74-a5b6-c80240331919"
+      ],
+      "settings": {
+        "title": "",
+        "container": "fullwidth",
+        "size_of_columns": "1",
+        "size_of_columns_mobile": "1",
+        "margins_for_columns": "none",
+        "align_of_columns": "top_center",
+        "disable_column_paddings": false,
+        "precedence": "",
+        "customization_class": "blog_header"
+      }
+    },
+    "16542012088298a264": {
+      "type": "blog-tags",
+      "disabled": true,
+      "settings": {
+        "allcaps": true,
+        "bold": true,
+        "color": "",
+        "selected_bold": true,
+        "selected_color": "rgba(0,0,0,0)",
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "background_color": "#f9f9f9",
+        "border_thickness": 1.4,
+        "border_color": ""
+      }
+    },
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "show_information": false,
+        "show_image": false,
+        "show_content": true,
+        "show_tags": false,
+        "show_social_share_buttons": false,
+        "social_share_buttons_type": "1",
+        "show_navigation": false,
+        "show_comments": false,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true
+      }
+    },
+    "1663712138478e2159": {
+      "type": "spacer",
+      "disabled": true,
+      "settings": {
+        "margin_top": 0,
+        "margin_bottom": 60,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "fullwidth",
+        "show_separator": true,
+        "title": ""
+      }
+    },
+    "1663711803697b2ecc": {
+      "type": "home-builder",
+      "blocks": {
+        "b3efb224-d88c-4feb-b4df-eb9a1d02bd76": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "text_line_1": "Step 1: Apply",
+            "text_line_2": "Once you find a job listing that is relevant to your experience and looks like a good fit for you, you can submit your resume and cover letter online.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_controls": false,
+            "type": "text-3",
+            "content_position": "center",
+            "content_align": "left",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "rgba(0,0,0,0)",
+            "color_curtain_bg": "rgba(0,0,0,0)",
+            "customization_class": "our-values"
+          }
+        },
+        "8d5ad733-82ee-4022-a641-a8ecf2f6bbb4": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "text_line_1": "Step 2: Interview",
+            "text_line_2": "If we believe you are a good fit for both the role and with the Gales team, we will contact you for an interview and provide you with the next steps for continuing the interview process.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_controls": false,
+            "type": "text-3",
+            "content_position": "center_left",
+            "content_align": "left",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": "our-values"
+          }
+        },
+        "8722d084-03b0-45b5-bdc7-db8612a18915": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "text_line_1": "Step 3: Decision",
+            "text_line_2": "Once you have spoken with all interviewers, and we have contacted references, we will contact you in due course to let you know if you have been successful.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_controls": false,
+            "type": "text-3",
+            "content_position": "center",
+            "content_align": "left",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": "our-values"
+          }
+        }
+      },
+      "block_order": [
+        "b3efb224-d88c-4feb-b4df-eb9a1d02bd76",
+        "8d5ad733-82ee-4022-a641-a8ecf2f6bbb4",
+        "8722d084-03b0-45b5-bdc7-db8612a18915"
+      ],
+      "settings": {
+        "title": "<p>&lt;p&gt;Our Hiring Process&lt;/p&gt;</p><p>&lt;p class=\"fs-lg\"&gt;We hire people who are not only good at what they do, but are a good match for our team.&lt;/p&gt;</p>",
+        "container": "boxed",
+        "size_of_columns": "3",
+        "size_of_columns_mobile": "1",
+        "margins_for_columns": "none",
+        "align_of_columns": "top_center",
+        "disable_column_paddings": false,
+        "precedence": "",
+        "customization_class": "hiring-process"
+      }
+    }
+  },
+  "order": [
+    "16542012657356e2f4",
+    "16542012088298a264",
+    "main",
+    "1663712138478e2159",
+    "1663711803697b2ecc"
+  ]
+}

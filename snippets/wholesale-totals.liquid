@@ -1,0 +1,32 @@
+<table id="wholesale-totals" class="wtotals">
+    <tr>
+      <td><h5 class="mb-3 no-letter-spacing">{{ 'layout.cart.title' | t }} {{ 'wholesale.bulk.quantity' | t }}</h5></td>
+      <td><h5 id="wholesaleCartQty" class="totalQty mb-0 no-letter-spacing">{{ cart.item_count }}</h5></td>
+    </tr>
+    <tr>
+      <td>
+        <h5 class="mb-3 no-letter-spacing">{{ 'layout.cart.title' | t }} {{ 'wholesale.bulk.subtotal' | t }}</h5>
+      </td>
+      <td>
+        <h5 id="wholesaleCartSubtotal" class="mb-0 no-letter-spacing">{{ cart.total_price | money }}</h5>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h5 class="mb-3 no-letter-spacing">{{ 'wholesale.bulk.discount' | t }}</h5>
+      </td>
+      <td class="pos-relative">
+        <div class="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <h5 id="wholesaleCartDiscount" class="mb-0 no-letter-spacing">--</h5>
+      </td>
+    </tr>
+    <tr class="totalRow">
+      <td><h5 class="mb-3 no-letter-spacing">{{ 'layout.cart.title' | t }} {{ 'wholesale.bulk.total' | t }}</h5></td>
+      <td><h5 id="wholesaleCartTotal" class="mb-0 no-letter-spacing float-right">--</h5></td>
+    </tr>
+  </table>

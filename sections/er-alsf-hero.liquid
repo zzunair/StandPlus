@@ -1,0 +1,160 @@
+{% if section.settings.left_corner_image != blank %}
+  <img
+    class="left-corner-image"
+    src="{{ section.settings.left_corner_image | image_url: width: '105' }}"
+    loading="lazy"
+    width="105"
+    height="169"
+    alt="{{ section.settings.left_corner_image.alt }}"
+  >
+{% endif %}
+{% if section.settings.right_corner_image != blank %}
+  <img
+    class="right-corner-image"
+    src="{{ section.settings.right_corner_image | image_url: width: '240' }}"
+    loading="lazy"
+    width="240"
+    height="216"
+    alt="{{ section.settings.right_corner_image.alt }}"
+  >
+{% endif %}
+
+<div class="er-alsf-hero__grid">
+  <div class="content">
+    {% if section.settings.logo != blank %}
+      <div class="logo">
+        <img
+          src="{{ section.settings.logo | image_url: width: '142' }}"
+          loading="lazy"
+          width="142"
+          height="144"
+          alt="{{ section.settings.logo.alt }}"
+        >
+      </div>
+    {% endif %}
+    <div class="text">
+      <div class="title__wrapper">
+        {% if section.settings.logo != blank %}
+          <div class="logo mobile">
+            <img
+              src="{{ section.settings.logo | image_url: width: '142' }}"
+              loading="lazy"
+              width="142"
+              height="144"
+              alt="{{ section.settings.logo.alt }}"
+            >
+          </div>
+        {% endif %}
+        <h1>{{ section.settings.title }}</h1>
+      </div>
+      <p>{{ section.settings.description }}</p>
+      {% if section.blocks.size > 0 %}
+        <div class="properties">
+          {% for block in section.blocks %}
+            <div class="property">
+              {% render 'er-icon-check-mark' %}
+              {{ block.settings.name }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if section.settings.btn_text != blank and section.settings.btn_url != blank %}
+        <div class="btn__wrapper">
+          <a class="btn w-100" href="{{ section.settings.btn_url }}">{{ section.settings.btn_text }}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="images__wrapper">
+    <div class="big-image">
+      <img
+        src="{{ section.settings.big_image | image_url: width: '549' }}"
+        loading="lazy"
+        width="549"
+        height="405"
+        alt="{{ section.settings.big_image.alt }}"
+      >
+    </div>
+    <img
+      class="small-image"
+      src="{{ section.settings.small_image | image_url: width: '177' }}"
+      loading="lazy"
+      width="177"
+      height="182"
+      alt="{{ section.settings.small_image.alt }}"
+    >
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ER ALSF hero",
+  "class": "er-alsf-hero__wrapper",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "image_picker",
+      "id": "big_image",
+      "label": "Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "small_image",
+      "label": "Small image on the corner of the Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_corner_image",
+      "label": "Left corner image"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_corner_image",
+      "label": "Right corner image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Section description"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button url"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "property",
+      "name": "Property",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Property name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER ALSF hero"
+    }
+  ]
+}
+{% endschema %}

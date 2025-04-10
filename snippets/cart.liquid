@@ -1,0 +1,443 @@
+<!-- snippets/cart.liquid -->
+{% liquid
+    if customer
+    assign ctags = customer.tags | join: ',' | downcase
+        if ctags contains 'wholesale'
+            assign wholesale = true
+            assign discounts = customer.metafields.furnacebrook.automatic_discount_code.value
+            assign defaultDiscounts = shop.metafields.furnacebrook.wholesale_default 
+            for ctag in customer.tags
+                assign dctag = ctag | downcase
+                if dctag contains 'wholesale' and dctag != 'wholesale'
+                    assign customDiscount = dctag
+                    break
+                endif
+            endfor
+        endif
+    endif
+%}
+    
+{%- if settings.product_format_pjpg -%}
+    {%- assign image_format = 'pjpg' -%}
+{%- else -%}
+    {%- assign image_format = null -%}
+{%- endif -%}
+<div>
+    {% comment %} <div>discounts: {{ discounts | json }}</div>
+    <div>defaultDiscounts: {{ defaultDiscounts | json }}</div>
+    
+    <div>customDiscount: {{ customDiscount | json }}</div> {% endcomment %}
+    
+    <div class="js-page-cart-ajax">
+    {%- if cart.item_count > 0 -%}
+        <h1 class="h2 mt-20 mb-30 text-center">{{ 'cart.general.title' | t }}</h1>
+        <div class="cart pb-60 pb-lg-70">
+            <div class="container">                
+                {%- if cart.item_count > 0 -%}
+                    <form action="/cart" method="post" novalidate>
+                        <div class="row">
+                            <div class="col-lg-8 col-xl-9">
+                                <div class="cart__items cart-grid align-items-center">
+                                    <label class="m-0 cart-label-product">{{ 'cart.label.product' | t }}</label>
+                                    <label class="m-0 cart-label-price">{{ 'cart.label.price' | t }}</label>
+                                    <label class="m-0 text-center">{{ 'cart.label.quantity' | t }}</label>
+                                    <label class="m-0 text-right">{{ 'cart.label.total' | t }}</label>
+                                    <div class="row-line border"></div>
+                                    
+                                    {%- for item in cart.items -%}
+                                        {%- assign type = item.product.type | downcase -%}
+                                        {%- unless type == "insurance" -%}
+                                            {%- assign title = item.product.title -%}
+                                            {%- assign variant_title = item.variant.title -%}
+                                            {%- assign id = item.variant_id -%}
+                                            {%- assign url = item.url | within: collection -%}
+                                            {%- assign quantity = item.quantity -%}
+                                            {%- assign price = item.price -%}
+                                            {%- assign image = item.image -%}
+                                            {% include 'product-cart-res-variables' %}
+                                            <div data-js-product data-product-cart-line="{{ forloop.index }}" class="product-cart-line-{{ forloop.index }}">                                            
+                                                <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="js-product-button-remove-from-cart">
+                                                    <i>{% render 'icon-theme-165' %}</i>
+                                                </a>
+                                            </div>
+                                            {%- if image != blank -%}
+                                                <a href="{{ item.url | within: collections.all }}" class="cart__image product-cart-line-{{ forloop.index }}">
+                                                    {% render 'rimage' with image: image size: '150x' format: image_format image_class: 'w-100' %}
+                                                </a>
+                                            {%- endif -%}
+                                            <div class="d-none d-sm-block product-unit-price product-cart-line-{{ forloop.index }}">
+                                                {% include 'product-get-price' with price: price compare_at_price: item.original_price current_variant: item available: true %}
+                                            </div>
+                                            <div class="mt-20 input-qty-with-warning">
+                                                <div class="input-quantity input-quantity--type-04 d-flex align-items-center m-auto position-relative js-product-quantity product-cart-line-{{ forloop.index }}" data-js-product data-product-cart-line="{{ forloop.index }}">
+                                                    <div class="d-flex flex-center position-absolute left-0 ml-10 cursor-pointer" data-control="-"><i>{% render 'icon-theme-189' %}</i></div>
+                                                    <input type="number" class="mb-0 px-35 text-center js-input-quantity-cart" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+                                                    <div class="d-flex flex-center position-absolute right-0 mr-10 cursor-pointer" data-control="+"><i>{% render 'icon-theme-188' %}</i></div>
+                                                </div>
+                                                <div style="opacity: 0;" aria-hidden="true" class="product-cart-line-{{ forloop.index }} quantity-max-note">{{ 'products.product.quantity_max_note' | t }}</div>
+                                            </div>
+                                            <div class="text-right extended-price product-cart-line-{{ forloop.index }}" data-js-product data-product-cart-line="{{ forloop.index }}">
+                                                {% include 'product-get-price' with price: item.line_price compare_at_price: null current_variant: item available: true %}
+                                            </div>
+                                            <div class="cart_product_info product-cart-line-{{ forloop.index }}">
+                                                <a class= "cart_product_title" href="{{ item.url }}">{{ title }}</a>
+                                                
+                                                {%- assign property_size = item.properties | size -%}
+                                                {%- assign size_attr = false -%}
+                                                {% capture properties_list %}
+                                                    {%- if property_size > 0 -%}
+                                                        {%- for p in item.properties -%}
+                                                            <p class="mt-0 mb-0">
+                                                                {%- unless p.last == blank or p.first[0] == '_' -%}
+                                                                    <span>{{ p.first }}: </span>
+                                                                    {%- if p.last contains '/uploads/' -%}
+                                                                        <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                                                                    {%- else -%}
+                                                                        {{ p.last }}
+                                                                    {%- endif -%}
+                                                                    {%- assign pfirst = p.first | downcase -%}
+                                                                    {%- if pfirst == "size" -%}
+                                                                        {%- assign size_attr = true -%}
+                                                                    {%- endif -%}
+                                                                {%- endunless -%}
+                                                            </p>
+                                                        {%- endfor -%}
+                                                    {%- endif -%}
+                                                {% endcapture %}
+                                                
+                                                
+                                                
+                                                
+                                                {%- unless item.product.has_only_default_variant or size_attr -%}
+                                                <p class="mb-0">{{ variant_title }}</p>
+                                                <div class="d-sm-none product-unit-price">
+                                                    <span class="js-input-quantity-cart" id="updates_{{ item.key }}">{{ quantity }} x
+                                                    </span>
+                                                    {% include 'product-get-price' with price: price compare_at_price: item.original_price current_variant: item available: true %}
+                                                </div>
+                                                {%- endunless -%}
+                                                {%- if settings.cart_show_vendor -%}
+                                                    <p class="mt-10 mb-0">
+                                                        <a href="{{ item.vendor | link_to_vendor | split: 'href="' | last | split: '"' | first }}">{{ item.vendor }}</a>
+                                                    </p>
+                                                {%- endif -%}
+
+                                                {{ properties_list }}
+                                                
+                                                {%- if settings.reviews_type == 'loox' and item.product.metafields.loox.num_reviews -%}
+                                                    <div class="mt-7">
+                                                        <div class="loox-rating" data-id="{{ item.product.id }}" data-rating="{{ item.product.metafields.loox.avg_rating }}" data-raters="{{ item.product.metafields.loox.num_reviews }}"></div>
+                                                    </div>
+                                                {%- endif -%}
+                                            </div>
+                                            <div class="row-line border"></div>
+                                        {%- endunless -%}
+                                    {%- endfor -%}
+                                </div>
+
+                                {%- if settings.cart_show_free_shipping -%}
+                                    <div class="pt-20">
+                                        {% render 'free-shipping' %}
+                                    </div>
+                                {%- endif -%}
+                                <div class="d-none d-lg-flex pt-25">
+                                    <a href="/" class="btn btn--text text-left no-letter-spacing">
+                                        <i class="mb-4 mr-4">{% render 'icon-theme-012' %}</i>{{ 'cart.general.continue_shopping' | t }}
+                                    </a>
+                                    <button type="submit" class="btn btn--text text-left ml-auto no-letter-spacing" name="update">
+                                        <i class="mb-4 mr-4">{% render 'icon-theme-010' %}</i>{{ 'cart.general.update' | t }}
+                                    </button>
+                                </div>
+                                {%- if settings.app_klarna_enable -%}
+                                    <div class="klarna-message-cart"></div>
+                                {%- endif -%}
+                            </div>
+                            <div class="col-lg-4 col-xl-3 mt-25 mt-lg-0">
+                                <aside class="cart__sidebar p-20 border">
+                                    <h3 class="h3 mb-20 no-letter-spacing">{{ 'cart.general.sidebar_title' | t }}</h3>
+                                    <div class="border-bottom border--dashed">
+                                        {%- unless settings.shipping_calculator == 'Disabled' -%}
+                                        <div id="shipping-calculator">
+                                            <h3 class="h6 mb-10">{{ 'cart.general.shipping_calculator_heading' | t }}</h3>
+                                            <p class="mb-10">{{ 'cart.general.shipping_calculator_heading_paragraph' | t }}</p>
+                                            <div>
+                                                <p class="field">
+                                                    <label for="address_country" class="label-required">{{ 'cart.general.shipping_country_title' | t }}</label>
+                                                    <select id="address_country" name="address[country]" data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% elsif settings.shipping_calculator_default_country != '' %}{{ settings.shipping_calculator_default_country }}{% endif %}">{{ country_option_tags }}</select>
+                                                </p>
+                                                <p class="field" id="address_province_container" style="display:none;">
+                                                    <label for="address_province" id="address_province_label" class="label-required text-uppercase">{{ 'cart.general.shipping_province_title' | t }}</label>
+                                                    <select id="address_province" name="address[province]" data-default="{% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}{{ customer.default_address.province }}{% endif %}"></select>
+                                                </p>
+                                                <p class="field">
+                                                    <label for="address_zip" class="label-required">{{ 'cart.general.shipping_zip_title' | t }}</label>
+                                                    <input type="text" id="address_zip" name="address[zip]"{% if shop.customer_accounts_enabled and customer %} value="{{ customer.default_address.zip }}"{% endif %} placeholder="{{ 'cart.general.shipping_zip_placeholder' | t }}"/>
+                                                </p>
+                                                <p class="field">
+                                                <div class="get-rates btn btn--text h-auto px-0 button text-underline">{{ 'cart.general.shipping_calculator_submit_button_label' | t }}</div>
+                                                </p>
+                                            </div>
+                                            <p class="shipping-calculator-info d-none mb-10"></p>
+                                            <div id="wrapper-response"></div>
+                                        </div>
+                                        <script>
+                                            theme.AssetsLoader.require('scripts', 'plugin_shipping_rates_calculation');
+                                            theme.AssetsLoader.require('scripts', 'shipping_rates_calculation');
+                                        </script>
+                                        <script id="shipping-calculator-response-template" type="text/template">
+                                            {% raw %}
+                                                <p id="shipping-rates-feedback" {{#if success}} class="success" {{else}} class="error" {{/if}}>
+                                                {{#if success}}
+                                                {{#if rates}}
+                                                {{#rates}}
+                                                {{#if @first}}
+                                                Rates start at {{price}}.
+                                                {{/if}}
+                                                {{/rates}}
+                                                {{else}}
+                                                We do not ship to this destination.
+                                                {{/if}}
+                                                {{else}}
+                                                {{ errorFeedback }}
+                                                {{/if}}
+                                                </p>
+                                            {% endraw %}
+                                        </script>
+                                        {%- endunless -%}
+                                    </div>
+                                    {%- if settings.cart_show_notes -%}
+                                        <div class="pt-15 border-bottom border--dashed">
+                                            <p class="field mb-15">
+                                                <label for="CartSpecialInstructions" class="mb-0">{{ 'cart.general.notes_title' | t }}</label>
+                                                <span class="d-block mt-8 mb-0">{{ 'cart.general.notes_paragraph' | t }}</span>
+                                            </p>
+                                            <textarea name="note" id="CartSpecialInstructions" rows="4">{{ cart.note }}</textarea>
+                                        </div>
+                                    {%- endif -%}
+                                    <div class="pt-15">
+                                        {%- if cart.cart_level_discount_applications.size > 0 -%}
+                                            <h5 class="d-none mb-3">{{ 'customer.order.discount' | t }}</h5>
+                                            {%- for discount_application in cart.cart_level_discount_applications -%}
+                                                <div class="cart__discount h6 d-flex align-items-center mb-15">
+                                                    <span class="d-flex align-items-center mr-10">
+                                                        <i class="mt-2 mr-6">{% include 'icon-theme-137' %}</i> <span>{{ discount_application.title | upcase }}</span>
+                                                    </span>
+                                                    <span class="h5 d-flex align-items-center mb-0 ml-auto">
+                                                        <span class="mb-2">-</span><span>{{ discount_application.total_allocated_amount | money }}</span>
+                                                    </span>
+                                                </div>
+                                            {%- endfor -%}
+                                        {%- endif -%}
+                                        {%- if cart.total_discounts > 0 -%}
+                                            <div class="cart__total-discounts mb-20">
+                                                <h5 class="mb-3">{{ 'cart.general.savings' | t }}</h5>
+                                                <h3 class="mb-0">{{ cart.total_discounts | money }}</h3>
+                                            </div>
+                                        {%- endif -%}
+                                        <div class="cart__subtotal mb-10">
+                                            <h5 class="mb-0 no-letter-spacing float-right">{{ cart.total_price | money }}</h5>
+                                            <h5 class="mb-3 no-letter-spacing">{{ 'cart.general.subtotal' | t }}</h5>
+                                        </div>
+                                        {% comment %} {% if wholesale %}
+                                            <div class="cart__total-discounts mb-20">
+                                                <h5 id="wholesaleDiscount" class="mb-0 no-letter-spacing float-right">--</h5>
+                                                <h5 class="mb-3 no-letter-spacing">{{ 'wholesale.bulk.discount' | t }}<span id="discountPercent"> ( 0%)</span></h5>
+                                            </div>
+                                            <div class="cart__subtotal mb-10">   
+                                                <h5 id="wholesaleTotal" class="mb-0 no-letter-spacing float-right">--</h5>
+                                                <h5 class="mb-3 no-letter-spacing">{{ 'wholesale.bulk.total' | t }}</h5>
+                                            </div>
+                                        {% endif %} {% endcomment %}
+                                        <p class="shipping-at-checkout">{{ 'cart.general.shipping_at_checkout' | t }}</p>
+                                        {%- if false and wholesale -%}
+                                            <a class="btn btn--full btn--secondary" onclick="showSubmitModal()">
+                                                {{ 'wholesale.cart.submit' | t }}
+                                            </a>
+                                        {%- else -%}
+                                            <input type="submit" class="btn btn--full btn--secondary checkout-button" name="checkout" value="{{ 'cart.general.checkout' | t }}">
+                                        {%- endif -%}
+                                    </div>
+                                </aside>
+                                <div id="onward-container" class="mt-20"></div>
+                                <div class="d-lg-none d-flex pt-15 clear-both">
+                                    <a href="/" class="btn btn--text text-left no-letter-spacing">
+                                        <i class="mb-4 mr-4">{% render 'icon-theme-012' %}</i>{{ 'cart.general.continue_shopping' | t }}
+                                    </a>
+                                    <button type="submit" class="btn btn--text text-left ml-auto no-letter-spacing" name="update">
+                                        <i class="mb-4 mr-4">{% render 'icon-theme-010' %}</i>{{ 'cart.general.update' | t }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                {%- endif -%}
+            </div>
+        </div>
+    {%- else -%}
+        <div class="cart d-flex flex-column align-items-center py-40 py-md-100 my-100">
+            <h1 class="h3">{{ 'cart.general.empty_title' | t }}</h1>
+            <p>{{ 'cart.general.empty_paragraph' | t }} </p>
+            <a href="/" class="cart__btn-empty empty-btn btn mt-20 px-15">{{ 'cart.general.empty_button' | t }}</a>
+        </div>
+    {%- endif -%}
+    <div class="container" style="font-size: 8px;color: #ddd;">
+    {%- for attr in cart.attributes -%}
+        <span> {{ attr[0] | slice: 0,2 }}:{{ attr[1] | slice: 0,2 }} </span>
+    {%- endfor -%}
+    </div>
+  </div>
+</div>
+{% comment %} {% if wholesale %} 
+    {% render 'wholesale-submit-form' %}
+    <script>
+        let disc = 0;
+        const themeCartTimer = setInterval(() => {
+            if(typeof theme.Cart == "object") {
+                console.log(theme.Cart);
+                if (typeof updateDiscount == "function") {
+                    clearInterval(themeCartTimer);
+                    disc = updateDiscount();
+                    const scDiscount = document.querySelector("div.scDiscount__container");
+                    if (disc > 0) {
+                        console.log("discount:", disc, scDiscount);
+                        if (scDiscount) {
+                            scDiscount.style.display = "none"   
+                        }
+                    }
+                }
+                
+            }
+        }, 200);
+    </script>
+{% endif %} {% endcomment %}
+
+<style>
+    .cart-grid .row-line {
+        grid-column: 1 / 4;
+        border-bottom: 1px solid;
+        margin-bottom: 15px;
+        margin-top: 15px;
+    }
+    .cart-grid {
+        display: grid !important;
+        column-gap: 20px;
+        grid-template-columns: 20px calc(40% - 17px) calc(60% - 45px);
+    }
+    .cart-grid .cart__image {
+        grid-column: 2;
+        width: 100%;
+    }
+    .cart-grid .cart_product_info {
+        grid-column: 3;
+    }
+    .cart-grid .input-quantity {
+        grid-column: 2;
+        padding-left: 0 !important;
+        width: 100%;
+        min-width: 105px;
+        margin-top: 15px !important;
+    }
+    .cart-grid .extended-price {
+        grid-column: 3;
+        text-align: left !important;
+        padding-left: 0;
+        margin-top: 15px;
+    }
+    .cart-grid .input-quantity input {
+        width: 100%;
+        min-width: 105px;
+    }
+    .cart label {
+        display: none;
+        color: var(--theme3);
+    }
+    @media (max-width: 540.999px) {
+        {%- if cart.item_count > 0 -%}
+            {%- for item in cart.items -%}
+                .cart_product_info.product-cart-line-{{ forloop.index }} {
+                    grid-row: {{ forloop.index | times: 3 | minus: 1 }};
+                }
+            {% endfor %}
+        {% endif %}
+    }
+    @media (max-width: 540px) {
+        div.input-qty-with-warning {
+            margin-top: 0 !important;
+            grid-column: 2;
+        }
+        div.cart-grid .extended-price {
+            margin-top: 0;
+        }
+        .cart-grid div.row-line.border {
+            margin-top: 0;
+        }
+    }
+    @media (min-width: 541px) {
+        .cart-grid {
+            grid-template-columns: 20px 150px 1fr 1fr 1fr;
+        }
+        .cart-grid .row-line {
+            grid-column: 1 / 6;
+        }
+        .cart-grid .cart_product_info {
+            grid-column: 2 / 4;
+            margin-top: 15px;
+        }
+        .cart-grid .input-quantity {
+            grid-column: 4;
+            margin-top: auto !important;
+        }
+        .cart-grid .extended-price {
+            grid-column: 5;
+            text-align: right !important;
+            max-width: 100% !important;
+            padding-right: 0;
+            margin-top: 0;
+        }
+        .cart-grid .product-unit-price, .cart-grid .cart-label-price {
+            padding-left: 15px;
+        }
+        .cart label {
+            display: block;
+        }
+        .cart-label-product {
+            grid-column: 2;
+        }
+    }
+    
+    @media (min-width: 768px) {
+        .cart-grid {
+            grid-template-columns: 20px 150px 2fr 1fr 1fr 1fr;
+        }
+        .cart-grid .row-line {
+            grid-column: 1 / 7;
+        }
+        {%- if cart.item_count > 0 -%}
+            {%- for item in cart.items -%}
+                .product-cart-line-{{ forloop.index }} {
+                    grid-row: {{ forloop.index | times:2 | plus: 1 }};
+                }
+            {% endfor %}
+        {% endif %}
+        .cart-grid .cart_product_info {
+            grid-column: 3;
+            margin-top: 0;
+        }
+        .cart-grid .input-quantity {
+            grid-column: 5;
+        }
+        .cart-grid .extended-price {
+            grid-column: 6;
+            text-align: right !important;
+            max-width: 100% !important;
+            padding-right: 0;
+        }
+        .cart-grid .product-unit-price, .cart-grid .cart-label-price  {
+            padding-left: 0;
+            grid-column: 4;
+        }
+        .cart-label-product {
+            grid-column: 3;
+        }
+    }
+</style>

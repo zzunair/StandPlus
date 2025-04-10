@@ -1,0 +1,56 @@
+<div class="er-media-gallery__wrapper">
+  <div class="er-media-gallery__grid">
+    <div class="left-container">
+      <div thumbsSlider="" class="swiper swiper-gallery-nav">
+        <div class="swiper-wrapper">
+          {% for media in product.media %}
+            <div class="swiper-slide">
+              {% if media.media_type == 'image' %}
+                <img
+                  src="{{ media.image | image_url: width: '137' }}"
+                  loading="eager"
+                  width="137"
+                  height="89"
+                  alt="{{ media.image.alt | escape }}"
+                >
+              {% endif %}
+              {% if media.media_type == 'video' %}
+                {{ media | video_tag: controls: true }}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="swiper swiper-gallery-main-image">
+        <div class="swiper-wrapper">
+          {% for media in product.media %}
+            <div class="swiper-slide">
+              {% if media.media_type == 'image' %}
+                <img
+                  src="{{ media.image | image_url: width: '578' }}"
+                  loading="eager"
+                  width="578"
+                  height="375"
+                  alt="{{ media.image.alt | escape }}"
+                >
+              {% endif %}
+              {% if media.media_type == 'video' %}
+                <img
+                  src="{{ media | image_url: width: '578' }}"
+                  loading="eager"
+                  width="578"
+                  height="375"
+                  alt="{{ media.video.alt | escape }}"
+                >
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+      </div>
+    </div>
+  </div>
+</div>

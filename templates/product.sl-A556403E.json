@@ -1,0 +1,1341 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "5c741271-5b65-466f-9d08-0274adaf3237": {
+          "type": "sidebar_custom_html",
+          "settings": {
+            "location": "sizeguide_help",
+            "title": "AG Sizing",
+            "content": "<div class=\"js-popup-button\" data-js-popup-button=\"size-guide\" style=\"display: flex;flex-wrap: wrap;gap: 0px 15px;justify-content: center;\">\n<div>\n<strong>TRUE TO SIZE</strong><span> Fits Normal and Wide Feet</span>\n</div>\n<div style=\"font-weight: 700;\" class=\"btn-link\">\n<i style=\"vertical-align: bottom;\">[icon:theme-078]</i>\nSIZE GUIDE\n</div>\n</div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "center",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "hide-h5-title",
+            "page_content": ""
+          }
+        },
+        "sidebar_custom_html_YtVCH3": {
+          "type": "sidebar_custom_html",
+          "disabled": true,
+          "settings": {
+            "location": "below_addtocart",
+            "title": "Not Ready to Preorder",
+            "content": "<style> \n.ag-notification.sidebar2 .overlay { padding: 0;}\n@media (max-width: 600px) {\n  .ag-notification.sidebar2 .overlay {\n    padding-left: 20px;\n    padding-right: 20px;\n  }\n}\n.ag-notification h5 {display: none !important;}\n.ag-notification {margin-top: -15px;margin-bottom: -5px;cursor: pointer;}\n</style>\n<div style=\"padding: 10px; background: #E3E1D8; text-align: center;width: 100%;\" onclick=\"AGSubscribe(event)\">\n<strong>Not Ready to Pre-order?</strong> <div>\n<span style=\"text-decoration:underline;\">Sign Up Here</span> to be notified when available</div>\n</div>\n<script>\nconst productHandle = document.querySelector(\"single-product\").attributes.getNamedItem(\"data-product-handle\").nodeValue;\nconsole.log(\"handle:\", productHandle);\nfunction AGSubscribe(event) {\nwindow._klOnsite = window._klOnsite || [];\nif (productHandle == \"antigrav1\") window._klOnsite.push(['openForm', 'Yuvk4c']);\nelse window._klOnsite.push(['openForm', 'VFkS8d']);\n}\n</script>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "left",
+            "padding_horiz": 26,
+            "padding_vert": 26,
+            "image_link": "",
+            "customization_class": "ag-notification",
+            "page_content": ""
+          }
+        },
+        "6a733112-eda2-48e6-a1de-238efa67392c": {
+          "type": "sidebar_custom_html",
+          "settings": {
+            "location": "below_addtocart",
+            "title": "HSA/FSA Slug",
+            "content": "<style> \n.truemed-instructions-link-text {\ndisplay: none !important;}\n.truemed-instructions {\tmargin-top: -10px; display: none;}\n</style>\n<div id=\"truemed-prequalify\" style=\"font-size: 14px;\" icon-height=\"12\" data-public-id=\"tm_qual_h1tkr71lxl\"></div>\n<script src=\"https://truemed-public.s3.us-west-1.amazonaws.com/truemed-ads/prequal-widget.min.js\" defer></script>\n<div class=\"er-iconography__wrapper\" onclick=\"document.querySelector('.truemed-instructions-open').click()\">\n<span style=\"cursor: pointer;\">HSA/FSA Eligible. <strong style=\"text-decoration:underline;\">Learn More.</strong> Select Truemed at Checkout</span>\n</div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "center",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "hide-h5-title hsa-slug",
+            "page_content": ""
+          }
+        },
+        "sidebar_custom_html_dETxMt": {
+          "type": "sidebar_custom_html",
+          "settings": {
+            "location": "below_addtocart",
+            "title": "Redo Widget",
+            "content": "<div id=\"redo-widget\"></div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "left",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "hide-h5-title",
+            "page_content": ""
+          }
+        },
+        "e505aaa1-090a-4e70-b30d-1151bcd9e51e": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "*CUSTOM MOLDED FIT",
+            "content": "No two feet are alike, that’s why STAND+ shoes are designed to custom form to your foot!\nIf they they arrive feeling tight, use a hair dryer on high heat for 15-30 seconds, insert your foot with a sock on (being careful not to burn yourself) and your new shoes will instantly form to your specific foot shape! They will naturally form to your foot with wear as well! <a href=\"/pages/custom-moldable\">Learn More</a>",
+            "page_content": ""
+          }
+        },
+        "tab_custom_LnycxH": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "Shipping",
+            "content": "All options available at checkout",
+            "page_content": ""
+          }
+        },
+        "b0febcf2-a38c-4ae7-a929-10af2ad0e5f4": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "Size Guide",
+            "content": "",
+            "page_content": "antigrav-size-guide"
+          }
+        },
+        "959240db-9a88-436b-8c09-b6c9e0ebb7a8": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "Care Instructions",
+            "content": "",
+            "page_content": "care-instructions"
+          }
+        },
+        "154ff52f-6929-40f6-b8af-518891f890e2": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "Lab Verified Protection",
+            "content": "<p>STAND+ AntiGrav1 Shoes are ASTM F2913 Certified Slip-Resistant on wet/dry surfaces. In addition, they are Water Resistant and Antibacterial/Antimicrobial.</p><p><b>Need Oil-Slip Resistant? Try our <a href=\"/products/antigrav2\">AntiGrav2.</a></b>\n</p><p><a href=\"/pages/stand-antigrav-lab-results\">See the full results here.</a></p>",
+            "page_content": ""
+          }
+        },
+        "36225c60-99d9-4da7-9bce-e394c3e0260c": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "Returns and Exchanges",
+            "content": "",
+            "page_content": "returns-exchanges"
+          }
+        },
+        "5588e8a5-2d28-44d8-91b5-7d99dbab84f4": {
+          "type": "sidebar_custom_html",
+          "disabled": true,
+          "settings": {
+            "location": "below_addtocart",
+            "title": "",
+            "content": "<p>SHOP OUR <em>CLASSIC</em></p><p><strong>FRONTLINE SHOE</strong></p>",
+            "overlay": true,
+            "text_color": "#ffffff",
+            "text_align_vert": "bottom",
+            "text_align_horiz": "left",
+            "padding_horiz": 25,
+            "padding_vert": 20,
+            "image": "shopify://shop_images/PDPUpdate_frontline_2000.png",
+            "image_link": "shopify://products/frontline",
+            "customization_class": "the_other_shoe",
+            "page_content": ""
+          }
+        },
+        "d5265c8f-7959-451a-a211-6cd3594bf251": {
+          "type": "sidebar_custom_html",
+          "disabled": true,
+          "settings": {
+            "location": "below_addtocart",
+            "title": "",
+            "content": "<div class=\"plg-impact plg-laundry-truck\" data-widget-id=\"8ZqAGJGb9nHVGDbh\"></div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "left",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "",
+            "page_content": ""
+          }
+        },
+        "sidebar_custom_html_hirKhX": {
+          "type": "sidebar_custom_html",
+          "settings": {
+            "location": "below_addtocart",
+            "title": "",
+            "content": "<p style=\"font-size: clamp(12px, 7vw, 27px);letter-spacing: .5px;font-weight: 800;\">WE’RE BUILT FOR IT</p>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "left",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "er-iconography__wrapper",
+            "page_content": ""
+          }
+        },
+        "iconography_tJckVJ": {
+          "type": "iconography",
+          "settings": {
+            "name": "CLOUDLIKE COMFORT",
+            "image": "shopify://shop_images/stand_icon_Cloudlike_Comfort.svg"
+          }
+        },
+        "iconography_GJQ94a": {
+          "type": "iconography",
+          "settings": {
+            "name": "STABILITY AND SUPPORT",
+            "image": "shopify://shop_images/stand_icon_Stability_and_Support.svg"
+          }
+        },
+        "iconography_GP3eCF": {
+          "type": "iconography",
+          "settings": {
+            "name": "BREATHABLE",
+            "image": "shopify://shop_images/stand_icon_Breathable.svg"
+          }
+        },
+        "725f5fff-2eaf-4a48-a242-de851b183296": {
+          "type": "iconography",
+          "settings": {
+            "name": "FLUID RESISTANT",
+            "image": "shopify://shop_images/stand_icon_Fluid_Resistant.svg"
+          }
+        },
+        "b846a27c-6524-417d-aea0-cd4e1c055c00": {
+          "type": "iconography",
+          "settings": {
+            "name": "ANTIMICROBIAL",
+            "image": "shopify://shop_images/stand_icon_Antimicrobial.svg"
+          }
+        },
+        "9d06f7c4-1537-4ea9-b315-5d1b47ac1d19": {
+          "type": "iconography",
+          "settings": {
+            "name": "EASY TO CLEAN",
+            "image": "shopify://shop_images/stand_icon_Easy_to_Clean.svg"
+          }
+        },
+        "2255d50e-d347-4ee5-a7b0-39682d6ed68a": {
+          "type": "iconography",
+          "settings": {
+            "name": "FEATHERLIGHT",
+            "image": "shopify://shop_images/stand_icon_Featherlight.svg"
+          }
+        },
+        "iconography_AQkpNV": {
+          "type": "iconography",
+          "settings": {
+            "name": "MACHINE WASHABLE",
+            "image": "shopify://shop_images/Machine_Washable.svg"
+          }
+        },
+        "632a0685-8b44-4397-a2ee-830e0d7242e1": {
+          "type": "iconography",
+          "settings": {
+            "name": "*CUSTOM MOLDABLE",
+            "image": "shopify://shop_images/Custom_Moldable.svg"
+          }
+        }
+      },
+      "block_order": [
+        "5c741271-5b65-466f-9d08-0274adaf3237",
+        "sidebar_custom_html_YtVCH3",
+        "6a733112-eda2-48e6-a1de-238efa67392c",
+        "sidebar_custom_html_dETxMt",
+        "e505aaa1-090a-4e70-b30d-1151bcd9e51e",
+        "tab_custom_LnycxH",
+        "b0febcf2-a38c-4ae7-a929-10af2ad0e5f4",
+        "959240db-9a88-436b-8c09-b6c9e0ebb7a8",
+        "154ff52f-6929-40f6-b8af-518891f890e2",
+        "36225c60-99d9-4da7-9bce-e394c3e0260c",
+        "5588e8a5-2d28-44d8-91b5-7d99dbab84f4",
+        "d5265c8f-7959-451a-a211-6cd3594bf251",
+        "sidebar_custom_html_hirKhX",
+        "iconography_tJckVJ",
+        "iconography_GJQ94a",
+        "iconography_GP3eCF",
+        "725f5fff-2eaf-4a48-a242-de851b183296",
+        "b846a27c-6524-417d-aea0-cd4e1c055c00",
+        "9d06f7c4-1537-4ea9-b315-5d1b47ac1d19",
+        "2255d50e-d347-4ee5-a7b0-39682d6ed68a",
+        "iconography_AQkpNV",
+        "632a0685-8b44-4397-a2ee-830e0d7242e1"
+      ],
+      "settings": {
+        "product_info_gallery_height_override": false,
+        "product_info_gallery_height_percent": 100,
+        "gallery_size": "8",
+        "sidebar": "off",
+        "enable_sticky_sidebar": false,
+        "show_fit_selector": false,
+        "show_selected_style": false,
+        "show_tabs": true,
+        "show_tab_description": true,
+        "top_description": false,
+        "show_tab_reviews": false,
+        "scrolling_to_opened_tab": false,
+        "tabs_type": "tabs"
+      }
+    },
+    "c56d1824-8640-4b5c-b696-c87b23ccb452": {
+      "type": "er-infographics",
+      "blocks": {
+        "b31db1e1-7c67-445a-8e5a-dec12caae2e4": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/01_infographic_proline_cloud_like_comfort.png",
+            "name": "Cloud like comfort",
+            "description": "<p>Ranked #1 in independent lab tests for durability, comfort, fit and pressure reduction, our shoes feature featherlight XL Extralight® technology for all-day comfort.</p>"
+          }
+        },
+        "c3581d6c-ca73-45bb-bbe4-dc0f90a761ef": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/02_infographic_proline_waterproof.png",
+            "name": "Waterproof",
+            "description": "<p>Don't let spills or weather ruin your day. Rain or shine, puddles or mud, your feet will remain dry and comfortable.</p>"
+          }
+        },
+        "6465c7d0-2835-4e48-ba5a-9162ee32768f": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/03_infographic_proline_slip_resistant.png",
+            "name": "Slip Resistant",
+            "description": "<p>ASTM F2913 Slip resistant and lace-free. Feel confident and secure in every step, no matter how hectic the environment gets.</p>"
+          }
+        },
+        "9375482b-b4bf-4ab9-b1cd-99e733f9ca96": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/04_infographic_proline_machine_washable.png",
+            "name": "Machine Washable",
+            "description": "<p>After a busy day at work, simply toss them in the washing machine, and they'll come out fresh and clean, ready for the next day's challenges.</p>"
+          }
+        },
+        "9d506d4a-4ae1-4d17-a222-c9d380012a7d": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/05_infographic_proline_7MM_of_arch_support.png",
+            "name": "7MM of arch support",
+            "description": "<p>Say goodbye to foot fatigue and discomfort. Our shoes are specially designed to alleviate strain and promote proper alignment.</p>"
+          }
+        },
+        "f184ca08-c926-419f-8d81-b546fb4f55c7": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/06_infographic_proline_antimicrobial.png",
+            "name": "Antimicrobial",
+            "description": "<p>Our shoes come with an antimicrobial barrier, ensuring your feet stay fresh and protected from harmful bacteria and odors throughout your shift.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b31db1e1-7c67-445a-8e5a-dec12caae2e4",
+        "c3581d6c-ca73-45bb-bbe4-dc0f90a761ef",
+        "6465c7d0-2835-4e48-ba5a-9162ee32768f",
+        "9375482b-b4bf-4ab9-b1cd-99e733f9ca96",
+        "9d506d4a-4ae1-4d17-a222-c9d380012a7d",
+        "f184ca08-c926-419f-8d81-b546fb4f55c7"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "fEvW4AX9nsGJ3DeJ4rv3DU": {
+      "type": "sl-benefit-bar",
+      "blocks": {
+        "0859508e-8894-4a16-ae91-94a1e52c8acb-1": {
+          "type": "benefit_linktext",
+          "settings": {
+            "devices": "all",
+            "text": "Cruelty free",
+            "message_link": "",
+            "message_icon": "check-circle"
+          }
+        },
+        "0859508e-8894-4a16-ae91-94a1e52c8acb-2": {
+          "type": "benefit_linktext",
+          "settings": {
+            "devices": "all",
+            "text": "Eco-friendly",
+            "message_link": "",
+            "message_icon": "check-circle"
+          }
+        },
+        "0859508e-8894-4a16-ae91-94a1e52c8acb-3": {
+          "type": "benefit_linktext",
+          "settings": {
+            "devices": "all",
+            "text": "Clinically tested",
+            "message_link": "",
+            "message_icon": "check-circle"
+          }
+        }
+      },
+      "block_order": [
+        "0859508e-8894-4a16-ae91-94a1e52c8acb-1",
+        "0859508e-8894-4a16-ae91-94a1e52c8acb-2",
+        "0859508e-8894-4a16-ae91-94a1e52c8acb-3"
+      ],
+      "settings": {
+        "devices": "all",
+        "sticky_on_scroll": true,
+        "desktop_layout": "alternate_timer",
+        "timer_length": 1,
+        "pattern_select": "039726dd-7383-4c27-965b-78880ebaad56",
+        "bar_height": "medium",
+        "font_style": "body",
+        "text_size": "medium",
+        "border_type": "brand_style",
+        "mobile_bar_height": "match_desktop",
+        "mobile_text_size": "match_desktop",
+        "background_color": "transparent",
+        "text_color": "transparent",
+        "border_color": "transparent"
+      }
+    },
+    "b424c025-eaae-4fd2-afe3-8444dffa0799": {
+      "type": "home-builder",
+      "blocks": {
+        "promobox_Gc3cba": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "",
+            "text_line_2": "",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_shopify_cdn": "shopify://files/videos/STANDCloudlikeComfort.mp4",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-1-2",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "#ffffff",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "7c34bbca-6499-4b73-bd0b-522b9360bcf5": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 200,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "CLOUDLIKE COMFORT",
+            "text_line_2": "12+ HOUR SHIFT RATED",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "text",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 200,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "#0b0a0b",
+            "color_text_2": "#0b0a0b",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": "my-30"
+          }
+        },
+        "promobox_RnrK46": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "FLUID RESISTANT",
+            "text_line_2": "REPELS SPILLS & MESS",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "text",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "#0b0a0b",
+            "color_text_2": "#0b0a0b",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": "my-30"
+          }
+        },
+        "promobox_3gkmRq": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "",
+            "text_line_2": "",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_shopify_cdn": "shopify://files/videos/STANDFluidResistant.mp4",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-1-2",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "#ffffff",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "promobox_pbnfVP": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "",
+            "text_line_2": "",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_shopify_cdn": "shopify://files/videos/STANDBreathable.mp4",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-1-2",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "#ffffff",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "promobox_3MNzWn": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "BREATHABLE",
+            "text_line_2": "COOLING VENTILATION",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "text",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "#0b0a0b",
+            "color_text_2": "#0b0a0b",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": "my-30"
+          }
+        },
+        "promobox_am8Kfd": {
+          "type": "promobox",
+          "disabled": true,
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "SLIP-RESISTANT",
+            "text_line_2": "DRY TO OILY SURFACES",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "text",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "#0b0a0b",
+            "color_text_2": "#0b0a0b",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": "my-30"
+          }
+        },
+        "a9d2a58b-3984-4c83-840f-b8b27a2d9dee": {
+          "type": "promobox",
+          "disabled": true,
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "",
+            "text_line_2": "",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_shopify_cdn": "shopify://files/videos/STANTSlipResistant.mp4",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-1-2",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "#ffffff",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "promobox_Gc3cba",
+        "7c34bbca-6499-4b73-bd0b-522b9360bcf5",
+        "promobox_RnrK46",
+        "promobox_3gkmRq",
+        "promobox_pbnfVP",
+        "promobox_3MNzWn",
+        "promobox_am8Kfd",
+        "a9d2a58b-3984-4c83-840f-b8b27a2d9dee"
+      ],
+      "settings": {
+        "title": "",
+        "container": "boxed",
+        "size_of_columns": "2",
+        "size_of_columns_mobile": "1",
+        "margins_for_columns": "none",
+        "align_of_columns": "center",
+        "disable_column_paddings": true,
+        "precedence": "2,1,3,4,6,5,7,8",
+        "customization_class": "stand-features",
+        "url": ""
+      }
+    },
+    "1634128129c7f7073c": {
+      "type": "home-builder",
+      "blocks": {
+        "7cec1383-4d32-4930-87ce-4fe8b3ed1e36": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/Breathable.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "BREATHABLE COMFORT",
+            "text_line_2": "Our newest comfort-focused, ergonomic shoe features ridged ventilation outlets on the instep to keep your feet feeling cool and dry while protecting you from spills and splashes.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-2-5",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 0,
+            "text_width": 0,
+            "height": "100",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "01f78ad2-99b2-490b-9b09-8ae7a13dfa1c": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/hi_res-22-Gales_Inc_r2_9951.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "WIDE WIDTH",
+            "text_line_2": "Pro Line standing shoes comfortably fit wide width feet with orthopedic benefits. If your feet are standard width or narrow, they'll fit you too with a snug instep and wiggle room for your toes.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-2-5",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 0,
+            "text_width": 0,
+            "height": "100",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "5735e7e3-2640-499d-afee-fab027a81039": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/hi_res-bf-Gales_Inc_r1_9994.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "SLIP RESISTANT",
+            "text_line_2": "Gales Pro Line shoes are the most comfortable, arch supportive, slip-resistant shoes you’ll wear! Our Pro Line soles are designed for grip and traction on both wet and dry surfaces.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-2-5",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 0,
+            "text_width": 0,
+            "height": "100",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "2af348cb-dfcd-419e-a37a-1622fe274e4a": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/Lightweight_Durable_Support.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "FEATHERLIGHT",
+            "text_line_2": "Comfy on the inside, durable on the outside, our XL Extralight® materials are designed to stand up to the toughness of a long day while feeling like you're walking on clouds.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-2-5",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 0,
+            "text_width": 0,
+            "height": "100",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "7cec1383-4d32-4930-87ce-4fe8b3ed1e36",
+        "01f78ad2-99b2-490b-9b09-8ae7a13dfa1c",
+        "5735e7e3-2640-499d-afee-fab027a81039",
+        "2af348cb-dfcd-419e-a37a-1622fe274e4a"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "container": "boxed",
+        "size_of_columns": "4",
+        "size_of_columns_mobile": "2",
+        "margins_for_columns": "preset_4",
+        "align_of_columns": "top_center",
+        "disable_column_paddings": false,
+        "precedence": "",
+        "customization_class": "key_features_builder",
+        "url": ""
+      }
+    },
+    "c034fc3d-d63c-48b7-967c-bc85a90d30b9": {
+      "type": "home-builder",
+      "blocks": {
+        "f16c748f-aa7f-42b6-a807-0fada06ad3c3": {
+          "type": "slick_slider",
+          "settings": {
+            "height": "100",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "arrows": true,
+            "bullets": true,
+            "speed": 2,
+            "pause_on_mouse": true
+          }
+        },
+        "0eafbcae-e648-478f-88a8-e195e84e93ca": {
+          "type": "slick_slide",
+          "settings": {
+            "url": "",
+            "image": "shopify://shop_images/Breathable.jpg",
+            "image_size": 900,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "text_line_1": "BREATHABLE COMFORT",
+            "text_line_2": "Our newest technology features ridged ventilation outlets strategically placed on the instep to keep your feet feeling cool and dry while reducing moisture penetration from spills and splashes.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "button_1_newtab": false,
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "button_2_newtab": false,
+            "color_button_type_2": "default",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-1-curtain-2",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "91bddad8-9984-4167-8d71-fdcccf2e1680": {
+          "type": "slick_slide",
+          "settings": {
+            "url": "",
+            "image_size": 900,
+            "image_mobile": "shopify://shop_images/alsf_Wide_Width.png",
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "text_line_1": "WIDE WIDTH",
+            "text_line_2": "By popular demand, our Pro Lines now comfortably fit wide width feet.  If your feet are standard width or narrow, they'll fit you too with a snug instep and plenty of wiggle room for your toes.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "button_1_newtab": false,
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "button_2_newtab": false,
+            "color_button_type_2": "default",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-1-curtain-2",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "f16c748f-aa7f-42b6-a807-0fada06ad3c3",
+        "0eafbcae-e648-478f-88a8-e195e84e93ca",
+        "91bddad8-9984-4167-8d71-fdcccf2e1680"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "container": "boxed",
+        "size_of_columns": "1",
+        "size_of_columns_mobile": "1",
+        "margins_for_columns": "none",
+        "align_of_columns": "top_center",
+        "disable_column_paddings": false,
+        "precedence": "",
+        "customization_class": "",
+        "url": ""
+      }
+    },
+    "2482b99e-2c88-42cd-8421-a6c8b7d5b91d": {
+      "type": "spacer",
+      "disabled": true,
+      "settings": {
+        "margin_top": 30,
+        "margin_bottom": 20,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "652df2d2-c202-4012-9acb-fcab826cdb15": {
+      "type": "faqs",
+      "blocks": {
+        "b4d98dfb-b303-42a1-9039-f4ff56308690": {
+          "type": "section",
+          "settings": {
+            "question": "Do you have a printable size guide?",
+            "page_content": "",
+            "answer": "Yes, download it <a href=\"\">here</a>",
+            "is_open": false
+          }
+        },
+        "8bd60b71-1c8a-41e9-a06f-6c527c9ab7cc": {
+          "type": "section",
+          "settings": {
+            "question": "If I am between sizes, which size should I get?",
+            "page_content": "",
+            "answer": "Get the larger size",
+            "is_open": false
+          }
+        },
+        "b8049b1c-d4d6-4171-8a7e-d5194f8074a3": {
+          "type": "section",
+          "settings": {
+            "question": "I have wide feet, which size should I get?",
+            "page_content": "",
+            "answer": "Get Pro Line",
+            "is_open": false
+          }
+        },
+        "9798ae8e-8330-4f4d-9513-35f83cbf755c": {
+          "type": "section",
+          "settings": {
+            "question": "If I don't order the right size, can I return or exchange them?",
+            "page_content": "",
+            "answer": "Yes, you can. Start a <a href=\"https://weargales.happyreturns.com/\" style=\"text-decoration: underline;\">return or exchange here.</a>",
+            "is_open": false
+          }
+        }
+      },
+      "block_order": [
+        "b4d98dfb-b303-42a1-9039-f4ff56308690",
+        "8bd60b71-1c8a-41e9-a06f-6c527c9ab7cc",
+        "b8049b1c-d4d6-4171-8a7e-d5194f8074a3",
+        "9798ae8e-8330-4f4d-9513-35f83cbf755c"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "SIZE GUIDE"
+      }
+    },
+    "ea3ec747-8a5a-430e-80d6-b6dae300c3fc": {
+      "type": "spacer",
+      "settings": {
+        "margin_top": 0,
+        "margin_bottom": 30,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "1685741751105bb5d3": {
+      "type": "apps",
+      "blocks": {
+        "dd86ccbb-1ed8-459d-a0e9-89bc43b6878e": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "dd86ccbb-1ed8-459d-a0e9-89bc43b6878e"
+      ],
+      "settings": {
+        "full_width": false
+      }
+    },
+    "1634128136bb246108": {
+      "type": "spacer",
+      "settings": {
+        "margin_top": 50,
+        "margin_bottom": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "related-products": {
+      "type": "carousel-related-products",
+      "disabled": true,
+      "settings": {
+        "show_section": false,
+        "type": "related",
+        "title": "RELATED PRODUCTS",
+        "size_of_columns": "4",
+        "max_count": 6,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true,
+        "arrows": true,
+        "bullets": true
+      }
+    },
+    "er_custom_liquid_f7XgNC": {
+      "type": "er-custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render \"sizeguide-toggle\" %}"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "c56d1824-8640-4b5c-b696-c87b23ccb452",
+    "fEvW4AX9nsGJ3DeJ4rv3DU",
+    "b424c025-eaae-4fd2-afe3-8444dffa0799",
+    "1634128129c7f7073c",
+    "c034fc3d-d63c-48b7-967c-bc85a90d30b9",
+    "2482b99e-2c88-42cd-8421-a6c8b7d5b91d",
+    "652df2d2-c202-4012-9acb-fcab826cdb15",
+    "ea3ec747-8a5a-430e-80d6-b6dae300c3fc",
+    "1685741751105bb5d3",
+    "1634128136bb246108",
+    "related-products",
+    "er_custom_liquid_f7XgNC"
+  ]
+}

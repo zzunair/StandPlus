@@ -1,0 +1,111 @@
+{% style %}
+  .er-collection-banner__wrapper.section-{{ section.id }} {
+    {% if section.settings.banner_image != blank %}
+      background: url('{{ section.settings.banner_image | image_url: width: 1920 }}');
+    {% else %}
+      background: white;
+    {% endif %}
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+    justify-content: center;
+  }
+  @media screen and (max-width: 768px) {
+    .er-collection-banner__wrapper.section-{{ section.id }} {
+      {% if section.settings.banner_image_mobile != blank %}
+        background: url('{{ section.settings.banner_image_mobile | image_url: width: 768 }}');
+      {% else %}
+        background: white;
+      {% endif %}
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      align-items: {{ section.settings.vertical_alignment }};
+      justify-content: {{ section.settings.horizontal_alignment }};
+    }
+  }
+  @media screen and (max-width: 576px) {
+    .er-collection-banner__wrapper.section-{{ section.id }} {
+      background-position: center top;
+    }
+  }
+{% endstyle %}
+
+{% if section.settings.title != blank %}
+  <div class="er-collection-banner__wrapper section-{{ section.id }}">
+    <h2>{{ section.settings.title }}</h2>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "ER Collection banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image_mobile",
+      "label": "Banner image for mobile"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Banner title"
+    },
+    {
+      "type": "header",
+      "content": "Mobile text alignment config"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "Horizontal",
+      "default": "center",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Vertical",
+      "default": "start",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER Collection banner"
+    }
+  ]
+}
+{% endschema %}

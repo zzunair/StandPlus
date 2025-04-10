@@ -1,0 +1,108 @@
+{% if section.blocks.size > 0 %}
+  <div class="swiper er-swiper-infography" id="swiper-{{ section.id }}">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide">
+          <div class="er-infographics__card">
+            <div class="er-infographics__card--description">
+              <img
+                src="{{ block.settings.image | image_url: width: '270' }}"
+                loading="lazy"
+                width="270"
+                height="270"
+                alt="{{ block.settings.name }}"
+              >
+              {{ block.settings.description }}
+              <div class="er-infographics__see-more js-er-infographics-see-more">
+                {% render 'er-icon-eye' %}See more
+              </div>
+              <div class="er-infographics__see-less js-er-infographics-see-less">
+                {% render 'er-icon-eye' %}See less
+              </div>
+            </div>
+            <div class="er-infographics__card--title">{{ block.settings.name }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="swiper-button-next er-swiper-infography"></div>
+  <div class="swiper-button-prev er-swiper-infography"></div>
+  {% comment %} <div class="er-swiper-infography-pagination"></div> {% endcomment %}
+{% endif %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    new Swiper('#swiper-{{ section.id }}', {
+      slidesPerView: 1,
+      spaceBetween: 10,
+      freeMode: true,
+      allowTouchMove: false,
+      navigation: {
+        nextEl: '.swiper-button-next.er-swiper-infography',
+        prevEl: '.swiper-button-prev.er-swiper-infography',
+      },
+      // pagination: {
+      //   el: ".er-swiper-infography-pagination",
+      //   clickable: true,
+      // },
+      breakpoints: {
+        300: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+        340: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 10,
+        },
+        924: {
+          slidesPerView: 4,
+          spaceBetween: 10,
+        },
+        1200: {
+          slidesPerView: 4,
+          spaceBetween: 10,
+        },
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "ER Infographics",
+  "class": "er-infographics__wrapper",
+  "limit": 1,
+  "blocks": [
+    {
+      "type": "info_card",
+      "name": "Info card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Info card image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Info card name"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Info card description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER Infographics"
+    }
+  ]
+}
+{% endschema %}

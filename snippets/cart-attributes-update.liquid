@@ -1,0 +1,135 @@
+{% assign ctags = customer.tags | join: "," | downcase %}
+{% assign updatedAttributes = "" %}
+{% assign shopliftTests = shop.metafields.furnacebrook.shoplift_tests.value %}
+{% comment %} <script>
+  console.log('NEW cart.attributes: {{ cart.attributes | json }}');
+  console.log('NEW ctags: {{ ctags }}');
+  console.log('defaultDiscount: {{ shop.metafields.furnacebrook.wholesale_default | json }}');
+  console.log('defaultDiscount Code: {{ shop.metafields.furnacebrook.wholesale_default[0]['code'] }}');
+  let cart1 = {{ cart | json }}
+  console.log("cart1:", cart1);
+</script> {% endcomment %}
+
+{% liquid
+  assign discountCode = ""
+  if ctags contains "wholesale"
+    assign whsl = "Yes"
+    assign wholesale = true  
+    assign ptags = product.tags | join: ',' | downcase 
+    if ptags contains 'giftcodes'
+      assign discountCode = shop.metafields.furnacebrook.wholesale_giftcodes[0]['code']
+    else
+      assign discountCode = shop.metafields.furnacebrook.wholesale_default[0]['code']
+    endif
+    for ctag in customer.tags
+      assign dctag = ctag | downcase
+      if dctag contains 'wholesale' and dctag != 'wholesale'
+        assign discountCode = dctag
+        break
+      endif
+    endfor
+    assign discounts = customer.metafields.furnacebrook.automatic_discount_code.value  
+  endif
+  
+  if cart.attributes['Wholesale'] != whsl
+    assign updatedAttributes = 'Wholesale: "' | append: whsl | append: '"'  
+  endif
+%}
+
+<script>
+  let cart = {{ cart | json }};
+  // console.log("liquid cart:", cart)
+  // console.log("in cart-attributes-update");
+  const pageHandle = "{{ page.handle }}"; 
+  // console.log("page:", pageHandle);
+  const attributes = {...cart.attributes, {{ updatedAttributes }} };
+  const currentAttributes = JSON.stringify(attributes);
+  // console.log("cart-attribute-update attributes: ", attributes);
+  if (pageHandle.includes("payroll-deduct")) {
+    attributes["PayrollDeduct"] = pageHandle.replace("-payroll-deduct", "");
+    fetch("/discount/HARDROCK24")
+    .catch(error => console.error('Error:', error));
+  }
+  // console.log("cart-attribute-update attributes: ", attributes);
+  {% comment %} 
+  // console.log('shopliftTests Meta: {{ shopliftTests | json }}')
+  const shopliftTests = {{ shopliftTests | json }};
+  // console.log("shopliftTests Meta:", shopliftTests)
+  const shopliftLocalStore = localStorage.getItem("Shoplift_Essential");
+  // console.log("Shoplift_Essential:", shopliftLocalStore);
+  let shoplift = {}
+  if (shopliftLocalStore) {
+      try { shoplift = JSON.parse(shopliftLocalStore) }
+      catch {shoplift = {} }
+  } {% endcomment %}
+ 
+  
+  {% comment %}  
+  if (shoplift?.visitorTests) {
+    let count = 0;
+    shoplift.visitorTests.reverse().forEach((test, index) => {
+      // console.log("test:", test);
+      // console.log("testId:", cart.attributes["shoplift_testId_" + index], test.testId, cart.attributes["shoplift_testId_" + index] != test.testId);
+      const testId = shopliftTests[test.testId]?.testName || test.testId;
+      const testIgnore = shopliftTests[test.testId]?.ignore || false;
+      if (testIgnore != true) {
+        if (cart.attributes["shoplift_testId_" + index] != testId) attributes["shoplift_testId_" + index] = testId;
+        // console.log("hypoId:", cart.attributes["shoplift_hypothesisId_" + index], test.hypothesisId, cart.attributes["shoplift_hypothesisId_" + index] != test.hypothesisId);
+        const hypoId = shopliftTests[test.testId]?.[test.hypothesisId]
+          ? shopliftTests[test.testId]?.[test.hypothesisId]?.leg + ": " + shopliftTests[test.testId]?.[test.hypothesisId]?.name 
+          : test.hypothesisId;
+        if (cart.attributes["shoplift_hypothesisId_" + index] != hypoId) attributes["shoplift_hypothesisId_" + index] = hypoId;
+        if (testId == "Delivery Estimate" && cart.attributes["DeliveryEstimate"] != hypoId) attributes["DeliveryEstimate"] = shopliftTests[test.testId]?.[test.hypothesisId]?.name;
+        count++;
+      }
+    });
+    if (count > 0) {
+      if (!cart.attributes.hasOwnProperty("shoplift_excluded") || shoplift.hasOwnProperty("isMerchant") && cart.attributes["shoplift_excluded"] != shoplift.isMerchant) {
+        attributes["shoplift_excluded"] = shoplift.isMerchant ? true : "";
+      }
+    } else {
+      attributes["shoplift_excluded"] = "";
+    }
+  }
+  {% endcomment %}
+  // console.log('attributes:', attributes);
+  // console.log('current cart:', cart);
+  if (currentAttributes != JSON.stringify(attributes)) {
+    if (Object.keys(attributes).length > 0) {
+      const requestParamsUpdate = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          {
+            attributes: attributes
+          }
+        )
+      };
+      // console.log("requestParamsUpdate", requestParamsUpdate);
+      fetch("{{ routes.root | append: routes.cart_update_url | append: '.js' }}", requestParamsUpdate)
+      .then(res => {
+        if (!res.ok) { throw new Error('Network response was not ok') }
+        return res.json();
+      })
+      .then(data => { 
+        // console.log("Update Cart response:", data);
+      })
+      .catch(error => console.error('Error:', error));
+
+      
+    }
+  }
+  {% if whsl == "Yes" %}
+    let discountCode = "{{ discountCode }}";
+    
+    console.log("theme discountCode:", discountCode);
+    fetch("/discount/" + discountCode)
+    .then(res => {
+      if (!res.ok) { throw new Error('Network response was not ok') }
+      // console.log("Update Discount response:", res);
+    })
+    .catch(error => console.error('Error:', error));
+  {% endif %}
+</script>

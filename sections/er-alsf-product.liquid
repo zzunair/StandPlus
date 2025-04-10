@@ -1,0 +1,74 @@
+{% style %}
+  .er-alsf-product__wrapper.section-{{ section.id }} {
+    {% if section.settings.bg_image != blank %}
+      background: url('{{ section.settings.bg_image | image_url: width: 1920 }}');
+    {% else %}
+      background: #FFC742;
+    {% endif %}
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+  }
+  @media screen and (max-width: 992px) {
+    .er-alsf-product__wrapper.section-{{ section.id }} {
+      background: #FFFFFF;
+    }
+  }
+{% endstyle %}
+
+{% assign product = all_products[section.settings.product] %}
+
+<div class="er-alsf-product__wrapper section-{{ section.id }}">
+  <img
+    class="mobile-background-offset"
+    src="{{ section.settings.bg_image | image_url: width: 992 }}"
+    loading="lazy"
+    width="992"
+    height="992"
+    alt="background image"
+  >
+  <div class="er-alsf-product__grid">
+    <div class="gallery__wrapper">
+      {% render 'er-media-gallery', product: product %}
+    </div>
+    <div id="alsf-product-atc" class="product-info__wrapper">
+      <single-product class="product-page-main d-block" {% include 'product-get-attributes' with build_variant: "all" %}>
+        {% include 'product-res-variables' %}
+        {% include 'product-page-get-info' %}
+      </single-product>
+      {% comment %} {% if content_for_header contains 'furnace-brook' %}{% render 'made2order-gales-use-this-one' product: product %}{% endif %} {% endcomment %}
+      <div id="m2oCustom"></div>
+      <div class="plg-impact plg-alexs-lemonade" data-widget-id="c7lWZLmq5MJgA_IBNUCnag"></div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ER ALSF product",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Section background image"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fit_selector",
+      "label": "Show 'Fit' Selector",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER ALSF product"
+    }
+  ]
+}
+{% endschema %}

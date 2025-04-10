@@ -1,0 +1,163 @@
+{% style %}
+
+  {% if section.settings.product %}
+    {% for media in section.settings.product.media %}
+      {% if media.media_type == 'video' %}
+        .er-alsf-details__wrapper {
+          padding-top: 450px !important;
+        }
+        @media screen and (max-width: 1200px) {
+          .er-alsf-details__wrapper {
+            padding-top: 380px !important;
+          } 
+        }
+        @media screen and (max-width: 600px) {
+          .er-alsf-details__wrapper {
+            padding-top: 330px !important;
+          } 
+        }
+        @media screen and (max-width: 500px) {
+          .er-alsf-details__wrapper {
+            padding-top: 250px !important;
+          } 
+        }
+        @media screen and (max-width: 400px) {
+          .er-alsf-details__wrapper {
+            padding-top: 200px !important;
+          } 
+        }
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endstyle %}
+
+{% if section.settings.product %}
+  {% for media in section.settings.product.media %}
+    {% if media.media_type == 'video' %}
+      {{ media | video_tag: image_size: '900x', autoplay: true, loop: true, muted: true, controls: false }}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+<div class="er-alsf-details__grid">
+  <div class="content">
+    {% if section.settings.logo != blank %}
+      <div class="logo">
+        <img
+          src="{{ section.settings.logo | image_url: width: '142' }}"
+          loading="lazy"
+          width="142"
+          height="144"
+          alt="{{ section.settings.logo.alt }}"
+        >
+      </div>
+    {% endif %}
+    <div class="text">
+      <div class="title__wrapper">
+        {% if section.settings.logo != blank %}
+          <div class="logo mobile">
+            <img
+              src="{{ section.settings.logo | image_url: width: '142' }}"
+              loading="lazy"
+              width="142"
+              height="144"
+              alt="{{ section.settings.logo.alt }}"
+            >
+          </div>
+        {% endif %}
+        <h3>{{ section.settings.title }}</h3>
+      </div>
+      {% if section.blocks.size > 0 %}
+        <ul>
+          {% for block in section.blocks %}
+            <li>
+              <div class="name">
+                {% render 'er-icon-check-mark' %}
+                {{ block.settings.name }}
+              </div>
+              <div class="description">{{ block.settings.description }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="image">
+    <img
+      src="{{ section.settings.image | image_url: width: '436' }}"
+      loading="lazy"
+      width="436"
+      height="577"
+      alt="{{ section.settings.image }}"
+    >
+  </div>
+  {% if section.settings.btn_text != blank and section.settings.btn_url != blank %}
+    <div class="btn__wrapper">
+      <a class="btn w-100" href="{{ section.settings.btn_url }}">{{ section.settings.btn_text }}</a>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "ER ALSF details",
+  "class": "er-alsf-details__wrapper",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Section logo"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Section image"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Choose a product to get video from media"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button url"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "detail",
+      "name": "Detail",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Detail name"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Detail description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER ALSF details"
+    }
+  ]
+}
+{% endschema %}

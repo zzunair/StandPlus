@@ -1,0 +1,34 @@
+<!-- snippets/wholesale-giftcodes.liquid -->
+{% assign tags = customer.tags | join: "," | downcase %}
+<div class="container">
+    {% if tags contains "wholesale" %}
+        <div class="loggedin">
+            <div class="d-flex justify-content-center">
+                <p>Download template and fill out ALL information fields.</p>
+            </div>
+            <div class="d-flex justify-content-center">
+                <a href="https://cdn.shopify.com/s/files/1/0291/3724/0142/files/Gales_Giftable_Codes_Order_Template.xlsx?v=1664485539" 
+                    Download class="btn">DOWNLOAD TEMPLATE</a>
+            </div>
+            <div class="d-flex justify-content-center mt-60 mb-40">
+                <h4>Send completed Template to 
+                    <a class="dottedline hoverfade" href="mailto:wholesale@weargales.com?subject=Wholesale Form Submission: Giftable Codes">wholesale@weargales.com</a>
+                </h4>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Wholesale Gift Codes",
+    "settings": [
+    ],
+    "presets": [
+        {
+            "name": "Wholesale Giftcodes",
+            "category": "3) Static content"
+        }
+    ]
+}
+{% endschema %}

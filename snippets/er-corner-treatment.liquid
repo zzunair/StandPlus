@@ -1,0 +1,16 @@
+<div class="er-corner-treatments">
+  {% if cornerTitle != blank %}
+    {% if cornerTitle == 'Limited Edition' %}
+      <div class="pill limited-edition">Limited Edition</div>
+    {% endif %}
+    {% if cornerTitle == 'Low Inventory' %}
+      <div class="pill low-inventory">Low Inventory</div>
+    {% endif %}
+    {% if cornerTitle == 'Best Seller' %}
+      <div class="pill best-seller">{% render 'icon-white-star' %}Best Seller</div>
+    {% endif %}
+    {% if cornerTitle == 'New' %}
+      <div class="pill new-arrival">New</div>
+    {% endif %}
+  {% endif %}
+</div>

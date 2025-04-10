@@ -1,0 +1,47 @@
+<!-- snippets/wholesale-loggedin.liquid -->
+{%- if customer -%}
+    <div>
+        {%- assign tags = customer.tags | join: "," | downcase -%}
+        {%- if apply -%}
+            {%- unless tags contains "wholesale" -%}
+                <div class="d-flex justify-content-center">
+                    <p>Please apply for a Wholesale Account to view this page.</p>
+                </div>
+                <div class="d-flex justify-content-center mt-60 mb-40">
+                    <a href="/pages/groups-and-wholesale#wholesale-form" class="btn">APPLY</a>
+                </div>
+            {%- endunless -%}
+        {%- endif -%}
+        <div class="text-md-right text-center pb-20 pt-40">Logged in as: 
+            <a class="dottedline hoverfade" href="/account">{{ customer.name }}</a>
+            <span> (<a class="logout dottedline hoverfade">{{ "general.popups.account.authorized.log_out" | t }}</a>)</span>
+        </div>
+        <div class="text-md-right text-center pb-20">
+            <a href="/account" class="btn btn--secondary mr-10 px-15">{{ "layout.customer.account" | t }}</a>
+            <a class="logout btn btn--secondary px-15">{{ "general.popups.account.authorized.log_out" | t }}</a>
+            {%- if apply -%}<a class="btn float-left" href="/pages/groups-and-wholesale" class="btn">Back</a>{%- endif -%}
+        </div>
+    </div>
+    <script>
+        (function() {
+        const logoutBtns = document.querySelectorAll('a.logout');
+        if(logoutBtns) {
+            logoutBtns.forEach(logoutBtn => {
+                logoutBtn.addEventListener('click', function() {
+                    fetch('/account/logout').then(() => window.location.href = "/pages/groups-and-wholesale")
+                })
+            })
+        }
+        })()
+    </script>
+
+{%- else -%}
+        {% if apply %}
+            <div class="d-flex justify-content-center">
+                <p>Please log in or apply for a Wholesale Account to view this page.</p>
+            </div>
+            <div class="d-flex justify-content-center mt-60">
+                <a href="/pages/groups-and-wholesale#wholesale-form" class="btn">{{ "layout.customer.log_in" | t }} or Apply</a>
+            </div>
+        {% endif %}
+{%- endif -%}

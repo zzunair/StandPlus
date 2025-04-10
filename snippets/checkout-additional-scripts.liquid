@@ -1,0 +1,220 @@
+{% comment %} 
+THIS IS JUST A REPOSITORY OF WHAT IS IN THE SHOPIFY CHECKOUT SETTINGS
+FOUND AT: https://weargales.myshopify.com/admin/settings/checkout
+{% endcomment %}
+
+{% comment %} <script src="https://triplewhale-pixel.web.app/triplepx.js"></script> {% endcomment %}
+
+{% comment %} ADDED BY SCOTT
+Purchase data layer v2.0 - part of "Shopify GA4 Kit" by Analyzify
+Visit https://analyzify.app/shopify-google-analytics/ga4 for complete tutorial 
+{% endcomment %}
+
+<script>
+	{% comment %} console.log("datalayer script start", window.dataLayer); {% endcomment %}
+	window.now = window.now || Date.now(); 
+	const parseJson = string => {
+		try { return JSON.parse(string); }
+		catch(e) { return string }
+	}
+    if (!window.sessionStorage.getItem("gales_src")) {
+      window.sessionStorage.setItem("gales_src", JSON.stringify({src: window.location.href, time: now}))
+    }
+    if (!window.localStorage.getItem("gales_src")) {
+      window.localStorage.setItem("gales_src", JSON.stringify({src: window.location.href, time: now}))
+    }
+	window.dataLayer = window.dataLayer || [];
+	const abf = parseJson(localStorage.getItem("ABFurnace"));
+	if (abf) {
+		window.dataLayer.push({
+			'ABFurnace': abf.ab
+		});
+	}
+	var shipping_price = '{{ shipping_price | money_without_currency | remove: "," }}';
+	shipping_price = Number(shipping_price) || shipping_price
+	var total_price = '{{ total_price | money_without_currency | remove: "," }}';
+	total_price = Number(total_price) || total_price
+	var tax_price = '{{ tax_price | money_without_currency | remove: "," }}';
+	tax_price = Number(tax_price) || tax_price
+	var total_discounts = '{{ discounts_amount | money_without_currency | remove: "," }}';
+	total_discounts = Number(total_discounts) || total_discounts
+	var subtotal = '{{ line_items_subtotal_price | money_without_currency | remove: "," }}';
+	subtotal = Number(subtotal) || subtotal
+	var orderItemsName = []
+	var orderItemsPrice = []
+	var orderItemsQuantity = []
+	var orderItemsId = []
+	var orderItemsVarId = []
+	var orderItemsSku = [];
+	var preorder = [];
+	var totalQuantity = 0;
+	{% for line_item in line_items %}
+		orderItemsName.push('{{ line_item.title | remove: "'" | remove: '"' }}');
+		orderItemsPrice.push('{{ line_item.price | money_without_currency | remove: "," }}');
+		orderItemsQuantity.push('{{ line_item.quantity }}');
+		orderItemsId.push('{{ line_item.product_id }}');
+		orderItemsVarId.push('{{ line_item.variant_id }}');
+		orderItemsSku.push('{{ line_item.sku }}');
+		totalQuantity +=  {{ line_item.quantity }};
+		preorder.push('{{ line_item.properties['Pre-order'] }}');
+	{% endfor %}
+	console.log("preorder:", preorder);
+	window.purchase = false;
+	{% if first_time_accessed == true and post_purchase_page_accessed == false %}
+		const getUrl = urlString => {
+			try {
+				const url = new URL(urlString); 
+				return {
+					href: url.href,
+					origin: url.origin,
+					protocol: url.protocol,
+					host: url.host,
+					hostname: url.hostname,
+					port: url.port,
+					pathname: url.pathname,
+					search: url.search,
+					searchParams: Object.fromEntries(url.searchParams),
+					hash: url.hash
+				  };
+			}
+			catch(e){ return urlString; }
+		}
+
+		let GalesSrcLocal = parseJson(window.localStorage.getItem("gales_src"));
+		let GalesSrc_local = getUrl(GalesSrcLocal?.src);
+		GalesSrc_local.time = GalesSrcLocal?.time;
+
+		let GalesSrcSession = parseJson(window.sessionStorage.getItem("gales_src"));
+		let GalesSrc_session = getUrl(GalesSrcSession?.src);
+		GalesSrc_session.time = GalesSrcSession?.time;
+		
+		let GtmOrderId_session = sessionStorage.getItem("GtmOrderId");
+		let GtmOrderId_local = localStorage.getItem("GtmOrderId");
+		window.dataLayer.push({
+			'page_type': 'purchase',
+			'event': 'purchase',
+			'currency': "{{ shop.currency }}",
+			'customerCurrency' : '{{ currency }}',
+			'subtotalValue': subtotal,
+			'totalValue': total_price,
+			'totalDiscounts': total_discounts,
+			'discounts' : parseJson('{{ discount_applications | json }}'),
+			'shipping': shipping_price,
+			'shipping_method' : '{{ shipping_method.title }}',
+			'shipping_method_id' : decodeURIComponent('{{ shipping_method.id }}').split("|#|"),
+			'shipping_zip' : '{{ shipping_address.zip }}',
+			'tax': tax_price,
+			'payment_type': '{{ transactions[0].gateway }}',
+			'transaction_id': "{{ order_name }}",
+			'checkout_id' : "{{ id }}",
+			'checkout_name' : '{{ name }}',
+			'order_id' : "{{ order_id }}",
+			'item_count' : "{{ item_count }}",
+			'shopify_transaction_id': '{{ order_number }}',
+			'attributes' : parseJson('{{ attributes | json }}'),
+			'productName': orderItemsName,
+			'productPrice': orderItemsPrice,
+			'productQuantity': orderItemsQuantity,
+			'variantSku' : orderItemsSku,
+			'productId': orderItemsId,
+			'variantId': orderItemsVarId,
+			'devDate': "7/28/23 11:16am MT",
+			'GtmOrderId_session' : GtmOrderId_session,
+			'GtmOrderId_session_check' : GtmOrderId_session == "{{ order_id }}",
+			'GtmOrderId_local' : GtmOrderId_local,
+			'GtmOrderId_local_check' : GtmOrderId_local == "{{ order_id }}",
+			'GalesSrc_local' : GalesSrc_local,
+			'GalesSrc_session' : GalesSrc_session
+		});
+		window.purchase = true;          
+	{% endif %}
+	{% comment %} console.log("datalayer script end", window.dataLayer); {% endcomment %}
+</script>
+
+<script>
+	{% comment %} console.log("enhance script start"); {% endcomment %}
+	window.enhanced_conversion_data = {
+		email: "{{ checkout.email }}",
+		phone_number: "{{ checkout.customer.default_address.phone }}",
+		address: {
+			first_name: "{{ checkout.customer.first_name }}",
+			last_name: "{{ checkout.customer.last_name }}",
+			street: "{{ checkout.billing_address.address1 }}", 
+			city: "{{ checkout.billing_address.city }}", 
+			region: "{{ checkout.billing_address.province }}", 
+			postal_code: "{{ checkout.billing_address.zip }}",
+			country: "{{ checkout.billing_address.country_code }}"
+		}
+	};
+	{% comment %} console.log("enhance script end", window.enhanced_conversion_data); {% endcomment %}
+</script>
+
+<script>
+	let options = {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify({num: 1, status: "start", purchase: window.purchase, order_id: "{{ order_id }}", 
+			shopify_transaction_id: '{{ order_number }}', dataLayer: window.dataLayer})
+    }
+	{% comment %} fetch("https://logs-01.loggly.com/inputs/74f4b993-9009-475b-b03f-e5e5c17cfc9c/tag/http/", options); {% endcomment %}
+	{% comment %} console.log("running GTM script"); {% endcomment %}
+	let GtmOrderId = localStorage.getItem("GtmOrderId");
+	if (!window.purchase || !GtmOrderId || GtmOrderId != "{{ order_id }}") {
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),
+		event:'gtm.js','devDate': '7/28/2023 11:16am MT'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		{% comment %} console.log("calling GTM"); {% endcomment %}
+		options.body = JSON.stringify({num: 2, status: "gtm_send", purchase: window.purchase, order_id: "{{ order_id }}", 
+			shopify_transaction_id: '{{ order_number }}', dataLayer: window.dataLayer});
+		{% comment %} fetch("https://logs-01.loggly.com/inputs/74f4b993-9009-475b-b03f-e5e5c17cfc9c/tag/http/", options); {% endcomment %}
+		})(window,document,'script','dataLayer','GTM-T244WZG');
+	} else {
+		{% comment %} console.log("skipped GTM"); {% endcomment %}
+		options.body = JSON.stringify({num: 2, status: "gtm_skip", purchase: window.purchase, order_id: "{{ order_id }}", 
+			shopify_transaction_id: '{{ order_number }}', dataLayer: window.dataLayer})
+		{% comment %} fetch("https://logs-01.loggly.com/inputs/74f4b993-9009-475b-b03f-e5e5c17cfc9c/tag/http/", options); {% endcomment %}
+	}
+	sessionStorage.setItem("GtmOrderId", "{{ order_id }}");
+	localStorage.setItem("GtmOrderId", "{{ order_id }}");
+	{% comment %} console.log("GTM Script End", sessionStorage.getItem("GtmOrderId")); {% endcomment %}
+</script>
+{% comment %} <script>
+	setTimeout(() => {
+		let options = {
+			method: "POST",
+			headers: {
+				"Content-Type":"application/json",
+			},
+			body: JSON.stringify({num: 3, status: "timeout", purchase: window.purchase, order_id: "{{ order_id }}", 
+				shopify_transaction_id: '{{ order_number }}', dataLayer: window.dataLayer})
+		}
+		fetch("https://logs-01.loggly.com/inputs/74f4b993-9009-475b-b03f-e5e5c17cfc9c/tag/http/", options);
+	}, 3000)
+</script> {% endcomment %}
+{% comment %} <script defer src="https://app.octaneai.com/abhl3af807b4oar3/shopify.js" type="text/javascript"></script> {% endcomment %}
+
+<!-- End Google Tag Manager -->
+
+<!-- Hotjar Tracking Code for https://www.weargales.com -->
+{% comment %} <script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:2282341,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script> {% endcomment %}
+
+{% comment %} <!-- Google Tag Manager (noscript) -->
+<noscript>
+	<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T244WZG"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe>
+	<iframe src="https://logs-01.loggly.com/inputs/74f4b993-9009-475b-b03f-e5e5c17cfc9c/tag/http/?status=noscript&order_id={{ order_id }}"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) --> {% endcomment %}

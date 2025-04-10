@@ -1,0 +1,7 @@
+{% comment %} {% for block in blocks %}
+  {%- if block.type == "sidebar_custom_html" and block.settings.location == "sizeguide_help" -%}
+    <div class="mt-0">
+      {% render 'custom-html-block' with block: block, fl_index: "sizeguide_help_" | append: forloop.index %}        
+    </div>
+  {%- endif -%}
+{% endfor %} {% endcomment %}

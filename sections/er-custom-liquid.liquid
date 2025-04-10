@@ -1,0 +1,58 @@
+{% comment %} {% style %}
+  /* Octane.ai styles overwrite */
+  .oct-quiz-picture-choice-options__option {
+    padding-left: 0 !important;
+  }
+  .octane-ai-quiz-rendered li::before {
+    content: none !important;
+  }
+  .oct-quiz-multiple-choice-options__option {
+    min-width: 54px;
+    min-height: 54px;
+    padding: 10px !important;
+    border-radius: 5px !important;
+  }
+  .oct-quiz-multiple-choice-options__option div {
+    display: inline-block;
+    text-align: center;
+    vertical-align: bottom;
+    line-height: 1em;
+  }
+  .oct-quiz-multiple-choice-wrapper ul {
+    max-width: 770px;
+  }
+  .oct-quiz-btn.oct-quiz-btn--primary-text.oct-quiz-btn--small:hover,
+  .oct-quiz-btn.oct-quiz-btn--secondary-text.oct-quiz-btn--small:hover {
+    box-shadow: none !important;
+  }
+  /* End of Octane.ai styles overwrite */
+{% endstyle %} {% endcomment %}
+
+{{ section.settings.custom_liquid }}
+
+{% schema %}
+{
+  "name": "ER Custom Liquid",
+  "tag": "section",
+  "settings": [
+    {
+			"type": "text",
+			"id": "name",
+			"label": "Heading",
+			"default": "Custom Liquid",
+      "info": "not displayed; just for display in theme editor"
+    },
+    {
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "Custom Liquid",
+      "info": "Add here your custom liquid code"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER Custom Liquid"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,84 @@
+{% include 'global-variables' %}
+{% include 'product-cart-res-variables' %}
+
+
+{%- assign image_size = '100x' -%}
+<div class="product-cart" data-js-product data-product-variant-id="{{ id }}" data-product-cart-line="{{ forloop.index }}">
+    <div class="d-flex flex-row align-items-start">
+        <a href="{{ url }}">
+            <div class="product-cart__image mr-15">
+                {% render 'rimage' with image: image size: '150x' format: image_format image_class: 'w-100' %}
+                {% comment %} {% render 'product-get-images' with url: url image: image image_size: image_size title: title disable_lazyload: disable_lazyload %} {% endcomment %}
+            </div>
+        </a>
+        <div class="product-cart__content d-flex flex-column align-items-start">
+          <div class="product-cart-top">
+          <div class="product-cart__title-wrapper">
+            <div class="product-cart__title mb-3">
+                <h3 class="h6 m-0">
+                    <a href="{{ url }}">{{ title }}</a>
+                </h3>
+            </div>
+             <div class="product-cart__price">
+                <span class="product-cart__price-value">{% include 'product-get-price' %}</span>
+            </div>
+          </div>
+            {% comment %} <div>attri: {{  item.properties["Pre-order"] }}</div> {% endcomment %}
+            {% capture default_variant_title %}{{ 'products.product.default_variant_title' | t }}{% endcapture %}
+            {%- assign property_size = item.properties | size -%}
+            {%- assign size_attr = false -%}
+            {% capture properties_list %}
+                {%- if property_size > 0 -%}
+                    {%- for p in item.properties -%}
+                        <p class="mt-0 mb-0">
+                            {%- unless p.last == blank or p.first[0] == '_' -%}
+                                <span>{{ p.first }}: </span>
+                                {%- if p.last contains '/uploads/' -%}
+                                    <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                                {%- else -%}
+                                    {{ p.last }}
+                                {%- endif -%}
+                                {%- assign pfirst = p.first | downcase -%}
+                                {%- if pfirst == "size" -%}
+                                    {%- assign size_attr = true -%}
+                                {%- endif -%}
+                            {%- endunless -%}
+                        </p>
+                    {%- endfor -%}
+                {%- endif -%}
+            {% endcapture %}
+            
+            {%- unless size_attr -%}
+              {% capture variant_title_split %}
+                   {% assign options = variant_title | split: ' / ' %}
+  
+  {% for option_name in item.product.options %}
+    {% assign index = forloop.index0 %}
+    <p>{{ option_name }}: {{ options[index] }}</p>
+  {% endfor %}
+                {% endcapture %}
+              
+                <div class="product-cart__variant{% if variant_title == 'Default Title' %} d-none{% endif %}">{{ variant_title_split | replace: 'Default Title', default_variant_title }}</div>
+            {%- endunless -%}
+            {{ properties_list }}  
+          </div>
+           <div class="product-page-info__field-wrapper">
+            {%- if settings.cart_popup_show_quantity_input -%}
+                <div class="product-page-info__field product-page-info__quantity d-flex">
+                    {%- unless is_quick_view -%}
+                        {%- assign quantity_connect = 'cart' -%}
+                    {%- endunless -%}
+                        <div class="input-quantity input-quantity--type-04 d-flex align-items-center position-relative js-product-quantity">
+                            <div class="d-flex flex-center position-absolute left-0 ml-10 cursor-pointer" data-control="-"><i>{% render 'icon-theme-189' %}</i></div>
+                            <input type="number" class="product-cart__input-quantity mb-0 px-35 text-center js-input-quantity-cart" name="updates[]" value="{{ quantity }}" min="0">
+                            <div class="d-flex flex-center position-absolute right-0 mr-10 cursor-pointer" data-control="+"><i>{% render 'icon-theme-188' %}</i></div>
+                        </div>
+                </div>
+            {%- endif -%}
+            <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="product-cart__remove btn-link js-product-button-remove-from-cart">
+              <img src="https://cdn.shopify.com/s/files/1/0291/3724/0142/files/mynaui_trash.svg?v=1743015578" alt="trash-icon"/>  
+            </a>
+           </div>
+           </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+{% style %}
+  .er-alsf-value-props__wrapper.section-{{ section.id }} {
+    {% if section.settings.bg_image != blank %}
+      background: url('{{ section.settings.bg_image | image_url: width: 1920 }}');
+    {% else %}
+      background: #FFC742;
+    {% endif %}
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+  }
+{% endstyle %}
+
+{% if section.blocks.size > 0 %}
+  <div class="er-alsf-value-props__wrapper section-{{ section.id }}">
+    <div class="er-alsf-value-props__grid">
+      {% for block in section.blocks %}
+        <div class="prop__wrapper">
+          <img
+            src="{{ block.settings.image | image_url: width: '96' }}"
+            loading="lazy"
+            width="96"
+            height="96"
+            alt="{{ block.settings.image }}"
+          >
+          <div class="name">{{ block.settings.name }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "ER ALSF value props",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Section background image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value_prop",
+      "name": "Value prop",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Value prop image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Value prop name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER ALSF value props"
+    }
+  ]
+}
+{% endschema %}

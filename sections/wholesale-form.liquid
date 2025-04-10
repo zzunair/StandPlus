@@ -1,0 +1,531 @@
+<!-- sections/wholesale-form.liquid -->
+<script>!function () {var reb2b = window.reb2b = window.reb2b || []; if (reb2b.invoked) return;reb2b.invoked = true;reb2b.methods = ["identify", "collect"]; reb2b.factory = function (method) {return function () {var args = Array.prototype.slice.call(arguments); args.unshift(method);reb2b.push(args);return reb2b;};}; for (var i = 0; i < reb2b.methods.length; i++) {var key = reb2b.methods[i];reb2b[key] = reb2b.factory(key);} reb2b.load = function (key) {var script = document.createElement("script");script.type = "text/javascript";script.async = true; script.src = "https://s3-us-west-2.amazonaws.com/b2bjsstore/b/" + key + "/reb2b.js.gz"; var first = document.getElementsByTagName("script")[0]; first.parentNode.insertBefore(script, first);}; reb2b.SNIPPET_VERSION = "1.0.1";reb2b.load("XOE9GH2XK2OM");}();</script> 
+{% assign tags = customer.tags | join: "," | downcase %}
+<div id="wholesale-form" class="container wholesale-form" style="margin-top: -100px; padding-top: 100px;">
+    {% if tags contains "wholesale" %}
+        <div class="loggedin">
+            <div class="d-flex justify-content-center">
+                <p>You are currently logged in and approved for wholesale.</p>
+            </div>
+        </div>
+    {% else %}
+    <div data-section-id="{{ section.id }}" data-section-type="wholesale-form" id="wholesale_page" class="d-flex">
+        <div class="col-md-4 login-panel px-30 mx-auto mb-40">
+            <h4 class="h4 mb-40 text-center">{{ 'layout.customer.log_in' | t }}</h4>
+            {% if customer %}
+                <div class="d-flex justify-content-center">
+                    <p>You are currently logged in but do not have a Wholesale Account.</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <p>Please fill in the form to request a Wholesale Account.</p>
+                </div>
+                <div class="d-flex justify-content-center mt-60">
+                    <a class="logout btn btn--secondary px-15">{{ "general.popups.account.authorized.log_out" | t }}</a>
+                </div>
+            {% else %}
+                <p class="text-center">If you have an account, please log in:</p>
+                {% form 'customer_login' %}
+                    <div class="login_form">
+                        <input type="email"
+                                name="customer[email]"
+                                id="CustomerEmail"
+                                class="{% if form.errors contains 'email' %}input-error{% endif %}"
+                                placeholder="{{ 'customer.login.email_title' | t }}"
+                                spellcheck="false"
+                                autocomplete="off"
+                                autocapitalize="off"
+                                required="required">
+                        {%- if form.password_needed -%}
+                            <input type="password"
+                                name="customer[password]"
+                                id="CustomerPassword"
+                                class="{% if form.errors contains 'password' %}input-error{% endif %}"
+                                placeholder="{{ 'customer.login.password_title' | t }}"
+                                required="required">
+                        {%- endif -%}
+                        <input type="hidden" name="return_to" value="/pages/groups-and-wholesale"/>
+                        {% include 'form-get-message' %}
+                        <div class="text-center">
+                            <input type="submit" class="btn btn--full" value="{{ 'customer.login.sign_in' | t }}">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        {%- if form.password_needed -%}
+                        <div>
+                            <a href="#recover" class="btn-link mt-15 js-button-block-visibility" data-block-link="#recover">{{ 'customer.login.forgot_password' | t }}</a>
+                        </div>
+                        {%- endif -%}
+                    </div>
+                {% endform %}
+            {% endif %}
+            {% form 'recover_customer_password' %}
+            <div id="RecoverPasswordForm" class="pt-35 mt-35 border-top{% unless form.posted_successfully? %} d-none-important{% endunless %}" data-block-visibility="#recover" data-block-onscroll>
+                <h4 class="h4 text-center">{{ 'customer.recover_password.title' | t }}</h4>
+                <p>{{ 'customer.recover_password.subtext' | t }}</p>
+                {%- if form.posted_successfully? -%}
+                    <span class="hide reset-password-success"></span>
+                {%- endif -%}
+                <div class="login_form">
+                    <input type="email"
+                            name="email"
+                            id="RecoverEmail"
+                            placeholder="{{ 'customer.recover_password.email_title' | t }}"
+                            spellcheck="false"
+                            autocomplete="off"
+                            autocapitalize="off"
+                            required="required"
+                            data-block-visibility-focus>
+                    {% include 'form-get-message' %}
+                    <input type="submit" class="btn btn--full" value="{{ 'customer.recover_password.submit' | t }}">
+                </div>
+                <div class="mt-15 text-center">
+                    <span class="btn-link js-button-block-visibility" data-action="close" data-block-link="#recover">{{ 'customer.recover_password.cancel' | t }}</span>
+                </div>
+            </div>
+            {% endform %}
+        </div>
+        
+        <div class="col-md-8 signup-panel px-30 border-left">
+            <div class="wholesale-panel">
+                <h4 class="h4 mb-40 text-center">{{ 'customer.login.sign_up_title' | t }}</h4>
+                {%- if section.settings.title != blank -%}
+                    <h4 class="mb-35 text-center">{{ section.settings.title }}</h4>
+                {%- endif -%}
+                <div class="row">
+                    <div class="mx-15">
+                        <p class="text-center">Please submit your contact information.</p>
+                        {%- if section.settings.hubspot_form == "hubspot_form" and section.settings.hubspot_formid and section.settings.hubspot_portalid -%}
+                            <script>
+                                {% comment %} const hsScript = document.getElementById("hubspot-form"); {% endcomment %}
+                                function hsForm() {
+                                    hbspt.forms.create({
+                                    region: "na1",
+                                    portalId: "{{ section.settings.hubspot_portalid }}",
+                                    formId: "{{ section.settings.hubspot_formid }}"
+                                    });
+                                }
+                                {% comment %} hsScript.addEventListener("load", hsForm) {% endcomment %}
+                            </script>
+                            <script onload="hsForm()" defer charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script> 
+                            <style>
+                                .wholesale-panel {
+                                    height: calc(100% - 40px);
+                                    overflow: clip;
+                                }
+                            </style>
+                        {%- else -%}
+                            {% comment %} hubspot_api: Send Shopify Form Data to HubSpot {% endcomment %}
+                            {% if wholesale.form.title %}
+                                <h3>{{ 'wholesale.form.title' | t }}</h3>
+                            {% endif %}
+                            {% if wholesale.form.paragraph %}
+                            <p class="fs-lg">{{ 'wholesale.form.paragraph' | t }}</p>
+                            {% endif %}
+
+                            {% capture form_html %}
+                                <div class="wholesale-form">
+                                    <input type="hidden"
+                                        name="contact[form]"
+                                        value="wholesale">
+                                    {%- if section.settings.show_input_label -%}
+                                        <label for="ContactFormCompany" class="label-required">{{ 'wholesale.form.company_title' | t }}</label>
+                                    {%- endif -%}
+                                    <input type="text"
+                                        name="contact[company]"
+                                        id="ContactFormCompany"
+                                        placeholder="{{ 'wholesale.form.company_placeholder' | t }}"
+                                        value="{% if form[company] %}{{ form[company] }}{% endif %}"
+                                        required="required">
+                                    {%- if section.settings.show_input_label -%}
+                                        <label for="ContactFormAddress" class="label-required">{{ 'wholesale.form.address_title' | t }}</label>
+                                    {%- endif -%}
+                                    <input type="text"
+                                        name="contact[address]"
+                                        id="ContactFormAddress"
+                                        placeholder="{{ 'wholesale.form.address_placeholder' | t }}"
+                                        value="{% if form[address] %}{{ form[address] }}{% endif %}"
+                                        required="required">
+                                    {%- if section.settings.show_input_label -%}
+                                        <label for="ContactFormTeamSize" class="label-required">{{ 'wholesale.form.team_size' | t }}</label>
+                                    {%- endif -%}
+                                    <input type="text"
+                                        name="contact[contact_team_size]"
+                                        id="ContactFormTeamSize"
+                                        placeholder="{{ 'wholesale.form.team_size_placeholder' | t }}"
+                                        value="{% if form[contact_team_size] %}{{ form[contact_team_size] }}{% endif %}"
+                                        required="required">
+                                    {%- if section.settings.show_input_label -%}
+                                        <label for="ContactFormFirstName" class="label-required">{{ 'wholesale.form.first_name_title' | t }}</label>
+                                    {%- endif -%}
+                                    <input type="text"
+                                        name="contact[contact_first_name]"
+                                        id="ContactFormFirstName"
+                                        placeholder="{{ 'wholesale.form.first_name_placeholder' | t }}"
+                                        value="{% if form[contact_first_name] %}{{ form[contact_first_name] }}{% elsif customer %}{{ customer.first_name }}{% endif %}"
+                                        required="required">
+                                    {%- if section.settings.show_input_label -%}
+                                        <label for="ContactFormLastName" class="label-required">{{ 'wholesale.form.last_name_title' | t }}</label>
+                                    {%- endif -%}
+                                    <input type="text"
+                                        name="contact[contact_last_name]"
+                                        id="ContactFormLastName"
+                                        placeholder="{{ 'wholesale.form.last_name_placeholder' | t }}"
+                                        value="{% if form[contact_last_name] %}{{ form[contact_last_name] }}{% elsif customer %}{{ customer.last_name }}{% endif %}">
+                                    {%- if section.settings.show_input_label -%}
+                                        <label for="ContactFormEmail" class="label-required">{{ 'wholesale.form.email_title' | t }}</label>
+                                    {%- endif -%}
+                                    <input type="email"
+                                        name="contact[email]"
+                                        id="ContactFormEmail"
+                                        placeholder="{{ 'wholesale.form.email_placeholder' | t }}"
+                                        value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                                        spellcheck="false"
+                                        autocomplete="off"
+                                        autocapitalize="off"
+                                        required="required">
+                                    {%- if section.settings.show_phone_input -%}
+                                        {%- if section.settings.show_input_label -%}
+                                            <label for="ContactFormPhone">{{ 'wholesale.form.phone_title' | t }}</label>
+                                        {%- endif -%}
+                                        <input type="tel"
+                                        class="form-control"
+                                        name="contact[contact_phone]"
+                                        id="ContactFormPhone"
+                                        placeholder="{{ 'wholesale.form.phone_placeholder' | t }}"
+                                        value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                                        required="required">
+                                    {%- endif -%}
+                                    {%- if section.settings.show_input_label -%}
+                                        <label for="ContactFormMessage" class="label-required">{{ 'wholesale.form.message_title' | t }}</label>
+                                    {%- endif -%}
+                                    <textarea rows="4"
+                                            name="contact[body]"
+                                            id="ContactFormMessage"
+                                            placeholder="{{ 'wholesale.form.message_placeholder' | t }}">
+                                        {%- if form.body -%}
+                                            {{ form.body }}
+                                        {%- endif -%} 
+                                    </textarea>
+                                    {%- if section.settings.show_input_label -%}
+                                        <label for="ContactFormHowSource">How did you hear about us?</label>
+                                    {%- endif -%}
+                                    <select name="contact[how_source]" id="ContactFormHowSource">
+                                        <option value="">How did you hear about us?</option>
+                                        <option value="facebook">Facebook</option>
+                                        <option value="twitterx">Twitter/X</option>
+                                        <option value="linkedin">LinkedIn</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="conventiontradeshow">Convention/Trade Show</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <input type="hidden"
+                                        name="contact[instructions]"
+                                        value="To create a wholesale account and custom discount, 
+                                        please see the instructions here:
+                                        https://docs.google.com/document/d/1FXhv25tFM8DoZSD_IEcGNXq74bkCGzZ_ZcVBbchM4NE/edit"
+                                    >
+                                    {% include 'form-get-message' %}
+                                    <div>
+                                        {% comment %} <button type="submit" class="btn{% if section.settings.button_type == 'default' %} btn--secondary{% endif %}"><i class="mr-5">{% render 'icon-theme-196' %}</i>{{ 'wholesale.form.send' | t }}</button> {% endcomment %}
+                                        <input type="submit" class="btn btn--full{% if section.settings.button_type == 'default' %} btn--secondary{% endif %}" value="{{ 'wholesale.form.send' | t }}">
+                                    </div>
+                                </div>
+                            {% endcapture %}
+                            {% if section.settings.hubspot_form == "shopify" %}
+                                {% form 'contact' %}
+                                    {%- if form.posted_successfully? -%}
+                                        <p class="form-success">{{ 'wholesale.form.post_success' | t }}</p>
+                                    {%- endif -%}
+                                    {{ form_html }}
+                                {% endform %}
+                            {% else %}
+                                <form id="contact_form" class="contact-form" onSubmit="return sendData(event)" >
+                                    {{ form_html }}
+                                    <div id="hubspot-response"></div>
+                                </form>
+                                <div class="hubspot-popup d-none">
+                                    <div class="popup-content">
+                                        <h4 class="mb-30">Submitted</h4>
+                                        <p class="hubspot-response"></p>
+                                        <button class="hubspotClosePopup btn" onclick="return hubspotResetForm()">Close</button>
+                                    </div>
+                                </div>
+                                <script>
+                                    const hubspotContactForm = document.querySelector("#contact_form");
+                                    const formResponse = document.querySelector("#hubspot-response");
+                                    const hubspotPopup = document.querySelector(".hubspot-popup");
+                                    const hubspotPopupResponse = hubspotPopup.querySelector(".hubspot-response");
+                                    function hubspotResetForm() {
+                                        hubspotPopup.classList.add("d-none");
+                                    }
+                                    async function sendData(data) {
+                                        data.preventDefault();
+                                        // console.log("submit data:", data);
+                                        const formData = new FormData(data.target);
+                                        const hubspotData = {
+                                            "submittedAt": Date.now(),
+                                            "fields": [
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "email",
+                                                "value": formData.get("contact[email]") || ""
+                                              },
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "firstname",
+                                                "value": formData.get("contact[contact_first_name]") || ""
+                                              },
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "lastname",
+                                                "value": formData.get("contact[contact_last_name]") || ""
+                                              },
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "mobilephone",
+                                                "value": formData.get("contact[contact_phone]") || ""
+                                              },
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "company",
+                                                "value": formData.get("contact[company]") || ""
+                                              },
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "addresstext",
+                                                "value": formData.get("contact[address]") || ""
+                                              },
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "team_size_text",
+                                                "value": formData.get("contact[contact_team_size]") || ""
+                                              },
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "message",
+                                                "value": formData.get("contact[body]") || ""
+                                              },
+                                              {
+                                                "objectTypeId": "0-1",
+                                                "name": "how_source",
+                                                "value": formData.get("contact[how_source]") || ""
+                                              }
+                                            ],
+                                            "context": {
+                                              "pageUri": "www.standshoes.com/pages/groups-and-wholesale",
+                                              "pageName": "Corporate Programs"
+                                            }
+                                          }
+                                        
+                                        try {
+                                          const response = await fetch("https://api.hsforms.com/submissions/v3/integration/submit/{{ section.settings.hubspot_portalid }}/{{ section.settings.hubspot_formid }}", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                              },
+                                            body: JSON.stringify(hubspotData),
+                                          });
+                                          console.log("response:", response.status, response);
+                                          const responseJSON = await response.json();
+                                          console.log(responseJSON);
+                                          if (response.status == 200) {
+                                            // modify the window history so that an event is sent to Google Analytics
+                                            const url = new URL(window.location)
+                                            url.searchParams.set("submitted", "true");
+                                            window.history.pushState({}, null , url);
+                                            
+                                            formResponse.textContent = responseJSON.inlineMessage;
+                                            hubspotPopupResponse.textContent = responseJSON.inlineMessage;
+                                            hubspotPopup.classList.remove("d-none");
+                                            hubspotContactForm.classList.add("d-none");
+                                          } else {
+                                            formResponse.innerHTML = '<strong style="color:red;">ERROR: Please contact customer support.</strong><br><div>Additional Details:' 
+                                                + JSON.stringify(responseJSON) + '</div>';
+                                          }
+                                        } catch (e) {
+                                          console.error(e);
+                                        }
+                                      }
+                                </script>
+                            {% endif %}
+                        {%- endif -%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<style>
+    form#contact_form {
+        position: relative;
+    }
+    .hubspot-popup {
+        position: absolute;
+        bottom: 0;
+        background: white;
+        padding: 30px;
+        border: 1px solid gray;
+        text-align: center;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .wholesale-button {
+        border-radius: 25px;
+        background: var(--theme);
+        overflow: hidden;
+        padding: 20px;
+        margin: 12px;
+        flex-basis: 33%;
+        flex-grow: 1;
+    }
+    @media (max-width: 525px) {
+        .wholesale-options {
+            flex-direction: column;
+        }
+    }
+    .wholesale-button h4, .wholesale-button p {
+        color: white;
+        margin-bottom: 9px;
+    }
+    .underline {
+        text-decoration: underline;
+    }
+    #wholesale_page.d-flex {
+        flex-wrap: wrap;
+    }
+    #wholesale_page > div {
+        flex: 1;
+    }
+    #wholesale_page .login-panel {
+        min-width: 300px;
+        max-width: 350px;
+    }
+    #wholesale_page .signup-panel {
+        min-width: 444px;
+    }
+    .login_form input.btn {
+        width: 100%;
+        {% comment %} border-radius: 0px !important; {% endcomment %}
+        height: 45px;
+        font-weight: bold !important;
+    }
+    .wholesale-form .loggedin {
+        font-size: clamp(14px, 2.5vw, 42px);
+    }
+    .login-form .login_container {
+        min-width: 280px;
+    }
+    #wholesale_page input, #wholesale_page textarea {
+        font-weight: 600;
+    }
+    #wholesale_page input::placeholder, #wholesale_page textarea::placeholder {
+        font-weight: var(--input-weight)
+    }
+    #CustomerLoginForm h1 {
+        text-transform: capitalize;
+    }
+
+    @media (max-width: 767px) {
+        #wholesale_page .signup-panel {
+            border-top: 1px solid var(--theme5);
+            border-left: 0px !important;
+            padding-top: 40px;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            min-width: 300px;
+        }
+    }
+</style>
+<script>
+    theme.AssetsLoader.require('scripts', 'customers_login');
+</script>
+
+{% schema %}
+{
+    "name": "Wholesale form",
+    "settings": [
+        {
+            "type": "textarea",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_input_label",
+            "label": "Show input label",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_phone_input",
+            "label": "Show Phone Input",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "button_type",
+            "label": "Button type",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "invert",
+                "label": "Invert"
+              }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "HubSpot Form"
+        },
+        {
+            "type": "select",
+            "id": "hubspot_form",
+            "label": "HubSpot Form Linking or Substituting",
+            "default": "shopify",
+            "options": [
+              {
+                "value": "shopify",
+                "label": "Standard (Shopify Form & Email)"
+              },
+              {
+                "value": "hubspot_form",
+                "label": "Substitute HubSpot Form"
+              },
+              {
+                "value": "hubspot_api",
+                "label": "Send Shopify Form Data to HubSpot"
+              }
+            ]
+        },
+        {
+            "type": "text",
+            "id": "hubspot_portalid",
+            "label": "HubSpot PortalId",
+            "info": "Visit the form in HubSpot. View the URL: https://app.hubspot.com/submissions/{ PortalId }/form/{ FormId }/performance"
+        },
+        {
+            "type": "text",
+            "id": "hubspot_formid",
+            "label": "HubSpot FormId",
+            "info": "Visit the form in HubSpot. View the URL: https://app.hubspot.com/submissions/{ PortalId }/form/{ FormId }/performance"
+        },
+        {
+            "type": "text",
+            "id": "customization_class",
+            "label": "Customization class",
+            "info": "[See documentation for adding extra classes](https:\/\/mpthemes.net\/shella-shopify-theme\/documentation\/)"
+            }
+    ],
+    "presets": [
+        {
+            "name": "wholesale form",
+            "category": "3) Static content"
+        }
+    ]
+}
+{% endschema %}

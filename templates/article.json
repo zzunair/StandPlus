@@ -1,0 +1,184 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "16542012657356e2f4": {
+      "type": "home-builder",
+      "blocks": {
+        "bfb3a9f4-e01e-4b74-a5b6-c80240331919": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/STAND_Blog_Header.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "",
+            "text_line_2": "",
+            "text_line_3": "",
+            "style": "1",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-1-2",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "#ffffff",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "bfb3a9f4-e01e-4b74-a5b6-c80240331919"
+      ],
+      "settings": {
+        "title": "",
+        "container": "fullwidth",
+        "size_of_columns": "1",
+        "size_of_columns_mobile": "1",
+        "margins_for_columns": "none",
+        "align_of_columns": "top_center",
+        "disable_column_paddings": false,
+        "precedence": "",
+        "customization_class": "blog_header",
+        "url": ""
+      }
+    },
+    "16542012088298a264": {
+      "type": "blog-tags",
+      "settings": {
+        "allcaps": true,
+        "bold": true,
+        "color": "",
+        "selected_bold": true,
+        "selected_color": "rgba(0,0,0,0)",
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "background_color": "#f9f9f9",
+        "border_thickness": 1.4,
+        "border_color": ""
+      }
+    },
+    "main": {
+      "type": "main-article",
+      "blocks": {
+        "featured_AVLimt": {
+          "type": "featured",
+          "settings": {
+            "title": "",
+            "collection": "",
+            "product": "antigrav1",
+            "image": "shopify://shop_images/AG1_Collection_no_text.jpg",
+            "button_text": "Shop AntiGrav1",
+            "show_border": true
+          }
+        },
+        "featured_GTgFdM": {
+          "type": "featured",
+          "settings": {
+            "title": "",
+            "collection": "",
+            "product": "antigrav2",
+            "image": "shopify://shop_images/AG2_Snow_Reflection.jpg",
+            "button_text": "Shop AntiGrav2",
+            "show_border": true
+          }
+        },
+        "a63d359a-2718-4393-91a8-ba01c698578a": {
+          "type": "featured",
+          "settings": {
+            "title": "",
+            "collection": "",
+            "product": "frontline",
+            "image": "shopify://shop_images/frontline_colors.jpg",
+            "button_text": "Shop Frontline",
+            "show_border": false
+          }
+        },
+        "4d7cd286-c301-4120-8465-4df422cbb1d6": {
+          "type": "featured",
+          "settings": {
+            "title": "",
+            "collection": "",
+            "product": "pro-line",
+            "image": "shopify://shop_images/Lightweight_Durable_Support.jpg",
+            "button_text": "Shop Pro Line",
+            "show_border": false
+          }
+        },
+        "c3202578-c2a0-49b8-bfec-193e22ed98a5": {
+          "type": "subscription",
+          "settings": {
+            "title": "SUBSCRIPTION",
+            "show_border": false,
+            "paragraph": "Sign up for Gales updates to receive information about new arrivals, future events and specials.",
+            "button_text": "SUBSCRIBE!",
+            "placeholder": "Enter Your Email Here"
+          }
+        }
+      },
+      "block_order": [
+        "featured_AVLimt",
+        "featured_GTgFdM",
+        "a63d359a-2718-4393-91a8-ba01c698578a",
+        "4d7cd286-c301-4120-8465-4df422cbb1d6",
+        "c3202578-c2a0-49b8-bfec-193e22ed98a5"
+      ],
+      "settings": {
+        "show_information": false,
+        "show_image": true,
+        "show_content": true,
+        "show_tags": true,
+        "show_social_share_buttons": true,
+        "social_share_buttons_type": "1",
+        "show_navigation": true,
+        "show_comments": false,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true
+      }
+    }
+  },
+  "order": [
+    "16542012657356e2f4",
+    "16542012088298a264",
+    "main"
+  ]
+}

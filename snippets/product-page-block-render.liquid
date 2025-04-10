@@ -1,0 +1,9 @@
+<!--- snippets/product-page-block-render.liquid -->
+{% for block in blocks %}
+  {%- if block.type == "sidebar_custom_html" and block.settings.location == custom_block_location -%}
+    {%- assign fl_index = custom_block_location | append: '_' | append: forloop.index -%}
+    <div class="mt-0">
+      {% render 'custom-html-block' with block: block, fl_index: fl_index %}
+    </div>
+  {%- endif -%}
+{% endfor %}

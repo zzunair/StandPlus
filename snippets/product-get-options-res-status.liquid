@@ -1,0 +1,75 @@
+{%- assign disabled_value = true -%}
+{%- assign active_value = false -%}
+{%- assign downvalue = value | handleize | remove: "-" -%}
+{% comment %} <div>settings.product_hide_options_without_availability_variants: {{ settings.product_hide_options_without_availability_variants }}</div> {% endcomment %}
+{%- if settings.product_hide_options_without_availability_variants -%}
+    {%- assign hidden_value = false -%}
+{%- else -%}
+    {%- assign hidden_value = true -%}
+{% endif %}
+{% comment %} <div> hidden_value: {{ hidden_value }} </div> {% endcomment %}
+{% comment %} <div> value: {{ value }} </div> {% endcomment %}
+{%- for variant in cpv -%}
+    {% comment %} <div>variant: {{variant.id}} {{variant.available}} {{ variant.option1 }} {{ variant.option2 }} </div> {% endcomment %}
+    {%- if variant.available != true and settings.product_hide_options_without_availability_variants -%}
+        {%- continue -%}
+    {%- endif -%}
+    {%- if option_index0 == 0 and value == variant.option1 -%}
+        {%- assign disabled_value = false -%}
+        {%- if settings.product_hide_options_without_availability_variants -%}
+            {%- break -%}
+        {%- elsif variant.available -%}
+            {%- assign hidden_value = false -%}
+            {%- break -%}
+        {% endif %}
+    {%- elsif option_index0 == 1 and current_variant.option1 == variant.option1 and value == variant.option2 -%}
+        {%- assign disabled_value = false -%}
+        {%- if settings.product_hide_options_without_availability_variants -%}
+            {%- break -%}
+        {%- elsif variant.available -%}
+            {%- assign hidden_value = false -%}
+            {%- break -%}
+        {% endif %}
+    {%- elsif option_index0 == 2 and current_variant.option1 == variant.option1 and current_variant.option2 == variant.option2 and value == variant.option3 -%}
+        {%- assign disabled_value = false -%}
+        {%- if settings.product_hide_options_without_availability_variants -%}
+            {%- break -%}
+        {%- elsif variant.available -%}
+            {%- assign hidden_value = false -%}
+            {%- break -%}
+        {% endif %}
+    {%- endif -%}
+{%- endfor -%}
+{% comment %} <div>disabled_value: {{ disabled_value }}</div><br> {% endcomment %}
+{%- assign disabled_value = false -%}
+{%- unless disabled_value == true -%}
+    {% comment %} <div>product.options: {{ product.options }}</div><br> {% endcomment %}
+    {% comment %} <div>option.name: {{ option.name }}</div><br> {% endcomment %}
+    {% comment %} <div>mpo: {{ mpo }}</div><br> {% endcomment %}
+    {%- liquid
+        if product.options contains option.name
+            assign pvas = settings.product_variant_auto_select
+
+            if option_index0 == 0
+                if url_color
+                    if url_color == downvalue
+                        assign active_value = true
+                    endif
+                elsif current_variant.option1 == value
+                    assign active_value = true
+                endif
+            elsif option_index0 == 1 and current_variant.option2 == value
+                if pvas == "enable" or pvas == "first_n_second"
+                    assign active_value = true
+                endif
+            elsif option_index0 == 2 and current_variant.option3 == value
+                assign active_value = true
+            endif
+
+            if active_value
+                assign label_value = value | replace: '<', '&lt;' | replace: '>', '&gt;'
+            endif
+        endif 
+    -%}
+{%- endunless -%}
+{% capture trigger_attr %}{% if trigger %} data-js-trigger="{{ trigger }}-{% render 'product-get-options-strip-symbols' with value: option.name %}-{% render 'product-get-options-strip-symbols' with value: value %}"{% elsif trigger_id %} data-js-trigger-id="{{ trigger_id }}-{% render 'product-get-options-strip-symbols' with value: option.name %}-{% render 'product-get-options-strip-symbols' with value: value %}"{% endif %}{% endcapture %}

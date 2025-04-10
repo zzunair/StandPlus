@@ -1,0 +1,53 @@
+<div class="sizeguide-switch d-none">
+    <label class="toggle">
+      <span class="toggle-label">Inches</span>
+      <input class="toggle-checkbox" type="checkbox">
+      <div class="toggle-switch"></div>
+      <span class="toggle-label">mm</span>
+    </label>
+    <div class="sizeguide-checkbox">
+      <input type="checkbox">
+      <label class="checkbox-label">Show Width</label>
+    </div>
+</div>
+
+<script>
+    const sgswitch = document.querySelector(".sizeguide-switch");
+    const sizeguideSwitchLoc = document.querySelector("#sizeguide-switch-loc");
+    sizeguideSwitchLoc.appendChild(sgswitch);
+    sgswitch.classList.remove("d-none");
+
+    const toggle = document.querySelector("input.toggle-checkbox");
+    const checkbox = document.querySelector(".sizeguide-checkbox input")
+    const table = document.querySelectorAll("table.sizeguide");
+
+    toggle.addEventListener('change', function() {
+      if (this.checked) {
+        console.log("mm selected");
+        table.forEach(t => {
+            t.classList.remove("sizeguide-hide-mm");
+            t.classList.add("sizeguide-hide-in");
+        })
+      } else {
+        console.log("inches selected");
+        table.forEach(t => {
+            t.classList.add("sizeguide-hide-mm");
+            t.classList.remove("sizeguide-hide-in");
+        })
+      }
+    });
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        console.log("show width checked");
+        table.forEach(t => {
+            t.classList.remove("sizeguide-hide-width");
+        })
+      } else {
+        console.log("show width unchecked");
+        table.forEach(t => {
+            t.classList.add("sizeguide-hide-width");
+        })
+      }
+    });
+    
+</script>

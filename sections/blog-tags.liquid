@@ -1,0 +1,134 @@
+<div data-section-id="{{ section.id }}" data-section-type="blog-tags"{% render 'layout-get-container-class' %}>
+      <ul class="blog-tags list-unstyled">
+        <li>
+          <a {% unless request.path contains 'tagged' %}class="selected"{% endunless %}
+            href="{{ blog.url }}">{{ 'blogs.article.all_posts' | t }}</a>
+        </li>
+        {%- for tag in blog.all_tags -%}
+          {% assign cleantag  = tag | handle %}
+          <li>
+            <a {% if request.path contains cleantag %}class="selected"{% endif %}
+              href="{{ blog.url }}/tagged/{{ cleantag }}">{{ tag }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+</div>
+
+<style>
+    .blog-tags li {
+        display: inline-block;
+        padding: 0 20px;
+        white-space: nowrap;
+      }
+    .blog-tags {
+        text-align: center;
+        padding: {{ section.settings.padding_top }}px 0px {{ section.settings.padding_bottom }}px 0px;
+        {% unless section.settings.background_color == blank or section.settings.background_color == "rgba(0,0,0,0)" %}background: {{ section.settings.background_color }};{% endunless %}
+        {% if section.settings.allcaps %}text-transform: uppercase;{% endif %}
+        {% if section.settings.bold %}font-weight: bold;{% endif %}
+        {% if section.settings.border_thickness > 0 %}
+            border-bottom: {{ section.settings.border_thickness }}px solid;
+            {%- if section.settings.border_color == blank or section.settings.border_color == "rgba(0,0,0,0)" -%}
+                border-bottom-color: var(--theme);
+            {%- else -%}
+                border-bottom-color: {{ section.settings.border_color }};
+            {%- endif -%}
+        {% endif %}
+      }
+      {% unless section.settings.color == blank or section.settings.color == "rgba(0,0,0,0)" %}
+    .blog-tags li a {
+          color: {{section.settings.color}};
+        }
+      {% endunless %}
+    .blog-tags li a.selected {
+        {% unless section.settings.selected_color == blank or section.settings.selected_color == "rgba(0,0,0,0)" %}
+          color: {{section.settings.selected_color}};
+        {% endunless %}
+        {% if section.settings.selected_bold %}font-weight: bold;{% endif %}
+      }
+</style>
+{% schema %}
+{
+    "name": "Blog Tags",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "allcaps",
+            "label": "All CAPITALIZED",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "bold",
+            "label": "Bold",
+            "default": true
+          },
+          {
+            "type": "color",
+            "id": "color",
+            "label": "Color",
+            "info": "leave blank for theme default"
+          },
+          {
+            "type": "checkbox",
+            "id": "selected_bold",
+            "label": "Selected Tag Bold",
+            "default": true
+          },
+          {
+            "type": "color",
+            "id": "selected_color",
+            "label": "Selected Tag Color",
+            "info": "leave blank for theme default"
+          },
+          {
+            "type": "range",
+            "id": "padding_top",
+            "label": "Padding Above Tag Row",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 20
+          },
+          {
+            "type": "range",
+            "id": "padding_bottom",
+            "label": "Padding Below Tag Row",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 20
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "info": "leave blank for theme default"
+          },
+          {
+            "type": "range",
+            "id": "border_thickness",
+            "label": "Border Thickness",
+            "min": 0,
+            "max": 5,
+            "step": 0.1,
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "color",
+            "id": "border_color",
+            "label": "Border Color",
+            "info": "leave blank for theme default"
+          }
+    ],
+    "presets": [
+            {
+                "name": "Blog Tags Row",
+                "category": "1) Main building sections"
+            }
+        ]
+    }
+{% endschema %}

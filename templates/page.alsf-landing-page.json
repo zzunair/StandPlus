@@ -1,0 +1,253 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": true,
+        "show_content": true
+      }
+    },
+    "c77fd5a3-e3db-4c9f-859d-63448eaabc3a": {
+      "type": "er-alsf-top-bar",
+      "settings": {
+        "logo": "shopify://shop_images/gales_logo_white.svg",
+        "bg_color": "#00b0b9"
+      }
+    },
+    "9d4f6bc5-86ad-4264-8c03-2ab6cf810be8": {
+      "type": "er-alsf-hero",
+      "blocks": {
+        "240ad824-8fc2-4e93-9c6a-913e2a4a5d2e": {
+          "type": "property",
+          "settings": {
+            "name": "Portion Donated"
+          }
+        },
+        "74151daf-19b0-4401-8323-7833847a4c81": {
+          "type": "property",
+          "settings": {
+            "name": "Limited Edition"
+          }
+        },
+        "7ada3802-2ac1-48ec-92ce-87fd626962ea": {
+          "type": "property",
+          "settings": {
+            "name": "Exclusive Color"
+          }
+        }
+      },
+      "block_order": [
+        "240ad824-8fc2-4e93-9c6a-913e2a4a5d2e",
+        "74151daf-19b0-4401-8323-7833847a4c81",
+        "7ada3802-2ac1-48ec-92ce-87fd626962ea"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/ALSF_logo.png",
+        "big_image": "shopify://shop_images/ALSF_people.png",
+        "small_image": "shopify://shop_images/ALSF_small_image.png",
+        "left_corner_image": "shopify://shop_images/alsf_corner_lemon_1.png",
+        "right_corner_image": "shopify://shop_images/alsf_corner_lemon_2.png",
+        "title": "Take a stand with Gales®",
+        "description": "Give back with the limited edition Alex’s Lemonade Stand Foundation Shoe. Help us fund impactful research, raise awareness, and support families fighting childhood cancer.",
+        "btn_text": "Shop Now",
+        "btn_url": "#alsf-product-atc"
+      }
+    },
+    "be59bac9-c9d0-4a53-a2f7-64b73d181410": {
+      "type": "er-alsf-product",
+      "settings": {
+        "bg_image": "shopify://shop_images/alsf_lemons_background.png",
+        "product": "pro-line-alexs-lemonade-stand-lemon",
+        "show_fit_selector": true
+      }
+    },
+    "cd186104-3a2c-49e1-8735-704977aa6500": {
+      "type": "er-alsf-about",
+      "settings": {
+        "title": "About Alex’s Lemonade Stand",
+        "content": "<p>When Alex Scott was about to turn 1, she was diagnosed with neuroblastoma, a type of childhood cancer. At the age of 4, determined, courageous, confident Alex decided to raise money for childhood cancer with a front yard lemonade stand.She raised over $2,000.</p><p>After she passed in 2004, her family and supporters around the world continued her legacy and founded Alex’s Lemonade Stand Foundation, a 501(c)(3) non-profit focused on funding innovative and impactful pediatric cancer treatments and cures.</p>",
+        "big_image": "shopify://shop_images/alsf_alex_scott.png",
+        "mid_image": "shopify://shop_images/alsf_one_cup_v2.png",
+        "small_image": "shopify://shop_images/alsf_stand.png"
+      }
+    },
+    "e9effdf3-4642-4526-bd91-2771b7451b08": {
+      "type": "er-alsf-value-props",
+      "blocks": {
+        "3e513fcc-e8e5-4623-ae7a-4adcf901ee5d": {
+          "type": "value_prop",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Cloud-Like_Comfort.png",
+            "name": "SLIP RESISTANT"
+          }
+        },
+        "de1346bc-dbc2-43a9-bea5-5723c606ae00": {
+          "type": "value_prop",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Slip_Resistant_Easy_To_Clean.png",
+            "name": "WATERPROOF + EASY TO CLEAN"
+          }
+        },
+        "07067cae-5fb8-4c3a-a931-05fb8f5df751": {
+          "type": "value_prop",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Wide_width_Breathable.png",
+            "name": "BLEACH FRIENDLY"
+          }
+        },
+        "78513df3-5f9c-4a75-8aa9-91809c00dbc8": {
+          "type": "value_prop",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Eco-Friendly_Impact.png",
+            "name": "Lightweight"
+          }
+        },
+        "01b9464b-18c4-418b-84e7-056343a6dc0d": {
+          "type": "value_prop",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Gives_Back.png",
+            "name": "Gives Back"
+          }
+        },
+        "c53fd844-f580-458d-ace8-dc2364b8bfe7": {
+          "type": "value_prop",
+          "settings": {
+            "image": "shopify://shop_images/alsf_antimicrobial_v2.png",
+            "name": "ANTIMICROBIAL"
+          }
+        }
+      },
+      "block_order": [
+        "3e513fcc-e8e5-4623-ae7a-4adcf901ee5d",
+        "de1346bc-dbc2-43a9-bea5-5723c606ae00",
+        "07067cae-5fb8-4c3a-a931-05fb8f5df751",
+        "78513df3-5f9c-4a75-8aa9-91809c00dbc8",
+        "01b9464b-18c4-418b-84e7-056343a6dc0d",
+        "c53fd844-f580-458d-ace8-dc2364b8bfe7"
+      ],
+      "settings": {
+        "bg_image": "shopify://shop_images/alsf_lemons_background.png"
+      }
+    },
+    "17346432-5c5d-471b-af29-79c6c19332e8": {
+      "type": "er-alsf-details",
+      "blocks": {
+        "6feaefb5-4646-49c5-9e5a-1cd800e2109a": {
+          "type": "detail",
+          "settings": {
+            "name": "CLOUD-LIKE COMFORT",
+            "description": "Ranked #1 in independent lab tests for durability, comfort, fit and pressure reduction, our shoes feature featherlight XL Extralight® technology for all-day comfort."
+          }
+        },
+        "dc2fcb46-47f1-4483-a94d-ccde8793553a": {
+          "type": "detail",
+          "settings": {
+            "name": "SLIP RESISTANT & EASY TO CLEAN",
+            "description": "ASTM F2913 Slip resistant, machine washable, bleach friendly and lace-free, with antimicrobial protection from fungus, bacteria and odor."
+          }
+        },
+        "c5626081-53f5-4aa0-940a-6c53f51353a5": {
+          "type": "detail",
+          "settings": {
+            "name": "WIDE WIDTH & BREATHABLE",
+            "description": "True to size, accommodates wide width, with interior ventilation for increased breathability and circulation while moving."
+          }
+        },
+        "1131fa7c-0fe9-49be-9708-7ee244befad7": {
+          "type": "detail",
+          "settings": {
+            "name": "ECO-FRIENDLY IMPACT",
+            "description": "Produced using clean solar energy and partially recycled materials."
+          }
+        }
+      },
+      "block_order": [
+        "6feaefb5-4646-49c5-9e5a-1cd800e2109a",
+        "dc2fcb46-47f1-4483-a94d-ccde8793553a",
+        "c5626081-53f5-4aa0-940a-6c53f51353a5",
+        "1131fa7c-0fe9-49be-9708-7ee244befad7"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/ALSF_logo.png",
+        "title": "The Best Shoes for Healthcare",
+        "image": "shopify://shop_images/alsf_shoe_v3.jpg",
+        "product": "pro-line",
+        "btn_text": "Shop Now",
+        "btn_url": "#alsf-product-atc"
+      }
+    },
+    "a956a9e2-40b5-42a4-b5d5-8db2a71c6733": {
+      "type": "er-alsf-features",
+      "blocks": {
+        "c8c3b025-108e-4eec-8e27-ff50d950529a": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Breathable_Comfort.png",
+            "name": "Breathable Comfort",
+            "description": "Our newest technology features ridged ventilation outlets strategically placed on the instep to keep your feet feeling cool and dry while reducing moisture penetration from spills and splashes."
+          }
+        },
+        "e88e6d74-1019-47d3-96fa-cffe5ccd13f5": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Wide_Width.png",
+            "name": "Wide Width",
+            "description": "By popular demand, our Pro Lines now comfortably fit wide width feet. If your feet are standard width or narrow, they'll fit you too with a snug instep and plenty of wiggle room for your toes."
+          }
+        },
+        "c05feda8-d5c8-45a7-9b5f-ddf893cd80c2": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Slip_Resistant.png",
+            "name": "Slip Resistant",
+            "description": "Designed for both wet and dry surfaces, our Pro Line soles are specifically built to improve traction and grip in a variety of conditions."
+          }
+        },
+        "ca2ac836-5674-43e1-91ad-c35ab7e242c0": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/alsf_Featherlight_-_XL_Extralight.png",
+            "name": "Featherlight - XL Extralight®",
+            "description": "Comfy on the inside, durable on the outside, our XL Extralight® materials are designed to stand up to the toughness of a long day while keeping your feet feeling like walking on clouds."
+          }
+        }
+      },
+      "block_order": [
+        "c8c3b025-108e-4eec-8e27-ff50d950529a",
+        "e88e6d74-1019-47d3-96fa-cffe5ccd13f5",
+        "c05feda8-d5c8-45a7-9b5f-ddf893cd80c2",
+        "ca2ac836-5674-43e1-91ad-c35ab7e242c0"
+      ],
+      "settings": {
+        "bg_image": "shopify://shop_images/alsf_lemons_background_simple.png"
+      }
+    },
+    "31f16345-0d87-4b5c-a5fb-20ac5ddcb55d": {
+      "type": "er-alsf-judgeme-reviews",
+      "settings": {
+        "product": "pro-line"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "c77fd5a3-e3db-4c9f-859d-63448eaabc3a",
+    "9d4f6bc5-86ad-4264-8c03-2ab6cf810be8",
+    "be59bac9-c9d0-4a53-a2f7-64b73d181410",
+    "cd186104-3a2c-49e1-8735-704977aa6500",
+    "e9effdf3-4642-4526-bd91-2771b7451b08",
+    "17346432-5c5d-471b-af29-79c6c19332e8",
+    "a956a9e2-40b5-42a4-b5d5-8db2a71c6733",
+    "31f16345-0d87-4b5c-a5fb-20ac5ddcb55d"
+  ]
+}

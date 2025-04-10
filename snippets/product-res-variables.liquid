@@ -1,0 +1,297 @@
+<!-- snippets/product-res-variables.liquid -->
+{% liquid    
+    assign show_fit_selector = section.settings.show_fit_selector
+    assign first_variant_mode = "inventory"
+    assign current_variant = product.selected_or_first_available_variant
+    assign select_current_variant_by_id = current_variant.id
+    assign url_cfh = content_for_header | split: '"pageurl":"' | last | split: '"' | first 
+    assign url_collection = url_cfh | split: "\/collections\/" | last | slice: 0 | upcase
+    assign paramsJson = ""
+    assign urlParams = null
+    assign paramsArray = null
+    assign preorderForce = product.metafields.furnace.force_preorder
+
+    if url_cfh contains '?'
+        assign urlParams = url_cfh | split: "?" | last
+        assign paramsArray = urlParams | split: "\u0026"
+        
+        for param in paramsArray
+            assign keyval = param | split: "="
+            assign key = keyval[0] | json
+            assign val = keyval[1] | json
+            assign paramsJson = paramsJson | append: key | append: ' : ' | append: val
+            unless forloop.last 
+                assign paramsJson = paramsJson | append: ", "
+            endunless
+        endfor
+        if urlParams contains "variant="
+            assign url_variant = urlParams | split: "variant=" | last | split: "\u0026" | first | plus: 0
+        endif
+        if urlParams contains "fit="
+            assign url_fit = urlParams | split: "fit=" | last | split: "\u0026" | first | slice: 0 | upcase
+            unless url_fit == "M" or url_fit == "W"
+                assign url_fit = null
+            endunless
+        endif
+        if urlParams contains "color="
+            assign url_color = urlParams | split: "color=" | last | split: "\u0026" | first | url_decode | handleize | remove: "-"
+            assign product_split_option_position = 0
+            assign current_option = url_color | downcase
+        endif
+        if urlParams contains "size="
+            assign url_size = urlParams | split: "size=" | last | split: "\u0026" | first | upcase
+            if url_size contains "M" or url_fit == "M"
+                assign url_fit = "M" 
+                assign url_size_m = url_size | remove: "M" | remove: " " | strip
+                assign url_size_w = url_size_m | plus: 2
+            elsif url_size contains "W" or url_fit == "W"
+                assign url_fit = "W"
+                assign url_size_w = url_size | remove: "W" | remove: " " | strip
+                assign url_size_m = url_size_w | minus: 2
+            endif
+            assign url_size = "W" | append: url_size_w | append: " M" | append: url_size_m
+        endif
+        
+        if urlParams contains "dev"
+            assign url_dev = true
+        endif
+    endif
+    comment
+        cpv = combined product variants: the combined variants of all merged products
+        cpm = combined product media: the combined media of all merged products
+        cpi = combined product images: the combined images of all merged products
+        mph = merge product handle
+    endcomment
+    assign coming_soon = ""
+    assign cpv = null
+    assign cpm = null  
+    assign cpi = null
+    assign merge_list = product.metafields.furnace.product_merge_list | replace: " ", "" | split: ","
+    if merge_list.size == 0
+        assign cpv = product.variants
+        assign cpm = product.media
+        assign cpi = product.images
+        if product.metafields.furnace.config == "coming_soon"
+            assign coming_soon = "allvariants"
+        endif
+    else
+        
+        assign cpm_last = product.media | where: "alt", "all last" 
+        assign cpm = product.media | where: "alt", "all first"
+    endif
+    assign color_found = false
+    for mph in merge_list
+        assign mp = all_products[mph]
+        comment
+        assign metafield = mp.metafields.furnace.config.value
+        echo "<script>"
+        echo 'console.log("config: ' | append: mph | append: '");'
+        echo 'console.log("config: ' | append: mp.title | append: '");'
+        echo "console.log('config: " | append: metafield | append: "');" 
+        echo "</script>" 
+        endcomment
+            
+        if mp.metafields.furnace.config.value contains "coming_soon"
+            assign coming_soon = coming_soon | append: mp.variants[0].option1 | append: ","
+        endif
+        assign cpv = cpv | concat: mp.variants
+        assign cpm = cpm | concat: mp.media
+        assign cpi = cpi | concat: mp.images
+    endfor
+    assign cpm = cpm | concat: cpm_last
+
+
+    for vrnt in cpv 
+        if vrnt.inventory_management == "shopify" and vrnt.inventory_policy == "deny"
+            assign iqty = vrnt.inventory_quantity | at_most: 99
+        else
+            assign iqty = 99
+        endif 
+        assign vi = vrnt.id | append: ':' | append: iqty
+        assign vbis = vrnt.id | append: ':"' | append: vrnt.metafields.furnace.bis_signup | append: '"'
+
+        assign variantInventory = variantInventory | append: vi | append: ","
+        assign variantBis = variantBis | append: vbis | append: ","
+        
+        assign vrnt_color = vrnt.option1 | remove: "/" | remove: " " | remove: "-" | remove: "_" | remove: "+" | strip | downcase
+        assign vrnt_color = vrnt.option1 | handleize | remove: "-"
+        assign all_colors = all_colors | append: vrnt_color | append: ", "
+        if vrnt_color contains url_color
+            assign color_found = true
+        endif
+    endfor
+
+
+    unless color_found 
+        assign url_color = null
+    endunless
+
+    assign current_variant = cpv[0]
+    if url_variant or current_option
+        for pv in cpv
+            assign pv_options = pv.option1 | append: "," | append: pv.option2 | append: "," | append: pv.option3 | downcase | split: ","
+            if url_variant == pv.id or current_option == pv_options[product_split_option_position]
+                assign current_variant = pv
+                assign select_current_variant_by_id = pv.id
+                break
+            endif
+        endfor
+    endif
+
+    assign id = product.id
+    assign title = product.title
+    assign description = product.description
+    assign type = product.type
+    assign vendor = product.vendor
+    assign metafields = product.metafields
+    assign current_variant_id = current_variant.id
+    assign current_variant_metafields = current_variant.metafields
+   
+    if product.metafields.furnace.parent_product 
+        if product.metafields.furnace.parent_product contains "?"
+            assign paramchar = "&"
+        else 
+            assign paramchar = "?"
+        endif
+        assign option1_handle = product.variants[0].option1 | handleize
+        assign first_var_color = paramchar | append: "color=" | append: option1_handle
+        if collection
+            assign fit_letter = collection.handle | slice: 0 | downcase
+            if fit_letter == "m" or fit_letter == "w"
+                assign fit = "&fit=" | append: fit_letter
+            endif
+        endif
+        assign url = "/products/" | append: product.metafields.furnace.parent_product | append: first_var_color | append: fit
+
+    elsif url_without_collection 
+        assign url = product.url
+    else
+        assign url = product.url | within: collection
+    endif
+    if product_split_option and current_option 
+        assign current_option_handle = current_option | handleize
+        assign url = url | append: "?color=" | append: current_option_handle
+    endif
+
+    assign quantity = current_variant.inventory_quantity
+    assign sku = current_variant.sku
+    assign barcode = current_variant.barcode
+    assign price = current_variant.price
+    assign compare_at_price = current_variant.compare_at_price
+
+    comment 
+        scott discount price display: DON'T EDIT HERE. CHANGE SETTING IN DISCOUNT-DISPLAY-ENABLE.LIQUID
+        -- Update discount amounts and skus in metaobject "color_sale": https://admin.shopify.com/store/weargales/content/metaobjects/entries/color_sale
+        -- Enable/Disable discount in file "discount-display-enable.liquid"
+    endcomment
+        include 'discount-display-enable'
+        if discount_display_enable
+            unless product.gift_card? or product.handle == "wholesale-giftable-codes"
+                assign sku_filter = shop.metaobjects.color_sale.saledata.sku_filter | append: ""
+                if sku contains sku_filter 
+                    assign compare_at_price = current_variant.price
+                    assign remainingpercent = 100.00 | minus: shop.metaobjects.color_sale.saledata.discount_percent_off | divided_by: 100
+                    assign price = current_variant.price | times: remainingpercent | ceil
+                endif
+            endunless
+        endif
+
+    assign available = current_variant.available
+    if show_first_product_image
+        assign image = cpi[0]
+        assign hover_image = cpi[1]
+    elsif product.selected_variant.id == product.selected_or_first_available_variant.id and current_variant.image != blank
+        assign image = current_variant.image
+        assign hover_image = null
+    elsif select_current_variant_by_id and current_variant.image != blank
+        assign image = current_variant.image
+        assign hover_image = null
+    elsif cpi[0]
+        assign image = cpi[0]
+        assign hover_image = cpi[1]
+    elsif cpm[0]
+        assign image = cpm[0].preview_image.src
+    else
+        assign image = null
+    endif
+    assign label_hot = current_variant_metafields.labels.hot | default: metafields.labels.hot
+    assign label_new = current_variant_metafields.labels.new | default: metafields.labels.new
+    assign countdown_date = product.metafields.shella.countdown
+    if countdown_date == blank and product.metafields.countdown.date != blank
+        assign countdown_date = product.metafields.countdown.date
+    endif
+    assign select_current_variant_by_id = null
+    if current_variant.inventory_quantity <= 0 and current_variant.inventory_policy == 'continue' and current_variant.available
+        assign variant_pre_order = true
+    else
+        if preorderForce == true and current_variant.inventory_policy == 'continue' and current_variant.available
+            assign variant_pre_order = true
+        else
+            assign variant_pre_order = false
+        endif
+    endif
+%}
+{%- if section.settings.top_description -%}
+    {%- capture descriptions -%}
+        {%- for mph in merge_list -%}
+            {%- assign mp = all_products[mph] -%}
+            <div class="d-none" data-option1='{{ mp.variants[0].option1 | handle | replace: "-", "" }}'>
+                {%- if mp.description != blank -%}
+                    <div class="overflow-hidden">
+                        {% include 'parse-for-icons' content: mp.description %}
+                    </div>
+                {%- endif -%}
+            </div>
+        {% endfor %}
+    {%- endcapture -%}
+{%- endif -%}
+
+<script>
+    {%- if discount_display_enable -%}
+        window.discount_display_enable = {{ discount_display_enable }};
+        window.discount_display = {{ shop.metaobjects.color_sale.saledata | json }}
+        // console.log("discount:", window.discount_display_enable, window.discount_display);
+    {%- endif -%}
+
+    {% if variantInventory %}
+        window.cpvInv = { {{ variantInventory }} };
+        window.cpvBis = { {{ variantBis }} }; 
+    {% endif %}
+    {% comment %} 
+    console.log("urlParams: {{ urlParams }}");
+    window.cpv = {{ cpv | json }};
+    window.paramsJson = { {{ paramsJson }} };
+    window.url_cfh = {{ url_cfh | json }}; 
+    {% endcomment %}
+    {% comment %} console.log("cpv:", window.cpv); {% endcomment %}
+    {% comment %} console.log("inventory_policy: {{ current_variant.inventory_policy }}");
+    console.log("inventory_management: {{ current_variant.inventory_management }}");
+    console.log("inventory_quantity: {{ current_variant.inventory_quantity }}");
+    console.log("available: {{ current_variant.available }}");
+    console.log("variant_pre_order: {{ variant_pre_order }}");  {% endcomment %}
+    {% comment %} console.log('metaobject: {{ shop.metaobjects.color_sale.saledata | json }}');
+    console.log('meta {{ shop.metaobjects.color_sale.saledata.discount_percent_off }}');
+    console.log('meta {{ remainingpercent }}');
+    console.log('meta {{ shop.metaobjects.color_sale.saledata.sku_filter }}  sku: {{ sku }}');
+    console.log('meta {{ shop.metaobjects.color_sale.saledata.sku_filter.size }}');
+    console.log('meta enable: {{ discount_display_enable }}');  {% endcomment %}
+    
+    {% comment %} console.log("product_split_option_position: {{ product_split_option_position }}");
+    console.log("current_option: {{ current_option }}");
+    console.log("pv_options[product_split_option_position]: {{ pv_options[product_split_option_position] }}");
+    console.log("urlParams: {{ urlParams }}");
+    console.log("url_variant: {{ url_variant }}");
+    console.log("url_fit: {{ url_fit }}");
+    console.log("url_color: {{ url_color }}");
+    console.log("current variant: sku: {{ sku }} {{ sku | slice: 0,4 }}");
+    console.log("compare at price: {{ compare_at_price }}");
+    console.log("price: {{ price }}"); {% endcomment %}
+
+    {% comment %} console.log("all_colors: {{ all_colors }}"); {% endcomment %}
+    {% comment %} console.log("coming_soon: {{ coming_soon }}"); {% endcomment %}
+    {% comment %} console.log("url_size: {{ url_size }}"); {% endcomment %}
+    {% comment %} console.log("collection: {{ url_collection }}"); {% endcomment %}
+    {% comment %} console.log("collection: {{ collection.title }}  handle: {{ collection.handle }}");   {% endcomment %}
+    {% comment %} console.log("paramsJson:", paramsJson);  {% endcomment %}
+    
+</script>

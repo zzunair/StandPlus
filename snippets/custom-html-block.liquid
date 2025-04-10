@@ -1,0 +1,57 @@
+<style>
+    .sidebar_{{ fl_index }} .overlay > div > * {
+        color: {{ block.settings.text_color }};
+    }
+    .sidebar_{{ fl_index }} .overlay {
+        padding: {{ block.settings.padding_vert }}px {{ block.settings.padding_horiz }}px;
+        {%- case block.settings.text_align_vert -%}
+            {%- when "middle" -%}
+                top: 50%;
+                transform: translateY(-50%);
+            {%- when "bottom" -%}
+                bottom: 0;
+            {%- else -%}
+                top: 0;
+        {%- endcase -%}
+        text-align: {{ block.settings.text_align_horiz }};
+        width: 100%;
+        z-index: 10;
+        {%- if block.settings.overlay -%}position: absolute;{%- endif -%}
+    }
+</style>
+{% capture sidebar_custom_html %}{% render 'parse-page-html-content' with default_page: 'include-product-sidebar-custom-html' page_content: block.settings.page_content %}{% endcapture %}
+{%- if sidebar_custom_html == blank -%}
+    {% capture sidebar_custom_html %}<div>{{ block.settings.content }}</div>{% endcapture %}
+{%- endif -%}
+{%- if sidebar_custom_html != blank -%}
+    <div class="sidebar_{{ fl_index }} {{ block.settings.customization_class }}{% if block.settings.location == "sidebar" %} col-12 col-md-6 col-xl-12 pb-20 pb-xl-0{% endif %}{% if forloop.index0 > 0 %} mt-30{% endif %}">
+        {%- if block.settings.title != blank -%}
+            <h5 class="mb-10">{{ block.settings.title }}</h5>
+        {%- endif -%}
+        {%- if block.settings.overlay == false -%}
+            {%- capture ruler -%}{% render "icon-theme-078" %}{%- endcapture -%}
+            <div class="overlay">
+                {{ sidebar_custom_html | replace: "[icon:theme-078]", ruler }}
+            </div>
+        {%- endif -%}
+        {%- if block.settings.image != blank -%}
+            {%- if block.settings.image_link != blank -%}
+                <a class="w-100" href="{{ block.settings.image_link }}" style="position: relative;">
+            {%- else -%}
+                <div class="w-100" style="position: relative;">
+            {%- endif -%}
+            {%- if block.settings.overlay -%}
+                <div class="overlay">
+                    {{ sidebar_custom_html }}
+                </div>
+            {%- endif -%}
+            {% comment %} {{ block.settings.image | image_url: width: 500 | image_tag }} {% endcomment %}
+            {% render 'rimage' with image: block.settings.image size: image_size format: 'pjpg' image_class: 'article-sidebar-feature' %}
+            {%- if block.settings.image_link != blank -%}
+                </a>
+            {%- else -%}
+                </div>        
+            {%- endif -%}
+        {%- endif -%}
+    </div>
+{%- endif -%}

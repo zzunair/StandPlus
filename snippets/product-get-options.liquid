@@ -1,0 +1,517 @@
+<!-- snippets/product-get-options.liquid -->
+{%- unless product.has_only_default_variant -%}
+    {%- capture image_size_placeholder -%}_{width}x.{%- endcapture -%}
+    {%- assign options_type_circle_color = settings.product_options_type_circle_color | split: '|' | handleize -%}
+    {%- assign options_type_circle_image = settings.product_options_type_circle_image | split: '|' | handleize -%}
+    {%- assign options_type_square_image = settings.product_options_type_square_image | split: '|' | handleize -%}
+    {%- assign options_type_square_color = settings.product_options_type_square_color | split: '|' | handleize -%}
+    {%- assign options_type_select = settings.product_options_type_select | split: '|' | handleize -%}
+    {%- assign options_type_large_text = settings.product_options_type_large_text | split: '|' | handleize -%}
+    {%- assign auto_selected_options = settings.product_auto_selected_options | split: '|' | handleize -%}
+    {%- assign options_show_title = options_show_title | default: false -%}
+    {%- assign options_type = options_type | default: 1 -%}
+    {%- capture options_type_class -%}
+        {%- case options_type -%}
+        {%- when 1 -%}product-options--type-collection
+        {%- when 2 -%}product-options--type-page
+        {%- when 3 -%}product-options--type-footbar
+        {%- endcase -%}
+    {%- endcapture -%}
+    <a class="quick-view-close d-none"
+        onclick='QuickViewClose(event)'>
+        <span></span><i>{% render 'icon-theme-164' %}</i>
+    </a>
+
+    <div class="product-options {{ options_type_class }}{% if centered %} product-options--centered{% endif %}{% if mobile_centered %} product-options--mobile-centered{% endif %}{% if mobile_start %} product-options--mobile-start{% endif %}{% unless trigger %} js-product-options{% endunless %}" data-js-product-options{% if options_type == 1 and settings.product_variant_change_on_hover %} data-js-options-onhover{% endif %}{% if change_history %} data-js-change-history{% endif %}>
+        {%- if section.settings.show_selected_style -%}
+            <style>
+                .desktop-product-title-price .product-page-info__price {
+                    display: none;
+                }
+            </style>
+            <div class="option-style">
+                <div class="option-label d-flex">
+                    <label>
+                        <span>Style:</span> 
+                        <span class="ml-5" data-label-value="">Pro Line</span><span> - </span>{% include 'price-info' %}
+                    </label>
+                </div>
+            </div>
+        {%- endif -%}
+        {%- assign options_limit = 3 -%}
+        {%- if options_type == 1 and settings.product_options_listing_visibility != 'all' -%}
+            {%- assign options_limit = settings.product_options_listing_visibility | abs -%}
+            {%- assign enable_select_options_button = false -%}
+            {%- assign options_with_values_size = product.options_with_values | size -%}
+            {%- if options_with_values_size > options_limit -%}
+                {%- assign enable_select_options_button = true -%}
+            {%- endif -%}
+        {%- endif -%}
+        {%- comment -%} <div>Product:  {{ product | json }}</div> {%- endcomment -%}
+        {%- for option in product.options_with_values -%}
+            {%- liquid
+                assign option_index0 = forloop.index0
+                assign firstoption = option.values | first
+                assign mov = [""]
+                assign limitedEdition = ""
+                assign newOption = ""
+                unless firstoption == "*none*"
+                    assign mov = option.values
+                    assign limitedEdition = product.metafields.furnace.limited_edition | append: ","
+                    assign newOption = product.metafields.labels.new | append: ","
+                endunless
+                for mph in merge_list
+                    assign mpov = all_products[mph].options_with_values[option_index0].values
+                    if mpov.size > 0 
+                        assign limitedEdition = limitedEdition | append: all_products[mph].metafields.furnace.limited_edition | append: ","
+                        assign newOption = newOption | append: all_products[mph].metafields.labels.new | append: ","
+                        assign mov = mov | concat: mpov | uniq
+                    endif
+                   comment 
+                    echo "<br>merge " | append: option.name | append: " options for " | append: mph | append: ": " | append: mpov
+                   endcomment
+                endfor
+                assign limitedEdition = limitedEdition | split: ","
+                assign newOption = newOption | split: ","
+                comment
+                    echo "<br>newOption: " | append: newOption
+                    echo "<br>merged options: " | append: mov
+                    echo "<br>limited edition: " | append: limitedEdition
+                endcomment
+            -%}
+            {%- capture option_name -%}
+                {%- render 'product-get-options-strip-symbols' with value: option.name -%}
+            {%- endcapture -%}
+            {% comment %} <div>Option {{ forloop.index0 }}:  {{option_name}} -- {{ option | json }}</div>  {% endcomment %}
+            {%- assign label_value = null -%}
+            {% comment %} <div>{{ option.name }}: {{ option.values.size }}</div>
+            <div>{{ option.name }}: {{ option | json }}</div> {% endcomment %}
+            {%- if option.values.size > 0 or firstoption == "*none*" -%}
+                {%- capture option_section_html -%}
+                <!--- capturing option_section html --->
+                    {%- assign option_index0 = forloop.index0 -%}
+                    {%- assign hide_option = "" -%}
+                    {% if forloop.index > options_limit %}
+                        {% assign hide_option = "d-none" %}
+                    {%- elsif option.values.size == 1 and firstoption != "*none*" -%}
+                        {% assign hide_option = "d-none" %}
+                    {%- endif -%}
+                    <div data-section-container class="option-{{ option.name | downcase }} {{ hide_option }}">
+                        {%- assign clear_name = option.name | handleize -%}
+                        {% if clear_name == "size" and show_coming_soon %}
+                            <div class="coming_soon d-none">
+                                <div class="klaviyo-form-TdkHLV"></div>
+                            </div>
+                        {% endif %}
+                        {%- if clear_name == "size" -%}
+                            {%- assign fit_sel_val = "Select" -%}
+                        {%- endif -%}
+                        {%- if show_fit_selector and clear_name == "size" -%}
+                            {%- liquid 
+                                if url_fit == "M" 
+                                    assign m_active = "active"
+                                    assign fit_sel_val = "Mens"
+                                else
+                                    assign w_active = "active"
+                                    assign fit_sel_val = "Womens"
+                                endif
+                            -%}
+                        {%- endif -%}
+                        <div class="option-label d-flex" aria-label="Selected {{ option.name }}">
+                            <label {% unless options_show_title %} class="d-none"{% endunless %}>
+                                <span>{{ option.name }}:</span> 
+                                <span class="ml-5" data-label-value>{{ fit_sel_val }}</span>
+                            </label>
+                            {% comment %} inserted 'false' below to disable display of size guide link in this location (above size selector). 
+                                            But enabled in setttings so that size guide POPUP can be displayed {% endcomment %}
+                            {%- if false and settings.product_info_show_size_guide and clear_name == "size" -%}
+                                <span class="size-link h6 mb-0 js-popup-button" data-js-popup-button="size-guide">{%- if product_popup_buttons_show_icon -%}<i class="mr-8">{%- include 'icon-theme-078' -%}</i>{%- endif -%}<span>{{ 'products.product.size_guide' | t }}</span></span>
+                            {%- endif -%} 
+                        </div>
+                        {%- if show_fit_selector and clear_name == "size" -%}
+                            <input type="hidden" id="size_attribute" name="properties[Size]" value="{{ fit_sel_val }}">
+                            <div class="options-container" data-fit="fit">
+                                <div class="product-options__value product-options__fit product-options__value--large-text cursor-pointer {{ w_active }}" data-js-option-fit="" data-code="unisex-W" data-value="womens">Womens</div>
+                                <div class="product-options__value product-options__fit product-options__value--large-text cursor-pointer {{ m_active }}" data-js-option-fit="" data-code="unisex-M" data-value="mens">Mens</div>
+                            </div>
+                        {%- endif -%}
+                        {%- if product.metafields.furnace.estshipdate != blank -%}
+                            <input type="hidden" id="preorder_ship_date" name="properties[Pre-order]" value="{{ product.metafields.furnace.estshipdate }}">
+                        {%- endif -%}
+                        {%- if product.selected_variant.id == blank and settings.product_variant_auto_select != 'enable' -%}
+                            {%- assign disable_auto_select = false -%}
+                            {%- if settings.product_variant_auto_select == 'disable' -%}
+                                {%- assign disable_auto_select = true -%}
+                            {%- elsif settings.product_variant_auto_select == 'first' and forloop.index != 1 -%}
+                                {%- assign disable_auto_select = true -%}
+                            {%- elsif settings.product_variant_auto_select == 'first_n_second' and forloop.index != 1 and forloop.index != 2 -%}
+                                {%- assign disable_auto_select = true -%}
+                            {%- endif -%}
+                            {%- if auto_selected_options contains clear_name -%}
+                                {%- assign disable_auto_select = false -%}
+                            {%- endif -%}
+                        {%- endif -%}
+                        {%- if disable_auto_select -%}
+                            {%- assign enable_select_variant_button = true -%}
+                        {%- endif -%}
+                        {%- if options_type_circle_color contains clear_name -%}
+                            {%- comment -%} <div>Inside options_type_circle_color: {{ mov }}</div> {%- endcomment -%}
+                            <div class="product-options__section d-flex flex-wrap px-2" data-style="color" data-property="{{ option_name }}"{% if disable_auto_select %} data-disable-auto-select{% endif %}>
+                                {%- assign producttitle = product.title | downcase -%}
+                                {%- if producttitle == "antigrav2" -%}
+                                    {%- assign ag2 = true -%}
+                                {%- endif -%}
+                                {%- for value in mov -%}
+                                    {%- capture inputId -%}
+                                        {% render 'product-get-options-strip-symbols' with value: value -%}
+                                    {%- endcapture -%}
+                                    <div>option value: {{ value }}</div>
+                                    {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                    {%- assign std-colors = value | handleize | split: "-" -%}
+                                    {% comment %} <div>std-colors: {{ std-colors | json }}</div> {% endcomment %}
+                                    {%- if std-colors.size == 1 -%}
+                                        {%- assign colors-class1 = "standard-color-" | append: value | handleize -%}
+                                        {%- assign colors-class2 = "" -%}
+                                        {%- if ag2 == true -%}
+                                            {%- assign colors-class2 = "second-color-black" -%}
+                                        {%- endif -%}
+                                    {%- else -%}
+                                        {%- if std-colors[0] == "nurse" -%}
+                                            {%- assign colors-class1 = "standard-color-" | append: std-colors[2] | handleize -%}
+                                            {%- assign colors-class2 = "second-color-" | append: std-colors[3] | handleize -%}
+                                        {%- elsif std-colors[0] == "alexs" -%}
+                                            {%- assign colors-class1 = "standard-color-" | append: std-colors[3] | handleize -%}
+                                            {%- assign colors-class2 = "second-color-white" -%}
+                                        {%- else -%}        
+                                            {%- assign colors-class1 = "standard-color-" | append: std-colors[0] | handleize -%}
+                                            {%- assign colors-class2 = "second-color-" | append: std-colors[1] | handleize -%}
+                                        {%- endif -%} 
+                                    {%- endif -%}
+                                    <div class="product-options__value product-options__value--circle {{ colors-class1 }} {{ colors-class2 }} rounded-circle text-hide cursor-pointer{% if disabled_value %} disabled{% elsif hidden_value %} disabled-hidden{% endif %}{% if active_value %} active{% endif %}"
+                                        data-js-option-value
+                                        data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}"
+                                        {{ trigger_attr }}
+                                        data-scale="2"
+                                        {%- if settings.tooltips_enable and product_option_enable_tooltips -%}
+                                            data-js-tooltip
+                                            data-tippy-content="{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}"
+                                            data-tippy-placement="top"
+                                            data-tippy-distance="6"
+                                        {%- endif -%}
+                                    >
+                                        <input id="{{ inputId }}" name={{ option_name }} type="radio">
+                                        <label for="{{ inputId }}">{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}</label>
+                                        <span></span>
+                                        <div class="plus-mask">
+                                            <svg width="38" height="38" version="1.1" viewBox="0 0 78.396 78.396" xmlns="http://www.w3.org/2000/svg">
+                                                <defs>
+                                                    <mask id="mask-powermask-path-effect2244" maskUnits="userSpaceOnUse">
+                                                        <path id="mask-powermask-path-effect2244_box" d="m-1-0.99997h80.396v80.396h-80.396z" fill="#fff"/>
+                                                        <g transform="matrix(1.0131 0 0 1.0075 -3.3223 -160.44)" style="">
+                                                            <path d="m52.934 163.82-21.648 4.1927v20.599h-23.455v19.07h23.455l21.654-19.07v-24.791z"/>
+                                                            <path d="m31 207.68v24.795l21.654-4.1928v-20.602h23.458v-19.07h-23.458z"/>
+                                                        </g>
+                                                    </mask>
+                                                </defs>
+                                                <g>
+                                                    <path x="5e-07" y="2.8220222e-05" width="78.396286" height="78.396286" d="m5e-7 2.822e-5h78.396v78.396h-78.396z" fill="#fff" mask="url(#mask-powermask-path-effect2244)" stroke-width="0"/>
+                                                </g>
+                                                <g transform="translate(-2.9501 -158.8)">
+                                                    <path d="m52.937 163.81-21.587 4.1706v20.49h-23.39v18.969h23.39v24.664l21.593-4.1706v-20.493h23.393v-18.969h-23.393v-24.66z" fill="none" stroke="#333" stroke-miterlimit="10" stroke-width=".79641"/>
+                                                </g>
+                                            </svg>                                                
+                                        </div>
+                                    </div>
+                                {%- endfor -%}
+                            </div>
+                        {%- elsif options_type_circle_image contains clear_name -%}
+                            <div class="product-options__section d-flex flex-wrap px-2" data-style="circle-image" data-property="{{ option_name }}"{% if disable_auto_select %} data-disable-auto-select{% endif %}>
+                                {%- for value in mov -%}
+                                    {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                    {%- include 'product-get-options-res-image' -%}
+                                    <div class="product-options__value product-options__value--circle rounded-circle text-hide cursor-pointer{% if disabled_value %} disabled{% elsif hidden_value %} disabled-hidden{% endif %}{% if active_value %} active{% endif %} lazyload"
+                                        data-js-option-value
+                                        data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}"
+                                        {{ trigger_attr }}
+                                        {% if settings.product_format_pjpg %}
+                                            data-master="{{ option_image | img_url: '1x1', format: 'pjpg' | replace: '_1x1.', image_size_placeholder }}"
+                                            data-bg="{{ option_image | img_url: '48x', format: 'pjpg' }}"
+                                        {% else %}
+                                            data-master="{{ option_image | img_url: '1x1' | replace: '_1x1.', image_size_placeholder }}"
+                                            data-bg="{{ option_image | img_url: '48x' }}"
+                                        {% endif %} 
+                                            data-scale="2" 
+                                        {% if settings.tooltips_enable and product_option_enable_tooltips %}
+                                            data-js-tooltip
+                                            data-tippy-content="{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}"
+                                            data-tippy-placement="top"
+                                            data-tippy-distance="6"
+                                        {% endif -%}
+                                    >
+                                        <input id="{{ inputId }}" name={{ option_name }} type="radio">
+                                        <label for="{{ inputId }}">{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}</label>
+                                        <span></span>
+                                    </div>
+                                {%- endfor -%}
+                            </div>
+                        {%- elsif options_type_square_color contains clear_name -%}
+                            <div class="product-options__section d-flex flex-wrap" data-style="image" data-property="{{ option_name }}"{% if disable_auto_select %} data-disable-auto-select{% endif %}>
+                                {%- for value in mov -%}
+                                    {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                    <div class="product-options__value product-options__value--square standard-color-{{ value | handleize }} text-hide cursor-pointer{% if disabled_value %} disabled{% elsif hidden_value %} disabled-hidden{% endif %}{% if active_value %} active{% endif %}"
+                                        data-js-option-value
+                                        data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}"
+                                        {{ trigger_attr }}
+                                        data-scale="2"
+                                        {%- if settings.tooltips_enable and product_option_enable_tooltips -%}
+                                            data-js-tooltip
+                                            data-tippy-content="{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}"
+                                            data-tippy-placement="top"
+                                            data-tippy-distance="6"
+                                        {%- endif -%}
+                                    >{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}<span></span>
+                                </div>
+                                {%- endfor -%}
+                            </div>
+                        {%- elsif options_type_square_image contains clear_name -%}
+                            <!-- product options: color (with images) --->
+                            <div class="product-options__section d-flex flex-wrap" data-style="image" data-property="{{ option_name }}"{% if disable_auto_select %} data-disable-auto-select{% endif %}>
+                                <label class="color_options_heading"><h3 class="h3-unset">{{ 'products.product.color_options_core' | t }}</h3></label>
+                                <div class="options-container">
+                                {%- for value in mov -%}
+                                    {%- if limitedEdition[forloop.index0] <> "true" -%}
+                                        {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                        {%- include 'product-get-options-res-image' -%}
+                                        <div class="product-options__value product-options__value--square text-hide cursor-pointer{% if disabled_value %} disabled{% elsif hidden_value %} disabled-hidden{% endif %}{% if active_value %} active{% endif %} lazyload"
+                                            data-js-option-value 
+                                            data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}"
+                                            {{ trigger_attr }}
+                                                {%- if settings.product_format_pjpg -%}
+                                                    data-master="{{ option_image | img_url: '1x1', format: 'pjpg' | replace: '_1x1.', image_size_placeholder }}"
+                                                    data-bg="{{ option_image | img_url: '92x', format: 'pjpg' }}"
+                                                {%- else -%}
+                                                    data-master="{{ option_image | img_url: '1x1' | replace: '_1x1.', image_size_placeholder }}"
+                                                    data-bg="{{ option_image | img_url: '92x' }}"
+                                                {%- endif %}
+                                            data-scale="2"
+                                            {%- if settings.tooltips_enable and product_option_enable_tooltips -%}
+                                                data-js-tooltip
+                                                data-tippy-content="{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}"
+                                                data-tippy-placement="top"
+                                                data-tippy-distance="6" data-tippy-delay="[500,50]"
+                                            {%- endif -%}
+                                        >{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}<span></span>
+                                            {%- if newOption[forloop.index0] == "true" -%}
+                                                <div class="label label--new text-nowrap">{{ 'products.product.label.new' | t }}</div>
+                                            {%- endif -%}
+                                        </div>
+                                    {% endif %}
+                                {%- endfor -%}
+                                </div>
+                                <label class="color_options_heading">{{ 'products.product.color_options_limited' | t }}</label>
+                                <div class="options-container">
+                                {% assign show_coming_soon = false %}
+                                {%- for value in mov -%}
+                                    {%- if limitedEdition[forloop.index0] == "true" -%}
+                                        {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                        {%- include 'product-get-options-res-image' -%}
+                                        <div class="product-options__value product-options__value--square text-hide cursor-pointer 
+                                            {% if coming_soon contains value %} coming_soon{% endif %}
+                                            {% if disabled_value %} disabled{% elsif hidden_value %} disabled-hidden{% endif %}
+                                            {% if active_value %} active{% endif %} lazyload"
+                                            data-js-option-value loading="eager"
+                                            data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}"
+                                            {{ trigger_attr }}
+                                                {%- if settings.product_format_pjpg -%}
+                                                    data-master="{{ option_image | img_url: '1x1', format: 'pjpg' | replace: '_1x1.', image_size_placeholder }}"
+                                                    data-bg="{{ option_image | img_url: '92x', format: 'pjpg' }}"
+                                                {%- else -%}
+                                                    data-master="{{ option_image | img_url: '1x1' | replace: '_1x1.', image_size_placeholder }}"
+                                                    data-bg="{{ option_image | img_url: '92x' }}"
+                                                {%- endif %}
+                                            data-scale="2"
+                                            {% if settings.tooltips_enable and product_option_enable_tooltips -%}
+                                                data-js-tooltip
+                                                data-tippy-content="{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}"
+                                                data-tippy-placement="top"
+                                                data-tippy-distance="6" data-tippy-delay="[500,50]"
+                                            {%- endif -%}
+                                        >{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}
+                                        
+                                        {% if coming_soon contains value %}
+                                            {% assign show_coming_soon = true %}
+                                        {% else %}
+                                            <span></span>
+                                        {% endif %}
+                                        {% if newOption[forloop.index0] == "true" %}
+                                            <div class="label label--new text-nowrap">{{ 'products.product.label.new' | t }}</div>
+                                        {% endif %}
+                                        </div>
+                                        {% assign count_limited_edition = count_limited_edition | plus: 1 %}
+                                    {%- endif -%}
+                                {%- endfor -%}
+                                </div>
+                                {% comment %} <script>console.log("count_limited_edition: {{ count_limited_edition }}")</script> {% endcomment %}
+                            </div>
+                        {%- elsif options_type_large_text contains clear_name -%}
+                            <!-- product options: size --->
+                            <div class="product-options__section d-flex flex-wrap {{ blurclass }}" data-style="large-text" data-property="{{ option_name }}"{% if disable_auto_select %} data-disable-auto-select{% endif %}>
+                                {% unless url_fit %}
+                                    {% assign url_fit = "W" %}
+                                {% endunless %}
+                                {%- for value in mov -%}
+                                    {% assign value_handle = value | handleize %}
+                                    {% assign value_text = 'products.product.size_abbr.' | append: value_handle | t %}
+                                    {% if value_text contains "translation missing" or value_text contains "Translation missing" %}
+                                        {% assign value_text = value %}
+                                    {% endif %}
+                                    {% comment %} <script>console.log("clear_name: {{ clear_name }}  {{ value_handle }} abbr: {{ value_text }}");</script> {% endcomment %}
+                                    {%- comment -%} <div>value: {{ value }} {%- endcomment -%}
+                                    {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                    {%- capture inputId -%}
+                                        {% render 'product-get-options-strip-symbols' with value: value -%}
+                                    {%- endcapture -%}
+                                    <div class="product-options__value product-options__value--large-text d-flex flex-center border cursor-pointer{% if disabled_value %} disabled{% elsif hidden_value %} disabled-hidden{% endif %}{% if active_value %} active{% endif %}"
+                                        data-js-option-value
+                                        data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}"
+                                        {{ trigger_attr }}
+                                        data-scale="2" data-value="{{ inputId }}"
+                                    >
+                                        <input id="{{ inputId }}" name={{ option_name }} type="radio" 
+                                            {%- if hidden_value -%}
+                                                aria-label="{{ value_text | replace: '<', '&lt;' | replace: '>', '&gt;' | replace: " W", " / W" }} is Sold Out."
+                                            {%- endif -%}
+                                        >
+                                        {%- if show_fit_selector and clear_name == "size" -%} 
+                                            {% assign unisizes = value_text | split: " " %}
+                                            {% for unisize in unisizes %}
+                                                {% assign charsize = unisize | slice: 0 %}
+                                                {% assign sizeval = unisize | slice: 1, 10 %}
+                                                {% if url_fit == charsize %} 
+                                                    {% assign dclass = '' %}
+                                                {% else %}  
+                                                    {% assign dclass = 'd-none' %}
+                                                {% endif %}  
+                                                <sz class="unisex unisex-{{ charsize }} {{ dclass }}">{{ sizeval }}</sz>
+                                            {% endfor %}
+                                        {% else %}
+                                            <label for="{{ inputId }}">{{ value_text | replace: '<', '&lt;' | replace: '>', '&gt;' | replace: " W", " / W" }}</label>
+                                        {% endif %}
+                                        <span></span>
+                                    </div>
+                                {%- endfor -%}
+                                {% if options_type == 1 %}
+                                    <input type="hidden" name="variant_id" value="{{ current_variant.id }}" data-js-product-variant-input>
+                                    <div class="product-page-info__variants mb-15 d-none">
+                                        {% include 'product-get-variants' with product: product current_variant: current_variant show_custom_options: settings.product_show_custom_options %}
+                                    </div>
+                                    {% capture cart_icon_name %}{{ settings.cart_icon | default: 'icon-theme-109' }}{% endcapture %}
+                                    <div class="product-page-info__button-add-to-cart mb-5">
+                                        <button type="submit" class="btn{% if settings.product_info_button_add_to_cart_size == 'large' %} btn--size-large{% endif %} btn--full btn--status{% if settings.buttons_animation_icon_enable %} btn--animated{% endif %}{% if settings.button_add_to_cart_animation_enable %} btn--animation-shake{% endif %}{% if settings.cart_ajax %} js-product-button-add-to-cart{% endif %}" name="add"{% unless is_quick_view %} data-js-trigger-id="add-to-cart" data-js-button-add-to-cart-clone-id="footbar"{% endunless %} data-js-product-button-add-to-cart{% unless current_variant.available %} disabled="disabled" data-button-status="sold-out"{% elsif variant_pre_order %} data-button-status="pre-order"{% else %}{% if enable_select_variant_button %} data-button-status="select" data-button-select-disable{% endif %}{% endunless %}>
+                                            <span class="d-flex flex-center"><i class="btn__icon mr-5 mb-4">{% include cart_icon_name %}</i><span class="btn__text">{{ 'products.product.add_to_cart.title' | t }}</span></span>
+                                            <span class="d-flex flex-center" data-button-content="added"><i class="mr-5 mb-4">{% render 'icon-theme-110' %}</i>{{ 'products.product.add_to_cart.added' | t }}</span>
+                                            <span class="d-flex flex-center sold-out" data-button-content="sold-out">{{ 'products.product.add_to_cart.sold_out' | t }}</span>
+                                            <span class="d-flex flex-center" data-button-content="pre-order"><i class="btn__icon mr-5 mb-4">{% include cart_icon_name %}</i><span class="btn__text">{{ 'products.product.add_to_cart.pre_order' | t }}</span></span>
+                                            {%- if enable_select_variant_button -%}
+                                                <span class="d-flex flex-center" data-button-content="select"><i class="btn__icon mr-5 mb-4">{% include cart_icon_name %}</i><span class="btn__text">{{ 'products.product.add_to_cart.select_options' | t }}</span></span>
+                                            {%- endif -%}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {% render "product-page-block-render" with blocks: section.blocks, custom_block_location: "sizeguide_help"  %}
+                        {%- elsif options_type_select contains clear_name -%}
+                            <div class="select position-relative js-dropdown js-select">
+                                {%- assign select_dropdown_html = '' -%}
+                                <div data-js-dropdown-button>
+                                    <select class="product-options__section" data-style="select" data-property="{{ option_name }}" data-js-option-select{% if disable_auto_select %} data-disable-auto-select{% endif %}>
+                                        {%- if enable_select_options_button -%}
+                                            <option selected="selected" disabled="disabled">{{ default_title }}</option>
+                                        {%- endif -%}
+                                        {%- for value in mov -%}
+                                            {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                            <option {%- if active_value and enable_select_options_button != true -%} selected="selected"{%- endif -%} data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}" value="{%- render 'product-get-options-strip-symbols' with value: value -%}"{% if disabled_value %} disabled="disabled"{% elsif hidden_value %} data-disabled-hidden="disabled"{%- endif -%}>{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}</option>
+                                            {%- capture select_dropdown_html -%}
+                                                {{ select_dropdown_html }}
+                                                <span {%- if active_value and enable_select_options_button != true -%} class="selected"{%- endif -%} data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}"{% if disabled_value %} disabled="disabled"{% elsif hidden_value %} data-disabled-hidden="disabled"{%- endif -%} {{ trigger_attr }}>{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}</span>
+                                            {%- endcapture -%}
+                                        {%- endfor -%}
+                                    </select>
+                                    <i class="d-none d-lg-block position-absolute right-0 mr-10">{%- render 'icon-theme-229' -%}</i>
+                                </div>
+                                <div class="select__dropdown dropdown d-none position-lg-absolute {% if select_dropdown_position == 'top' %}bottom{% else %}top{% endif %}-lg-100 left-lg-0" data-js-dropdown data-js-select-dropdown{% if disable_auto_select %} data-dropdown-unselected{% endif %}>
+                                    <div class="px-15 pb-30 py-lg-15">
+                                        {{ select_dropdown_html }}
+                                    </div>
+                                </div>
+                            </div>
+                        {%- else -%}
+                            <div class="product-options__section d-flex flex-wrap" data-style="text" data-property="{{ option_name }}"{% if disable_auto_select %} data-disable-auto-select{% endif %}>
+                                {%- for value in mov -%}
+                                    {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                    <div class="product-options__value product-options__value--text d-flex flex-center border cursor-pointer{% if disabled_value %} disabled{% elsif hidden_value %} disabled-hidden{% endif %}{% if active_value %} active{% endif %}"
+                                        data-js-option-value
+                                        data-value="{%- render 'product-get-options-strip-symbols' with value: value -%}"
+                                        {{ trigger_attr }}
+                                        data-scale="2"
+                                    >{{ value | replace: '<', '&lt;' | replace: '>', '&gt;' }}<span></span></div>
+                                {%- endfor -%}
+                            </div>
+                        {%- endif -%}
+                        {%- if clear_name == "color" -%}
+                            {% render "product-page-block-render" with blocks: section.blocks, custom_block_location: "below_colorselectors"  %}
+                        {%- endif -%}
+                    </div>
+                    <!--- END capturing option_section html --->
+                {%- endcapture -%}
+                {%- if label_value -%}
+                    {%- assign label_value_replace = 'data-label-value>' | append: label_value -%}
+                    {%- assign option_section_html = option_section_html | replace: 'data-label-value>', label_value_replace -%}
+                {%- endif -%}
+                {{ option_section_html }}
+            {%- endif -%}
+        {%- endfor -%}
+        
+    </div>
+{%- endunless -%}
+{%- assign option_section_html = null -%}
+{%- assign change_history = false -%}
+{%- assign trigger = null -%}
+{%- assign trigger_id = null -%}
+{%- if settings.product_footbar_show_selectors -%}
+<style>
+    div.product-options__value {
+        position: relative;
+    }
+    div.label--new {
+        background-color: unset;
+        color: var(--button-h-bg);
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        padding: 0 2px;
+        text-transform: uppercase;
+        font: 12px/12px var(--base-family);
+        font-weight: bold;
+        font-size: 10px;
+    }
+    div.footbar div.product-options__section {
+        display: none !important;
+    }
+    div.footbar-product__options label span:first-child {
+        font-weight: normal;
+    }
+    div.footbar-product__options label span:last-child {
+        margin-left: 0 !important;
+        display: block;
+    }
+    div.footbar div.product-options label {
+        text-align: center;
+    }
+    {% if count_limited_edition == blank %}
+        label.color_options_heading {
+            display: none;
+        }
+    {% endif %}
+</style>
+{%- endif -%}

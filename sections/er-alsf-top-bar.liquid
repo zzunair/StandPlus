@@ -1,0 +1,55 @@
+{% style %}
+  .er-alsf-top-bar__wrapper {
+    background: {{ section.settings.bg_color }};
+  }
+{% endstyle %}
+
+{% if section.settings.logo != blank %}
+  <img
+    src="{{ section.settings.logo | image_url: width: '549' }}"
+    loading="lazy"
+    width="549"
+    height="405"
+    alt="gales"
+  >
+  <a
+    href="/cart"
+    class="header__btn-cart position-relative d-flex align-items-center text-nowrap js-popup-button"
+    data-js-popup-button="cart"
+  >
+    {% capture cart_icon_name %}{{ settings.cart_icon | default: 'icon-theme-109' }}{% endcapture %}
+    <i class="mr-lg-7">{% include cart_icon_name %}</i>
+    <span class="d-none d-lg-inline mt-lg-4" data-js-cart-count-desktop="{{ cart.item_count }}">
+      {{- 'layout.header.cart_count' | t: count: cart.item_count -}}
+    </span>
+    <span class="header__counter d-lg-none" data-js-cart-count-mobile="{{ cart.item_count }}">
+      {{- cart.item_count -}}
+    </span>
+  </a>
+{% endif %}
+
+{% schema %}
+{
+  "name": "ER ALSF top bar",
+  "class": "er-alsf-top-bar__wrapper",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Bar background color",
+      "default": "#00B0B9"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER ALSF top bar"
+    }
+  ]
+}
+{% endschema %}

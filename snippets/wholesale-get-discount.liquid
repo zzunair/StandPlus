@@ -1,0 +1,32 @@
+<!-- snippets/wholesale-get-discount.liquid -->
+{% liquid
+    assign ctags = customer.tags | join: ',' | downcase 
+    assign ptags = product.tags | join: ',' | downcase 
+    if ctags contains 'wholesale'
+      assign wholesale = true
+      if ptags contains 'giftcodes'
+          assign defaultDiscounts = shop.metafields.furnacebrook.wholesale_giftcodes
+      else
+          assign defaultDiscounts = shop.metafields.furnacebrook.wholesale_default
+      endif
+      for ctag in customer.tags
+        assign dctag = ctag | downcase
+        if dctag contains 'wholesale' and dctag != 'wholesale'
+          echo 'window.dev_debug && console.log("discount code from tag: ' | append: ctag | append: '")'
+          assign customDiscount = dctag
+          break
+        endif
+      endfor
+      assign discounts = customer.metafields.furnacebrook.automatic_discount_code.value
+    endif
+  %}
+  const discountCodes = {{ discounts | json }};
+  window.dev_debug && console.log("customer discounts:", discountCodes);
+  window.dev_debug && console.log('customDiscount: {{ customDiscount }}');
+  window.dev_debug && console.log('defaultDiscounts: {{ defaultDiscounts | json }}');
+  let defaultDiscounts = ""
+  if ("{{ customDiscount }}" != "") {
+    defaultDiscounts = [ { minQty: 0, discountPercent: parseInt("{{ customDiscount }}".split("-")[1]), code: "{{ customDiscount }}"} ];
+  }
+  else defaultDiscounts = ({{ defaultDiscounts | json }}).sort((a, b) => b.minQty - a.minQty );
+  window.dev_debug && console.log("default discounts:", defaultDiscounts);

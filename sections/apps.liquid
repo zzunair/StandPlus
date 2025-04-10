@@ -1,0 +1,37 @@
+{%- for block in section.blocks -%}
+  {%- unless settings.full_width -%}
+    <div class="container">
+  {%- endunless -%}
+  
+  {% render block %}
+  
+  {%- unless settings.full_width -%}
+    </div>
+  {%- endunless -%}
+    
+{%- endfor -%}
+
+{% schema %}
+{
+  "name": "Apps",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+        "name": "Apps",
+        "category": "7) Apps"
+    }
+  ]
+}
+{% endschema %}

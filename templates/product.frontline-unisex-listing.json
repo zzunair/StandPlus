@@ -1,0 +1,700 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "1653335693c56f4015": {
+      "type": "spacer",
+      "disabled": true,
+      "settings": {
+        "margin_top": 10,
+        "margin_bottom": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "fullwidth",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "924bf920-95d4-4363-b14e-96b7c8faa508": {
+          "type": "sidebar_custom_html",
+          "settings": {
+            "location": "sizeguide_help",
+            "title": "Frontline Regular Width Sizing",
+            "content": "<div class=\"js-popup-button\" data-js-popup-button=\"size-guide\" style=\"display: flex;flex-wrap: wrap;gap: 0px 15px;justify-content: center;\">\n<div>\n<strong>Regular Width</strong><span> True to Size</span>\n</div>\n<div style=\"font-weight: 700;\" class=\"btn-link\">\n<i style=\"vertical-align: bottom;\">[icon:theme-078]</i>\nSIZE GUIDE\n</div>\n</div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "center",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "hide-h5-title",
+            "page_content": ""
+          }
+        },
+        "sidebar_custom_html_4qMzAQ": {
+          "type": "sidebar_custom_html",
+          "disabled": true,
+          "settings": {
+            "location": "below_addtocart",
+            "title": "30 Day free returns",
+            "content": "<style>\n.tippy-tooltip.guarantee-theme {\npadding: 20px; font-size: inherit; line-spacing: 1.5rem; font-weight: 500; cursor: pointer;\n}\n.tippy-tooltip.guarantee-theme .d-block {\nmargin-bottom: .75rem;\n}\n</style>\n<div style=\"cursor: pointer; font-weight: 700; color: #F17849; text-decoration: underline; text-decoration-style:dotted;\" data-js-tooltip=\"\" data-tippy-interactive=\"true\" data-tippy-interactiveborder=\"15\" data-tippy-delay=\"[10, 100]\" data-tippy-touch=\"true\" data-tippy-theme=\"guarantee\" data-tippy-content=\"&lt;div class='d-block'&gt;We STAND behind our products.&lt;/div&gt;Try them for a full shift. If not completely satisfied, return or exchange in any condition within 30 days for free.\" data-tippy-placement=\"bottom\" data-tippy-distance=\"6\">30-Day STAND+ Guarantee</div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "center",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "hide-h5-title",
+            "page_content": ""
+          }
+        },
+        "sidebar_custom_html_BMLiaq": {
+          "type": "sidebar_custom_html",
+          "disabled": true,
+          "settings": {
+            "location": "below_addtocart",
+            "title": "Onward Widget",
+            "content": "<div id=\"onward-container\"></div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "left",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "hide-h5-title",
+            "page_content": ""
+          }
+        },
+        "6b2ab257-1894-4d39-a92a-2aaa0e00327d": {
+          "type": "sidebar_custom_html",
+          "settings": {
+            "location": "below_addtocart",
+            "title": "HSA/FSA Slug",
+            "content": "<style> \n.truemed-instructions-link-text {\ndisplay: none !important;}\n.truemed-instructions {\tmargin-top: -10px; display: none;}\n</style>\n<div id=\"truemed-prequalify\" style=\"font-size: 14px;\" icon-height=\"12\" data-public-id=\"tm_qual_h1tkr71lxl\"></div>\n<script src=\"https://truemed-public.s3.us-west-1.amazonaws.com/truemed-ads/prequal-widget.min.js\" defer></script>\n<div class=\"er-iconography__wrapper\">\n<span style=\"cursor: pointer;\" onclick=\"document.querySelector('.truemed-instructions-open').click()\">HSA/FSA Eligible. <strong style=\"text-decoration:underline;\">Learn More.</strong> Select Truemed at Checkout</span>\n</div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "center",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "hide-h5-title hsa-slug",
+            "page_content": ""
+          }
+        },
+        "sidebar_custom_html_ATAHmm": {
+          "type": "sidebar_custom_html",
+          "settings": {
+            "location": "below_addtocart",
+            "title": "Donations",
+            "content": "<div class=\"plg-impact\" data-widget-id=\"suiANk3p6SjoK9pR\" style=\"margin-bottom:20px;\"></div>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "left",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "hide-h5-title",
+            "page_content": ""
+          }
+        },
+        "sidebar_custom_html_V4Ra6y": {
+          "type": "sidebar_custom_html",
+          "disabled": true,
+          "settings": {
+            "location": "below_addtocart",
+            "title": "",
+            "content": "<p style=\"font-size: clamp(12px, 7vw, 27px);letter-spacing: .5px;font-weight: 800;\">WE’RE BUILT FOR IT</p>",
+            "overlay": false,
+            "text_color": "#000000",
+            "text_align_vert": "top",
+            "text_align_horiz": "left",
+            "padding_horiz": 0,
+            "padding_vert": 0,
+            "image_link": "",
+            "customization_class": "er-iconography__wrapper",
+            "page_content": ""
+          }
+        },
+        "24011588-07b8-43dd-895b-926f483a65c4": {
+          "type": "tab_custom",
+          "disabled": true,
+          "settings": {
+            "title": "Description",
+            "content": "<p>Designed to be the perfect shoe for healthcare professionals, Gales Frontline shoes provide the highest level of comfort, support and protection.</p>\n<h3 class=\"h3-unset mb-20\">✓ ALL-DAY COMFORT &amp; SUPPORT</h3>\n<p>Gales Frontline shoes provide top-tier arch support for healthcare professionals who are on their feet all day long. Long term cushioning, orthopedic support and moisture management with custom, machine washable Ortholite® insoles make our shoes the best shoe for healthcare workers.</p>\n<h3 class=\"h3-unset mb-20\">✓ SLIP RESISTANT + FEATHERLIGHT</h3>\n<p>Gales shoes for healthcare workers feature wet/dry Slip Resistant Soles with \"soft touch\" feel XL Extralight® technology 3x lighter than comparable materials. </p><p><i><u><a href=\"/products/antigrav2\">Need Oil Slip Resistance? Try our AntiGrav2.</a></u></i></p>\n<h3 class=\"h3-unset mb-20\">✓ ANTIMICROBIAL + WATERPROOF</h3>\n<p>Our Frontline shoes for healthcare workers are easy to clean on the go or at home in the washing machine. Gales Frontline nursing shoes are built with full moisture and microbe barrier protection - ISO 17702.2003 and ISO 22196:2011 Standards.</p>\n<h3 class=\"h3-unset mb-20\">✓ ECO-FRIENDLY IMPACT</h3>\n<p>We manufacture in clean solar energy facilities and our\nmaterials are free of heavy metals and harmful chemicals</p>",
+            "page_content": ""
+          }
+        },
+        "tab_custom_ri34iJ": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "*CUSTOM MOLDED FIT",
+            "content": "No two feet are alike, that’s why STAND+ shoes are designed to custom form to your foot!\nIf they they arrive feeling tight, use a hair dryer on high heat for 15-30 seconds, insert your foot with a sock on (being careful not to burn yourself) and your new shoes will instantly form to your specific foot shape! They will naturally form to your foot with wear as well! <a href=\"/pages/custom-moldable\">Learn More</a>",
+            "page_content": ""
+          }
+        },
+        "b0febcf2-a38c-4ae7-a929-10af2ad0e5f4": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "Size Guide",
+            "content": "",
+            "page_content": "frontline-size-guide"
+          }
+        },
+        "959240db-9a88-436b-8c09-b6c9e0ebb7a8": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "Care Instructions",
+            "content": "",
+            "page_content": "care-instructions"
+          }
+        },
+        "154ff52f-6929-40f6-b8af-518891f890e2": {
+          "type": "tab_custom",
+          "settings": {
+            "title": "Lab Verified Protection",
+            "content": "<p>Gales® Frontline Work Shoes are  Fluid Resistant and ISO 22196:2011 Standard Antibacterial / Antimicrobial, and Wet/Dry Slip Resistant.</p>\n<p><b>Need Oil Slip Resistance? Try our <a href=\"/products/antigrav2\">AntiGrav2.</a></b></p>\n<p><a href=\"/pages/gales-frontline-lab-results\">See the full results here.</a></p>",
+            "page_content": ""
+          }
+        },
+        "36225c60-99d9-4da7-9bce-e394c3e0260c": {
+          "type": "tab_custom",
+          "disabled": true,
+          "settings": {
+            "title": "Returns and Exchanges",
+            "content": "",
+            "page_content": "returns-exchanges"
+          }
+        },
+        "iconography_axBnej": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "CLOUDLIKE COMFORT",
+            "image": "shopify://shop_images/stand_icon_Cloudlike_Comfort.svg"
+          }
+        },
+        "iconography_VXPNNg": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "STABILITY AND SUPPORT",
+            "image": "shopify://shop_images/stand_icon_Stability_and_Support.svg"
+          }
+        },
+        "ef23aa41-f885-4a3e-b11b-bde3c2d21d27": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "WATERPROOF + EASY TO CLEAN",
+            "image": "shopify://shop_images/stand_icon_Fluid_Resistant.svg"
+          }
+        },
+        "932af5cc-67fc-4b88-a519-35c87e36a53f": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "ANTIMICROBIAL",
+            "image": "shopify://shop_images/stand_icon_Antimicrobial.svg"
+          }
+        },
+        "9c1eaa3a-14f7-480c-ab4d-e6b79681b24c": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "BLEACH FRIENDLY",
+            "image": "shopify://shop_images/stand_icon_Easy_to_Clean.svg"
+          }
+        },
+        "9792bc26-0b76-4a7f-a7a3-87f8e54e6e4b": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "FEATHERLIGHT",
+            "image": "shopify://shop_images/stand_icon_Featherlight.svg"
+          }
+        },
+        "iconography_Ky4nrR": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "MACHINE WASHABLE",
+            "image": "shopify://shop_images/Machine_Washable.svg"
+          }
+        },
+        "a46f1075-ed6b-4617-bee1-185f1843a798": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "*CUSTOM MOLDABLE",
+            "image": "shopify://shop_images/Custom_Moldable.svg"
+          }
+        },
+        "iconography_YMzYVf": {
+          "type": "iconography",
+          "settings": {
+            "name": "Return in any condition within 30 days for free.",
+            "image": "shopify://shop_images/STAND_Guarantee2.svg"
+          }
+        },
+        "iconography_bnGNwj": {
+          "type": "iconography",
+          "settings": {
+            "name": "4 interest-free payments or use your HSA/FSA card.",
+            "image": "shopify://shop_images/Flexible_Payments2.svg"
+          }
+        },
+        "iconography_HhkAcH": {
+          "type": "iconography",
+          "settings": {
+            "name": "American Podiatric Medical Association (APMA) recognized for promoting foot health.",
+            "image": "shopify://shop_images/APMA_logo2_9b2db376-1773-46cf-9be5-f8b19090822e.svg"
+          }
+        },
+        "iconography_6njDMX": {
+          "type": "iconography",
+          "settings": {
+            "name": "North American made with XL Extralight® materials.",
+            "image": "shopify://shop_images/Made_in_North_America2.svg"
+          }
+        }
+      },
+      "block_order": [
+        "924bf920-95d4-4363-b14e-96b7c8faa508",
+        "sidebar_custom_html_4qMzAQ",
+        "sidebar_custom_html_BMLiaq",
+        "6b2ab257-1894-4d39-a92a-2aaa0e00327d",
+        "sidebar_custom_html_ATAHmm",
+        "sidebar_custom_html_V4Ra6y",
+        "24011588-07b8-43dd-895b-926f483a65c4",
+        "tab_custom_ri34iJ",
+        "b0febcf2-a38c-4ae7-a929-10af2ad0e5f4",
+        "959240db-9a88-436b-8c09-b6c9e0ebb7a8",
+        "154ff52f-6929-40f6-b8af-518891f890e2",
+        "36225c60-99d9-4da7-9bce-e394c3e0260c",
+        "iconography_axBnej",
+        "iconography_VXPNNg",
+        "ef23aa41-f885-4a3e-b11b-bde3c2d21d27",
+        "932af5cc-67fc-4b88-a519-35c87e36a53f",
+        "9c1eaa3a-14f7-480c-ab4d-e6b79681b24c",
+        "9792bc26-0b76-4a7f-a7a3-87f8e54e6e4b",
+        "iconography_Ky4nrR",
+        "a46f1075-ed6b-4617-bee1-185f1843a798",
+        "iconography_YMzYVf",
+        "iconography_bnGNwj",
+        "iconography_HhkAcH",
+        "iconography_6njDMX"
+      ],
+      "custom_css": [
+        "div h1 {font-size: 36px !important; line-height: 46px !important;}",
+        ".m-0.product-subtitle {font-size: 19px; font-weight: 600; color: #707072;}",
+        ".js-variant-descriptions p {font-size: 16px;}",
+        ".js-variant-descriptions ul {font-size: 16px; line-height: 1.6;}",
+        ".tabs__body .rte {font-size: 16px; line-height: unset;}",
+        ".er-iconography__icon .name {font-weight: 600; font-size: 18px; line-height: 21px;}",
+        ".er-iconography__icon img {margin-right: 10px; padding: 7px; background: #f8f8f8; border-radius: 5px; border: 1px solid #ccc; height: 80px; width: 80px;}"
+      ],
+      "settings": {
+        "product_info_gallery_height_override": true,
+        "product_images_group_keep_index": true,
+        "product_images_arrows": "both",
+        "product_images_bullets": "none",
+        "product_info_gallery_height_percent": 67,
+        "gallery_size": "8",
+        "sidebar": "off",
+        "enable_sticky_sidebar": false,
+        "show_fit_selector": false,
+        "show_selected_style": false,
+        "top_title_price_mobile": false,
+        "top_description": true,
+        "show_tabs": true,
+        "open_first_tab": false,
+        "show_tab_description": false,
+        "show_tab_reviews": false,
+        "scrolling_to_opened_tab": true,
+        "tabs_type": "tabs"
+      }
+    },
+    "er_custom_liquid_HfeEMk": {
+      "type": "er-custom-liquid",
+      "settings": {
+        "name": "Size Guide Toggles",
+        "custom_liquid": "{% render \"sizeguide-toggle\" %}"
+      }
+    },
+    "f9622b3d-4942-469e-aef2-2ca669ff0260": {
+      "type": "er-infographics",
+      "blocks": {
+        "0959f465-717d-41e7-b7f4-d91d7d6983c1": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/01_infographic_frontline_cloud_like_comfort.png",
+            "name": "Cloud like comfort",
+            "description": "<p>Ranked #1 in independent lab tests for durability, comfort, fit and pressure reduction, our shoes feature featherlight XL Extralight® technology for all-day comfort.</p>"
+          }
+        },
+        "6b94ffba-aeea-4d9f-ab6a-c54b8976b883": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/02_infographic_frontline_waterproof.png",
+            "name": "Waterproof",
+            "description": "<p>Don't let spills or weather ruin your day. Rain or shine, puddles or mud, your feet will remain dry and comfortable.</p>"
+          }
+        },
+        "6053fb85-47ab-4cef-a1c8-29374c9ac94b": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/03_infographic_frontline_slip_resistant.png",
+            "name": "Slip Resistant",
+            "description": "<p>ASTM F2913 Slip resistant and lace-free. Feel confident and secure in every step, no matter how hectic the environment gets.</p>"
+          }
+        },
+        "1cf7f1c5-03ca-4495-ae0b-46a2ec7e71bf": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/04_infographic_frontline_machine_washable.png",
+            "name": "Machine Washable",
+            "description": "<p>After a busy day at work, simply toss them in the washing machine, and they'll come out fresh and clean, ready for the next day's challenges.</p>"
+          }
+        },
+        "70f70618-b722-47a2-b126-2429bf545aa1": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/05_infographic_frontline_7MM_of_arch_support.png",
+            "name": "7MM of arch support",
+            "description": "<p>Say goodbye to foot fatigue and discomfort. Our shoes are specially designed to alleviate strain and promote proper alignment.</p>"
+          }
+        },
+        "314b9609-9d34-441f-8a62-08a7ad1a9cd6": {
+          "type": "info_card",
+          "settings": {
+            "image": "shopify://shop_images/06_infographic_frontline_antimicrobial.png",
+            "name": "Antimicrobial",
+            "description": "<p>Our shoes come with an antimicrobial barrier, ensuring your feet stay fresh and protected from harmful bacteria and odors throughout your shift.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "0959f465-717d-41e7-b7f4-d91d7d6983c1",
+        "6b94ffba-aeea-4d9f-ab6a-c54b8976b883",
+        "6053fb85-47ab-4cef-a1c8-29374c9ac94b",
+        "1cf7f1c5-03ca-4495-ae0b-46a2ec7e71bf",
+        "70f70618-b722-47a2-b126-2429bf545aa1",
+        "314b9609-9d34-441f-8a62-08a7ad1a9cd6"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "1634128129c7f7073c": {
+      "type": "home-builder",
+      "blocks": {
+        "3bff4d49-6225-408f-bdba-0f678108fd2b": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/b5-Gales_Inc_r1_ATX10049_flip.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "ALL DAY COMFORT",
+            "text_line_2": "Being on your feet all day is easy in Gales shoes for healthcare workers. Our arch-supportive shoes feature orthopedic insoles for comfort that outlasts any nursing shoe on the market.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-2-5",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 0,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "06a77d6f-e268-4d02-9747-d4eac62e7163": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/Screen_Shot_2022-08-01_at_11.05.24_AM.png",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "SLIP RESISTANT",
+            "text_line_2": "The treads on our slip-resistant shoes for healthcare workers were extensively tested for quality and safety on both wet and dry surfaces. Our non-slip nursing shoes keep you safe during long shifts.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-2-5",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 89,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "24da9c3a-b414-495b-adaa-5ccf2b5b94c1": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/Screen_Shot_2021-06-23_at_9.22.38_AM.png",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "WATERPROOF",
+            "text_line_2": "Gales nursing shoes are waterproof, fluid resistant, and wipe clean in seconds with full moisture and microbe barrier protection. Our shoes feature two holes on the side so air flows in, but not fluids.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-2-5",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        },
+        "b3559ab0-d6a9-41f3-941b-e312e5e00d01": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/220526_PILLOWFIGHT_GALES_000731-RETOUCHED.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "ANTIMICROBIAL",
+            "text_line_2": "Our shoes for healthcare workers feature patented antimicrobial technology on the insoles and outsoles that continually resists microbe growth and provides built-in protection from bacteria&nbsp;and odor.",
+            "text_line_3": "",
+            "style": "2",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-2-5",
+            "content_position": "center",
+            "content_align": "center",
+            "add_container": false,
+            "content_width": 90,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "",
+            "color_text_2": "",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "3bff4d49-6225-408f-bdba-0f678108fd2b",
+        "06a77d6f-e268-4d02-9747-d4eac62e7163",
+        "24da9c3a-b414-495b-adaa-5ccf2b5b94c1",
+        "b3559ab0-d6a9-41f3-941b-e312e5e00d01"
+      ],
+      "settings": {
+        "title": "",
+        "container": "boxed",
+        "size_of_columns": "4",
+        "size_of_columns_mobile": "2",
+        "margins_for_columns": "preset_4",
+        "align_of_columns": "top_center",
+        "disable_column_paddings": false,
+        "precedence": "",
+        "customization_class": "key_features_builder",
+        "url": ""
+      }
+    },
+    "163430726099b71d81": {
+      "type": "spacer",
+      "settings": {
+        "margin_top": 30,
+        "margin_bottom": 0,
+        "margin_top_mobile": 30,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "168574376439cd6b27": {
+      "type": "apps",
+      "blocks": {
+        "cb66cf4e-e896-43ce-92ae-09d11ea5adf8": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "cb66cf4e-e896-43ce-92ae-09d11ea5adf8"
+      ],
+      "settings": {
+        "full_width": false
+      }
+    },
+    "related-products": {
+      "type": "carousel-related-products",
+      "disabled": true,
+      "settings": {
+        "show_section": false,
+        "type": "related",
+        "title": "RELATED PRODUCTS",
+        "size_of_columns": "4",
+        "max_count": 6,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true,
+        "arrows": true,
+        "bullets": true
+      }
+    },
+    "57979239-72cb-49b3-9ae7-e46b8fe9786b": {
+      "type": "spacer",
+      "settings": {
+        "margin_top": 60,
+        "margin_bottom": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    }
+  },
+  "order": [
+    "1653335693c56f4015",
+    "main",
+    "er_custom_liquid_HfeEMk",
+    "f9622b3d-4942-469e-aef2-2ca669ff0260",
+    "1634128129c7f7073c",
+    "163430726099b71d81",
+    "168574376439cd6b27",
+    "related-products",
+    "57979239-72cb-49b3-9ae7-e46b8fe9786b"
+  ]
+}

@@ -1,0 +1,28 @@
+{% comment %} <div class="label label--pre-order mb-3 mr-3 text-nowrap
+    {% if variant_pre_order != true %} d-none-important{% endif %}" data-js-product-label-pre-order>
+    {{ 'products.product.label.pre_order' | t }}</div> {% endcomment %}
+{%- assign preorderShipDate = product.metafields.furnace.estshipdate | split: "Date" | last -%}
+<div class="label label--pre-order-container {% if variant_pre_order != true %} d-none-important{% endif %}" data-js-product-label-pre-order>
+    {% comment %} {% render 'svg-logo-preorder' %} {% endcomment %}
+    <div class="label label--pre-order">
+        <span>PRE-ORDER</span>
+    </div>
+    {%- if preorderShipDate != blank -%}
+        <div class="shipping-est">Shipping Est. {{ preorderShipDate }}</div>
+    {%- endif -%}
+</div>
+
+{% comment %}  {% endcomment %}
+{%- if variant_pre_order -%}
+    {%- assign has_labels = true -%}
+{%- endif -%}
+{%- assign corner_treatment = product.metafields.custom.corner_treatment | upcase -%}
+{%- if corner_treatment != blank -%}
+    <div class="label label--pre-order corner_{{ corner_treatment | handleize }}">
+        {%- if corner_treatment == "BEST SELLER" -%}
+            <span class="icon-white-star">{% render 'icon-white-star' %} </span>
+        {%- endif -%}
+        <span>{{ corner_treatment }}</span>
+    </div>
+    {%- assign has_labels = true -%}
+{%- endif -%}

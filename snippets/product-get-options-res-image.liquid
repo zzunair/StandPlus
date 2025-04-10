@@ -1,0 +1,24 @@
+{%- assign option_image = null -%}
+{%- assign option_sku = null -%}
+{%- for variant in cpv -%}
+    {%- if value == variant.option1 or value == variant.option2 or value == variant.option3 -%}
+        {% comment %} <div>{{ value }} : {{ variant.option1 }} {{ variant.option2 }} {{ variant.option3 }}  </div> {% endcomment %}
+        {%- assign option_sku = variant.sku | replace_first: "-", "***" | split: "***" | first -%}
+        {% comment %} <div>1. option_sku: {{ option_sku }}</div>
+        <div>1. variant.sku: {{ variant.sku }}</div> {% endcomment %}
+        {%- if option_sku.size < 4 -%}
+            {%- assign skuSize = variant.sku | split: "-" | last | prepend: "-" -%}
+            {% comment %} <div>2. skuSize: {{ skuSize }}</div> {% endcomment %}
+            {%- assign option_sku = variant.sku | remove: skuSize -%}
+            {% comment %} <div>2. option_sku: {{ option_sku }}</div> {% endcomment %}
+        {%- endif -%}
+        {%- if variant.image != blank -%}
+            {%- assign option_image = variant.image -%}
+            {%- assign option_variant = variant -%}
+            {%- break -%}
+        {%- endif -%}
+    {%- endif -%}
+{%- endfor -%}
+{%- if option_image == null -%}
+    {%- assign option_image = image -%}
+{%- endif -%}

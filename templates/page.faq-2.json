@@ -1,0 +1,138 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_title": true,
+        "show_content": true
+      }
+    },
+    "faq_L6zRnx": {
+      "type": "faq",
+      "blocks": {
+        "item_m7tKKD": {
+          "type": "item",
+          "settings": {
+            "question": "BREAKS DOWN FOOD",
+            "answer": "<p>Everything we eat is broken down by the digestive enzymes we produce in our salvia, pancreas and stomach, allowing nutrients to be efficiently absorbed into the bloodstream. The 17 digestive enzymes found in DEBLOAT+ are particularly beneficial for people suffering from IBS and other digestive issues. They help to break down specific food groups (e.g. carbs, starches, fats, etc.), supported by a trio of organic ingredients known for their anti-inflammatory properties: cinnamon, turmeric and ginger.</p>"
+          }
+        },
+        "item_7QK8n4": {
+          "type": "item",
+          "settings": {
+            "question": "REDUCES GAS",
+            "answer": "<p>Alpha galactosidase is 1 of the 17 digestive enzymes found in DEBLOAT+. It breaks down the oligosaccharides (a type of carbohydrate) found in beans and cruciferous vegetables such as broccoli and cabbage, known for causing excess gas and bloating. Cinnamon, turmeric and ginger also boast carminative benefits, meaning they break up gas in the gastrointestinal tract and stimulate antral contractions (the contractions which help food pass from one part of the gut to another).</p>"
+          }
+        },
+        "item_RydB6x": {
+          "type": "item",
+          "settings": {
+            "question": "IMPROVES GUT HEALTH",
+            "answer": "<p>Licorice root has been used for centuries in Ayurvedic medicine, where it is believed to pacify “altered pitta”, reduce heartburn and heal ulcers. In clinical trials, 51% of people reported a reduction in bloating, nausea, gas and abdominal fullness within 30 days of taking our key ingredient daily.</p>"
+          }
+        },
+        "item_KJVGpf": {
+          "type": "item",
+          "settings": {
+            "question": "Question",
+            "answer": "<p>Answer</p>"
+          }
+        },
+        "item_rRVjbb": {
+          "type": "item",
+          "settings": {
+            "question": "Question",
+            "answer": "<p>Answer</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_m7tKKD",
+        "item_7QK8n4",
+        "item_RydB6x",
+        "item_KJVGpf",
+        "item_rRVjbb"
+      ],
+      "settings": {
+        "layout_gap": 0,
+        "layout_gap_mobile": 0,
+        "image_border_thickness": 0,
+        "image_ratio": "square",
+        "image_ratio_mobile": "portrait",
+        "image_position": "1",
+        "image_position_mobile": "1",
+        "heading": "<p>HOW IT WORKS</p>",
+        "heading_custom": false,
+        "heading_font": "josefin_sans_n4",
+        "heading_size": 82,
+        "heading_size_mobile": 32,
+        "heading_height": 150,
+        "heading_align": "left",
+        "heading_align_mobile": "left",
+        "heading_padding_vertical": 24,
+        "heading_padding_vertical_mobile": 24,
+        "heading_padding_horizontal": 24,
+        "heading_padding_horizontal_mobile": 24,
+        "item_padding_vertical": 20,
+        "item_padding_vertical_mobile": 20,
+        "item_padding_horizontal": 30,
+        "item_padding_horizontal_mobile": 30,
+        "item_border_thickness": 1,
+        "item_border_bottom_thickness": 1,
+        "number_custom": false,
+        "number_font": "josefin_sans_n4",
+        "number_size": 13,
+        "number_size_mobile": 13,
+        "number_height": 150,
+        "number_hide": false,
+        "question_custom": false,
+        "question_font": "josefin_sans_n4",
+        "question_size": 25,
+        "question_size_mobile": 15,
+        "question_height": 150,
+        "content_padding_vertical": 30,
+        "content_padding_vertical_mobile": 30,
+        "content_padding_horizontal": 60,
+        "content_padding_horizontal_mobile": 30,
+        "answer_width": 540,
+        "answer_custom": false,
+        "answer_font": "josefin_sans_n4",
+        "answer_size": 15,
+        "answer_size_mobile": 15,
+        "answer_height": 150,
+        "item_border_color": "#000000",
+        "number_color": "#000000",
+        "question_color": "#000000",
+        "answer_color": "#000000",
+        "image_border_color": "#000000",
+        "heading_color": "#000000",
+        "background_color": "#FFFFFF",
+        "background_gradient": "",
+        "border_color": "#000000",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_horizontal": 0,
+        "padding_horizontal_mobile": 0,
+        "full_width": true,
+        "content_width": 120,
+        "border_thickness": 1,
+        "lazy": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq_L6zRnx"
+  ]
+}

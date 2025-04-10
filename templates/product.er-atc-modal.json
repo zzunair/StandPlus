@@ -1,0 +1,136 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "17e39721-ec5e-4472-b3a5-c9a6f29c51d0": {
+      "type": "er-product-modal",
+      "settings": {
+        "gallery_size": "6",
+        "sidebar": "off",
+        "enable_sticky_sidebar": false,
+        "show_fit_selector": false,
+        "show_tabs": false,
+        "show_tab_description": false,
+        "top_description": false,
+        "show_tab_reviews": true,
+        "scrolling_to_opened_tab": false,
+        "tabs_type": "tabs"
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "a46f1075-ed6b-4617-bee1-185f1843a798": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "SLIP RESISTANT",
+            "image": "shopify://shop_images/pdp_icon_cloud_like_comfort.svg"
+          }
+        },
+        "ef23aa41-f885-4a3e-b11b-bde3c2d21d27": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "WATERPROOF & EASY TO CLEAN",
+            "image": "shopify://shop_images/pdp_icon_slip_resistant_easy_to_clean.svg"
+          }
+        },
+        "932af5cc-67fc-4b88-a519-35c87e36a53f": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "ANTIMICROBIAL",
+            "image": "shopify://shop_images/pdp_icon__antimicrobial.svg"
+          }
+        },
+        "9c1eaa3a-14f7-480c-ab4d-e6b79681b24c": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "BLEACH FRIENDLY",
+            "image": "shopify://shop_images/pdp_icon_wide_width_breathable.svg"
+          }
+        },
+        "9792bc26-0b76-4a7f-a7a3-87f8e54e6e4b": {
+          "type": "iconography",
+          "disabled": true,
+          "settings": {
+            "name": "LIGHTWEIGHT",
+            "image": "shopify://shop_images/pdp_icon_eco-friendly_impact.svg"
+          }
+        }
+      },
+      "block_order": [
+        "a46f1075-ed6b-4617-bee1-185f1843a798",
+        "ef23aa41-f885-4a3e-b11b-bde3c2d21d27",
+        "932af5cc-67fc-4b88-a519-35c87e36a53f",
+        "9c1eaa3a-14f7-480c-ab4d-e6b79681b24c",
+        "9792bc26-0b76-4a7f-a7a3-87f8e54e6e4b"
+      ],
+      "disabled": true,
+      "settings": {
+        "gallery_size": "6",
+        "sidebar": "off",
+        "enable_sticky_sidebar": false,
+        "show_fit_selector": true,
+        "show_tabs": false,
+        "show_tab_description": false,
+        "top_description": true,
+        "show_tab_reviews": false,
+        "scrolling_to_opened_tab": false,
+        "tabs_type": "tabs"
+      }
+    },
+    "168574376439cd6b27": {
+      "type": "apps",
+      "settings": {
+        "full_width": false
+      }
+    },
+    "1634128129c7f7073c": {
+      "type": "home-builder",
+      "settings": {
+        "title": "",
+        "container": "boxed",
+        "size_of_columns": "2",
+        "size_of_columns_mobile": "1",
+        "margins_for_columns": "preset_4",
+        "align_of_columns": "center_left",
+        "disable_column_paddings": true,
+        "precedence": "2,1,3,4,6,5,7,8",
+        "customization_class": ""
+      }
+    },
+    "related-products": {
+      "type": "carousel-related-products",
+      "disabled": true,
+      "settings": {
+        "show_section": false,
+        "type": "related",
+        "title": "RELATED PRODUCTS",
+        "size_of_columns": "4",
+        "max_count": 6,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true,
+        "arrows": true,
+        "bullets": true
+      }
+    }
+  },
+  "order": [
+    "17e39721-ec5e-4472-b3a5-c9a6f29c51d0",
+    "main",
+    "168574376439cd6b27",
+    "1634128129c7f7073c",
+    "related-products"
+  ]
+}

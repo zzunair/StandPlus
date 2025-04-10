@@ -1,0 +1,357 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": true,
+        "show_content": true
+      }
+    },
+    "9b5c420b-56a2-4983-a126-4b1c0176a59d": {
+      "type": "er-nurses-lp-hero",
+      "settings": {
+        "title": "Experience Unmatched Comfort:",
+        "subtitle": "Unveiling the Perfect Shoes for Nurses",
+        "description": "Elevate Your Long Shifts with Our Collection of Top-tier, Ultra-Comfy Nurse Shoes",
+        "btn_text": "Shop Now",
+        "btn_url": "#shopify-section-template--20748276302102__a4b1468c-734d-4aa2-ae9d-a5ebe7070d72",
+        "bg_color": "#3e5e7b",
+        "bg_image": "shopify://shop_images/er_nurses_lp_hero_banner.png",
+        "bg_image_mobile": "shopify://shop_images/er_nurses_lp_hero_banner_mobile.png"
+      }
+    },
+    "1b2f55ce-a634-4d99-b075-b5484c4b7527": {
+      "type": "er-nurses-lp-details",
+      "settings": {
+        "title": "Gales aren't your average nursing shoes",
+        "content": "<p>Nursing is physically demanding. Nurses walk 4-5 miles/day. Common issues that come along with not wearing quality footwear are:</p><ul><li>Peripheral neuropathy</li><li>Plantar fasciitis</li><li>Heel spurs</li><li>Inflammation</li></ul><p>Gales was founded to give back to the healthcare community through innovation with Smart PPE Footwear™ technology, offering the highest level of affordability, safety, cleanability, comfort and style in its class.</p><p>Common footwear worn in medical facilities puts our frontline nurses at risk, leaving 59 million providers exposed to infectious fluids and disease, so we led the charge to be the first to complete the bio-safe uniform.</p>",
+        "bg_color": "#f9f9f9",
+        "image": "shopify://shop_images/er_nurses_lp_hero_deatils_anim.gif"
+      }
+    },
+    "8f28baa2-d390-4a25-8ebb-34ada89cc227": {
+      "type": "er-nurses-lp-versus",
+      "blocks": {
+        "78512b17-f4da-447e-8efa-eafee5e59816": {
+          "type": "feature",
+          "settings": {
+            "name": "Comfort",
+            "gales": "Comfort for entire 10-12 hours shifts",
+            "others": "Up to 6 hours at a time"
+          }
+        },
+        "f9cd24b1-9934-492f-9b3f-45127c004f34": {
+          "type": "feature",
+          "settings": {
+            "name": "Support",
+            "gales": "Stability and support for prolonged standing and walking periods",
+            "others": "Lateral support and stability for quick movements"
+          }
+        },
+        "b0dcf96a-40c4-4c36-8b85-afb722af6ab1": {
+          "type": "feature",
+          "settings": {
+            "name": "Slip Resistance",
+            "gales": "Rubber outsole for traction on wet or slippery surfaces",
+            "others": "Non-scuffing soles with extra padding for dry surfaces"
+          }
+        },
+        "15cfd697-c28c-42c4-b792-8b754204ffb0": {
+          "type": "feature",
+          "settings": {
+            "name": "Easy to Clean",
+            "gales": "Slip-on design for easy removal and maintenance in sterile environments",
+            "others": "Laces are difficult-to-clean and soft fabrics attract stains"
+          }
+        },
+        "70d61223-28c9-4158-8c22-216dd62c11a5": {
+          "type": "feature",
+          "settings": {
+            "name": "Breathability",
+            "gales": "Our shoes offer excellent breathability while also being waterproof.",
+            "others": "Mesh construction allows air flow but lets in fluids"
+          }
+        }
+      },
+      "block_order": [
+        "78512b17-f4da-447e-8efa-eafee5e59816",
+        "f9cd24b1-9934-492f-9b3f-45127c004f34",
+        "b0dcf96a-40c4-4c36-8b85-afb722af6ab1",
+        "15cfd697-c28c-42c4-b792-8b754204ffb0",
+        "70d61223-28c9-4158-8c22-216dd62c11a5"
+      ],
+      "settings": {
+        "title": "Tennis Shoes vs. Nursing Shoes"
+      }
+    },
+    "12c2621c-f30b-4276-949e-ea0340c9f62f": {
+      "type": "er-nurses-lp-swiper-reveal",
+      "blocks": {
+        "e1ce9c2a-aa0e-4cd4-9360-cfdac2bb1dfd": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "Pro Line",
+            "image": "shopify://shop_images/01_infographic_proline_cloud_like_comfort.png",
+            "name": "CLOUD LIKE COMFORT",
+            "description": "<p>Ranked #1 in independent lab tests for durability, comfort, fit and pressure reduction, our shoes feature featherlight XL Extralight® technology for all-day comfort.</p>"
+          }
+        },
+        "9a8ad662-a292-4f96-a09a-eb9563a6338b": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "Pro Line",
+            "image": "shopify://shop_images/02_infographic_proline_waterproof.png",
+            "name": "WATERPROOF",
+            "description": "<p>Don't let spills or weather ruin your day. Rain or shine, puddles or mud, your feet will remain dry and comfortable.</p>"
+          }
+        },
+        "401457ce-2914-4de3-bb44-dad07b4ff40d": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "Pro Line",
+            "image": "shopify://shop_images/03_infographic_proline_slip_resistant.png",
+            "name": "SLIP RESISTANT",
+            "description": "<p>ASTM F2913 Slip resistant and lace-free. Feel confident and secure in every step, no matter how hectic the environment gets.</p>"
+          }
+        },
+        "75e3b3bd-cba5-4241-8ab7-4967307ddfc8": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "Pro Line",
+            "image": "shopify://shop_images/04_infographic_proline_machine_washable.png",
+            "name": "MACHINE WASHABLE",
+            "description": "<p>After a busy day at work, simply toss them in the washing machine, and they'll come out fresh and clean, ready for the next day's challenges.</p>"
+          }
+        },
+        "06e9ba30-85e0-4bf7-99ef-68571f16b1d8": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "Pro Line",
+            "image": "shopify://shop_images/05_infographic_proline_7MM_of_arch_support.png",
+            "name": "7MM OF ARCH SUPPORT",
+            "description": "<p>Say goodbye to foot fatigue and discomfort. Our shoes are specially designed to alleviate strain and promote proper alignment.</p>"
+          }
+        },
+        "5d378f12-3437-457e-a440-04e2658e0525": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "Pro Line",
+            "image": "shopify://shop_images/06_infographic_proline_antimicrobial.png",
+            "name": "ANTIMICROBIAL",
+            "description": "<p>Our shoes come with an antimicrobial barrier, ensuring your feet stay fresh and protected from harmful bacteria and odors throughout your shift.</p>"
+          }
+        },
+        "0392b8bb-43a1-4974-bec2-91ea12473f26": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "FrontLine",
+            "image": "shopify://shop_images/01_infographic_frontline_cloud_like_comfort.png",
+            "name": "CLOUD LIKE COMFORT",
+            "description": "<p>Ranked #1 in independent lab tests for durability, comfort, fit and pressure reduction, our shoes feature featherlight XL Extralight® technology for all-day comfort.</p>"
+          }
+        },
+        "beed8b2b-c859-4e9a-8b82-2313767f0433": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "Pro Line",
+            "image": "shopify://shop_images/02_infographic_frontline_waterproof.png",
+            "name": "WATERPROOF",
+            "description": "<p>Don't let spills or weather ruin your day. Rain or shine, puddles or mud, your feet will remain dry and comfortable.</p>"
+          }
+        },
+        "349dd8b4-08da-492d-87e1-baafe72db4f8": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "FrontLine",
+            "image": "shopify://shop_images/03_infographic_frontline_slip_resistant.png",
+            "name": "SLIP RESISTANT",
+            "description": "<p>ASTM F2913 Slip resistant and lace-free. Feel confident and secure in every step, no matter how hectic the environment gets.</p>"
+          }
+        },
+        "4cb09233-5c91-41b9-9b15-b66bf157390e": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "FrontLine",
+            "image": "shopify://shop_images/04_infographic_frontline_machine_washable.png",
+            "name": "MACHINE WASHABLE",
+            "description": "<p>After a busy day at work, simply toss them in the washing machine, and they'll come out fresh and clean, ready for the next day's challenges.</p>"
+          }
+        },
+        "4cd78ed6-67b2-46b0-9df8-c8fe188bd9e8": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "FrontLine",
+            "image": "shopify://shop_images/05_infographic_frontline_7MM_of_arch_support.png",
+            "name": "7MM OF ARCH SUPPORT",
+            "description": "<p>Say goodbye to foot fatigue and discomfort. Our shoes are specially designed to alleviate strain and promote proper alignment.</p>"
+          }
+        },
+        "172b3995-a98c-4970-a17f-0087598b5716": {
+          "type": "info_card",
+          "settings": {
+            "idCard": "FrontLine",
+            "image": "shopify://shop_images/06_infographic_frontline_antimicrobial.png",
+            "name": "ANTIMICROBIAL",
+            "description": "<p>Our shoes come with an antimicrobial barrier, ensuring your feet stay fresh and protected from harmful bacteria and odors throughout your shift.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "e1ce9c2a-aa0e-4cd4-9360-cfdac2bb1dfd",
+        "9a8ad662-a292-4f96-a09a-eb9563a6338b",
+        "401457ce-2914-4de3-bb44-dad07b4ff40d",
+        "75e3b3bd-cba5-4241-8ab7-4967307ddfc8",
+        "06e9ba30-85e0-4bf7-99ef-68571f16b1d8",
+        "5d378f12-3437-457e-a440-04e2658e0525",
+        "0392b8bb-43a1-4974-bec2-91ea12473f26",
+        "beed8b2b-c859-4e9a-8b82-2313767f0433",
+        "349dd8b4-08da-492d-87e1-baafe72db4f8",
+        "4cb09233-5c91-41b9-9b15-b66bf157390e",
+        "4cd78ed6-67b2-46b0-9df8-c8fe188bd9e8",
+        "172b3995-a98c-4970-a17f-0087598b5716"
+      ],
+      "settings": {
+        "bg_image": "shopify://shop_images/Hero_Banner.png",
+        "title": "Supporting Those Who Support All",
+        "subtitle": "Discover the Ultimate Nurse's Comfort",
+        "firstLink": "Pro Line",
+        "urlfirstLink": "",
+        "secondLink": "FrontLine",
+        "urlsecondLink": "",
+        "firstImage": "shopify://shop_images/Front_Line_8ff3dd06-bc34-4222-9c0b-8c0237ab1395.png",
+        "secondImage": "shopify://shop_images/Pro_Line_459e718b-f647-4618-b99d-df9727013d8e.png",
+        "lastTextButton": "Shop Now"
+      }
+    },
+    "a4b1468c-734d-4aa2-ae9d-a5ebe7070d72": {
+      "type": "er-nursr-lp-productCarousel",
+      "blocks": {
+        "addfc9c3-857f-4863-8323-7d93b3d449a9": {
+          "type": "collection",
+          "settings": {
+            "title": "Frontline",
+            "collection": "frontline",
+            "titleCarousel": "For Nurses with a Narrow Fit and a Desire for Streamlined Support",
+            "textCarousel": "Opt for Our Front Line Shoe Attention, nurses seeking a sleek, streamlined fit that provides targeted support! Our Front Line Shoe is tailored for those with a narrower foot profile, offering a snug and secure fit that enhances your agility. With its meticulously designed construction, the Front Line Shoe prioritizes stability and precision, helping you navigate your rounds with confidence and grace.",
+            "linkBtnCarousel": "shopify://products/frontline",
+            "textBtnCarousel": "Shop NOw"
+          }
+        }
+      },
+      "block_order": [
+        "addfc9c3-857f-4863-8323-7d93b3d449a9"
+      ],
+      "settings": {
+        "titleSection": "Introducing the Perfect Fit for Every Nurse",
+        "show_title": true,
+        "container": "boxed",
+        "size_of_columns": "2",
+        "max_count": 10,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true,
+        "arrows": true,
+        "bullets": false,
+        "prefer_meta_name": false,
+        "prefer_parent_images": false,
+        "show_price": true
+      }
+    },
+    "3ca80c32-4881-485c-90ef-36346b3759b0": {
+      "type": "er-nursr-lp-productCarousel",
+      "blocks": {
+        "079415ac-ae34-4fd8-9951-f47c174e109d": {
+          "type": "collection",
+          "settings": {
+            "title": "Pro Line",
+            "collection": "pro-line",
+            "titleCarousel": "For Nurses with a Need for Breathability and Extra Space",
+            "textCarousel": "If you're a nurse who battles with sweaty feet during those long shifts, we've got you covered. Our Proline Shoe is expertly engineered with breathability in mind, ensuring your feet stay comfortably cool throughout your demanding day. What's more, if you're looking for a wide fit that allows your feet to spread naturally, the Proline Shoe is your perfect match. Experience the relief of a well-ventilated, spacious shoe that supports you every step of the way.",
+            "linkBtnCarousel": "shopify://products/pro-line",
+            "textBtnCarousel": "Shop NOw"
+          }
+        }
+      },
+      "block_order": [
+        "079415ac-ae34-4fd8-9951-f47c174e109d"
+      ],
+      "settings": {
+        "titleSection": "",
+        "show_title": true,
+        "container": "boxed",
+        "size_of_columns": "2",
+        "max_count": 10,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true,
+        "arrows": true,
+        "bullets": false,
+        "prefer_meta_name": false,
+        "prefer_parent_images": false,
+        "show_price": true
+      }
+    },
+    "dec48906-bb63-4880-9d9e-de82d11c6a37": {
+      "type": "er-nurses-lp-tiktok",
+      "blocks": {
+        "555f68db-1b5b-4ce4-9952-d628ca5dbc69": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2023-08-14_at_1.51_1.png",
+            "link": "https://www.tiktok.com/@weargales/video/7222043598919896363"
+          }
+        },
+        "e71c3261-d608-4bb3-9c06-6a7a674fd5f0": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2023-08-14_at_1.51_2.png",
+            "link": "https://www.tiktok.com/@weargales/video/7234628222623698219"
+          }
+        },
+        "3864886c-0e6e-43b3-8983-de7e4df4f2f0": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2023-08-14_at_1.51_3.png",
+            "link": "https://www.tiktok.com/@weargales/video/7226102243668282667"
+          }
+        }
+      },
+      "block_order": [
+        "555f68db-1b5b-4ce4-9952-d628ca5dbc69",
+        "e71c3261-d608-4bb3-9c06-6a7a674fd5f0",
+        "3864886c-0e6e-43b3-8983-de7e4df4f2f0"
+      ],
+      "settings": {
+        "title": "Real nurses, real comfort:",
+        "subtitle": "Hear what your colleagues love about our shoes"
+      }
+    },
+    "9715a001-2881-4d4f-b435-652a9bc4d164": {
+      "type": "er-alsf-judgeme-reviews",
+      "settings": {
+        "product": "frontline"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "9b5c420b-56a2-4983-a126-4b1c0176a59d",
+    "1b2f55ce-a634-4d99-b075-b5484c4b7527",
+    "8f28baa2-d390-4a25-8ebb-34ada89cc227",
+    "12c2621c-f30b-4276-949e-ea0340c9f62f",
+    "a4b1468c-734d-4aa2-ae9d-a5ebe7070d72",
+    "3ca80c32-4881-485c-90ef-36346b3759b0",
+    "dec48906-bb63-4880-9d9e-de82d11c6a37",
+    "9715a001-2881-4d4f-b435-652a9bc4d164"
+  ]
+}

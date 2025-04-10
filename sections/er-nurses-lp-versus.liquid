@@ -1,0 +1,89 @@
+<div class="er-nurses-lp-versus__wrapper">
+  <div class="container">
+    {% if section.settings.title != blank %}
+      <h3>{{ section.settings.title }}</h3>
+    {% endif %}
+    <div class="er-nurses-lp-versus__scroll-wrapper">
+      <div class="er-nurses-lp-versus__content">
+        <div class="er-nurses-lp-versus__features">
+          <div class="er-nurses-lp-versus__features--title">
+            Features
+          </div>
+          <div class="er-nurses-lp-versus__features--content">
+            {% for block in section.blocks %}
+              <div class="er-nurses-lp-versus__features--content-item">{{ block.settings.name }}</div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="er-nurses-lp-versus__gales">
+          <div class="er-nurses-lp-versus__gales--title">
+            GALES SHOES
+          </div>
+          <div class="er-nurses-lp-versus__gales--content">
+            {% for block in section.blocks %}
+              <div class="er-nurses-lp-versus__gales--content-item">
+                {% render 'er-icon-blue-check-mark' %}
+                <span>{{ block.settings.gales }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="er-nurses-lp-versus__others">
+          <div class="er-nurses-lp-versus__others--title">
+            RUNNING SHOES
+          </div>
+          <div class="er-nurses-lp-versus__others--content">
+            {% for block in section.blocks %}
+              <div class="er-nurses-lp-versus__others--content-item">
+                {% render 'er-icon-grey-times' %}
+                <span>{{ block.settings.others }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ER Nurses LP Versus",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Tennis Shoes vs. Nursing Shoes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Feature name"
+        },
+        {
+          "type": "text",
+          "id": "gales",
+          "label": "Gales feature"
+        },
+        {
+          "type": "text",
+          "id": "others",
+          "label": "Others feature"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER Nurses LP Versus"
+    }
+  ]
+}
+{% endschema %}

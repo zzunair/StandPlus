@@ -1,0 +1,22 @@
+{% render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: false, product: section.settings.product %}
+
+{% schema %}
+{
+  "name": "ER ALSF judgeme reviews",
+  "class": "er-alsf-judgeme-reviews__wrapper",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Choose a product to get its reviews form judgeme widget"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER ALSF judgeme reviews"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,254 @@
+<div class="er-estimated-arrival" ab-test-variant="A">
+  <div class="er-estimated-arrival__messages">
+    <span class="order-legend-A">Order now and get it shipped the next business day <b class="js-er-estimated-delivery-soon-date">--</b></span>
+    <span class="order-legend-B">Order now and get it delivered as soon as <b class="js-er-estimated-delivery-soon-date">--</b></span>
+    <span class="order-legend-C">Order now and get it delivered as soon as <b class="js-er-estimated-delivery-soon-date">--</b></span>
+    <span>
+      {%- render 'icon-sand-clock' %}
+      <b class="js-er-estimated-delivery-countdown"> -- : -- : --</b></span
+    >
+  </div>
+  <div class="er-estimated-arrival__dates">
+    <div class="er-estimated-arrival__dates--wrapper">
+      {% render 'icon-package-send' %}
+      <div>
+        <div><b class="js-er-estimated-delivery-now-date">--</b></div>
+        <span>Order placed</span>
+      </div>
+    </div>
+    <div class="er-estimated-arrival__dates--arrow">
+      {% render 'icon-package-arrow' %}
+    </div>
+    <div class="er-estimated-arrival__dates--wrapper">
+      {% render 'icon-package-arrive' %}
+      {% render 'icon-truck' %}
+      <div>
+        <div class="er-estimated-delivery-arrival-dates">
+          <span class="js-er-estimated-delivery-arrival-date-start"></span> -
+          <span class="js-er-estimated-delivery-arrival-date-end"></span>
+        </div>
+        <div class="js-er-estimated-ship-day">-</div>
+        <span class="deliver-legend-A">Order ships</span>
+        <span class="deliver-legend-B">Delivered</span>
+        <span class="deliver-legend-C">Delivered</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    /****** Constants ******/
+    // Number of days counting from the order placed that the order will arrive
+    var days = {{ settings.er_estimated_delivery_normal_days }};
+    // Number of days counting from the order placed that the order will arrive after switch hour
+    var daysAfterSwitchHour = {{ settings.er_estimated_delivery_normal_days_switch }};
+    // Max of days counting from the first possible arrive date
+    var maxDays = {{ settings.er_estimated_delivery_normal_window_days }};
+    // Storage switch hour use 0-24 hours
+    const switchHour = {{ settings.er_estimated_delivery_switch_hour }};
+    // Expedited shippment
+    var expedited = false; // Default A variant
+    /****** End Constants ******/
+
+    /* USE JS to change variants from query param */
+    // TEMP CODE DELETE TO GO LIVE!!
+    const urlParams = new URLSearchParams(window.location.search);
+    const testVariant = urlParams.get('testVariant');
+    if (testVariant == 'A') {
+      document.querySelector('.er-estimated-arrival').setAttribute('ab-test-variant', 'A');
+    }
+    if (testVariant == 'B') {
+      document.querySelector('.er-estimated-arrival').setAttribute('ab-test-variant', 'B');
+    }
+    if (testVariant == 'C') {
+      document.querySelector('.er-estimated-arrival').setAttribute('ab-test-variant', 'C');
+    }
+    /* END USE JS to change variants from query param */
+
+    if (document.querySelector('.er-estimated-arrival').getAttribute('ab-test-variant') == 'C') {
+      var expedited = true;
+    }
+
+    if (expedited) {
+      days = {{ settings.er_estimated_delivery_expedited_days }};
+      daysAfterSwitchHour = {{ settings.er_estimated_delivery_expedited_days_switch }};
+      maxDays = {{ settings.er_estimated_delivery_expedited_window_days }};
+    }
+
+    // Call countdown function
+    var countDonwTimer = estimatedDeliveryCounter();
+    // Call dates calc funtion
+    estimatedDeliveryDates();
+
+    function estimatedDeliveryDates() {
+      // Set order date
+      document.querySelector('.js-er-estimated-delivery-now-date').innerHTML = new Date().toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      });
+
+      // STORAGE DATE IMPORTANT!!!!
+      const storageTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+      // const storageTime = '8/16/2023, 1:52:00 PM'; // For testing
+      const parsedStorageTime = Date.parse(storageTime);
+      var arrivalDate = new Date(parsedStorageTime);
+
+      // If its pass switch Hour
+      if (new Date(parsedStorageTime).getHours() >= switchHour) {
+        for (let i = 0; i < daysAfterSwitchHour; i++) {
+          arrivalDate.setDate(arrivalDate.getDate() + 1);
+          if (!expedited) {
+            if (arrivalDate.getDay() == 6 || arrivalDate.getDay() == 0) {
+              i--;
+            }
+          }
+        }
+      } else {
+        for (let i = 0; i < days; i++) {
+          arrivalDate.setDate(arrivalDate.getDate() + 1);
+          if (!expedited) {
+            if (arrivalDate.getDay() == 6 || arrivalDate.getDay() == 0) {
+              i--;
+            }
+          }
+        }
+      }
+
+      if (!expedited) {
+        // If Saturday send day to Monday
+        if (arrivalDate.getDay() == 6) {
+          arrivalDate.setDate(arrivalDate.getDate() + 2);
+        }
+
+        // If Sunday send day to Monday
+        if (arrivalDate.getDay() == 0) {
+          arrivalDate.setDate(arrivalDate.getDate() + 1);
+        }
+      }
+
+      var arrivalDateEnd = new Date(Date.parse(arrivalDate));
+
+      // Add days to start day ignoring weekend days
+      for (let i = 0; i < maxDays; i++) {
+        arrivalDateEnd.setDate(arrivalDateEnd.getDate() + 1);
+        if (!expedited) {
+          if (arrivalDateEnd.getDay() == 6 || arrivalDateEnd.getDay() == 0) {
+            i--;
+          }
+        }
+      }
+
+      if (!expedited) {
+        // At the end of calc if Saturday send day to Monday
+        if (arrivalDateEnd.getDay() == 6) {
+          arrivalDateEnd.setDate(arrivalDateEnd.getDate() + 2);
+        }
+
+        // At the end of calc if Sunday send day to Monday
+        if (arrivalDateEnd.getDay() == 0) {
+          arrivalDateEnd.setDate(arrivalDateEnd.getDate() + 1);
+        }
+      }
+
+      var formattedArrivalSoonDate = new Date(arrivalDate).toLocaleDateString('en-US', {
+        weekday: "long",
+      });
+
+      if (document.querySelector('.er-estimated-arrival').getAttribute('ab-test-variant') == 'B') {
+        formattedArrivalSoonDate = new Date(arrivalDate).toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+        });
+      }
+
+      if (document.querySelector('.er-estimated-arrival').getAttribute('ab-test-variant') == 'C') {
+        formattedArrivalSoonDate = new Date(arrivalDate).toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+        });
+      }
+
+      const formattedArrivalDate = new Date(arrivalDate).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      });
+
+      const formattedArrivalDateEnd = new Date(arrivalDateEnd).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      });
+
+      document.querySelectorAll('.js-er-estimated-delivery-soon-date').forEach(el => {
+        el.innerHTML = formattedArrivalSoonDate;
+      });
+      document.querySelector('.js-er-estimated-delivery-arrival-date-start').innerHTML = formattedArrivalDate;
+      document.querySelector('.js-er-estimated-delivery-arrival-date-end').innerHTML = formattedArrivalDateEnd;
+
+
+      // Shipping Date calc
+      var shipDate = new Date(parsedStorageTime);
+      if (new Date(parsedStorageTime).getHours() >= switchHour) {
+        shipDate.setDate(shipDate.getDate() + 2);
+      } else {
+        shipDate.setDate(shipDate.getDate() + 1); 
+      }
+
+      if (shipDate.getDate() == 6) {
+        shipDate.setDate(shipDate.getDate() + 2);
+      }
+
+      if (shipDate.getDate() == 0) {
+        shipDate.setDate(shipDate.getDate() + 1);
+      }
+
+      const formattedArrivalShipDate = new Date(shipDate).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+      });
+
+      document.querySelector('.js-er-estimated-ship-day').innerHTML = formattedArrivalShipDate;
+    }
+
+    function estimatedDeliveryCounter() {
+      return setInterval(function () {
+        var date = new Date();
+        if (new Date(date.toLocaleString('en-US', { timeZone: 'America/New_York' })).getHours() >= switchHour) {
+          date.setDate(date.getDate() + 1);
+        }
+        const countDownDateDay = new Date(date.toLocaleString('en-US', { timeZone: 'America/New_York' })).getDate();
+        const countDownDateMonth =
+          new Date(date.toLocaleString('en-US', { timeZone: 'America/New_York' })).getMonth() + 1;
+        const countDownDateYear = new Date(
+          date.toLocaleString('en-US', { timeZone: 'America/New_York' })
+        ).getFullYear();
+        var countDownDate = new Date(
+          `${countDownDateMonth}/${countDownDateDay}/${countDownDateYear} ${switchHour}:00:00`
+        ).getTime();
+
+        var storageNow = new Date(
+          Date.parse(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))
+        ).getTime();
+
+        // Find the distance between storageNow and the countdown date
+        var distance = countDownDate - storageNow;
+
+        // Time calculations for days, hours, minutes and seconds
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.querySelector(
+          '.js-er-estimated-delivery-countdown'
+        ).innerHTML = `${hours}h : ${minutes}m : ${seconds}s`;
+
+        // If the count down is over, write some text
+        if (distance < 0) {
+          clearInterval(countDonwTimer);
+          countDonwTimer = estimatedDeliveryCounter();
+          estimatedDeliveryDates();
+        }
+      }, 1000);
+    }
+  });
+</script>

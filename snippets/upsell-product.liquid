@@ -1,0 +1,386 @@
+{% assign parent_product = settings.upsell_product %}
+{% assign child_products = settings.upsell_product_list %}
+
+<div class="product-cart upsell-product" data-js-product data-product-variant-id="{{ parent_product.variants.first.id }}">
+    <div class="d-flex flex-row align-items-start">
+        <a href="{{ parent_product.url }}">
+            <div class="product-cart__image mr-15">
+                {% render 'rimage' with image: parent_product.featured_image size: '400x' format: image_format image_class: 'w-100' %}
+            </div>
+        </a>
+        <div class="product-cart__content d-flex flex-column align-items-start">
+            
+            <div class="product-cart__title-wrapper">
+                <div class="product-cart__title mb-3">
+                    <h3 class="h6 m-0">
+                        <a href="{{ parent_product.url }}">{{ parent_product.title }}</a>
+                    </h3>
+                </div>
+                
+                <div class="product-cart__price mt-3 mb-10 d-flex flex-column">
+                    <span class="product-cart__price-value font-weight-bold" style="color: #f17849;">
+                        {{ parent_product.price | divided_by: 2.0 | money_without_trailing_zeros }}  
+                    </span>
+                    <span class="product-cart__compare-price text-muted" style="text-decoration: line-through; font-size: 0.9em;">
+                        {{ parent_product.price | money_without_trailing_zeros }}
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="selected-options mb-2" style="font-size: 12px;">
+                <span class="selected-color"></span>
+                <br>
+                <span class="selected-size"></span>
+            </div>
+
+            <div class="upsell-color-options mb-2">
+                <label class="mb-1">Select Color:</label>
+                <div class="d-flex flex-wrap" style="gap: 5px;">
+                    {% for child_product in child_products %}
+                         {% assign colorInTitle = child_product.title | handleize | split: "-" %}
+                         {% assign color_image = "" %}
+                         {% if child_product.title contains "White/White" %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_30.png?v=1744140938' %}
+                         {% elsif child_product.title contains "Orange/White" %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_31.png?v=1744140938' %}
+                         {% elsif child_product.title contains "Tan/White" %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_32.png?v=1744140939' %}
+                         {% elsif child_product.title contains "Lemon" %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_33.png?v=1744140938' %}
+                         {% elsif child_product.title contains "Lavender" %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_34.png?v=1744140938' %}
+                         {% elsif child_product.title contains "Mint" %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_35.png?v=1744140938' %}
+                         {% endif %}
+                         {% if color_image != blank %}
+                            <div class="color-swatch"
+                                data-product-id="{{ child_product.id }}"
+                                data-product-url="{{ child_product.url }}"
+                                data-product-title="{{ child_product.title }}"
+                                data-color="{% assign title_parts = child_product.title | split: '-' %}{% if title_parts.size > 1 %}{{ title_parts | last | strip }}{% else %}{{ child_product.title }}{% endif %}"
+                                data-product-image="{{ child_product.featured_image | img_url: '400x' }}"
+                                class="{{ colors_class1 }} {{ colors_class2 }}"
+                                onclick="handleColorSelection(this)"
+                                style="
+                                    width: 24px; 
+                                    height: 24px; 
+                                    border-radius: 50%; 
+                                    margin-right: 5px; 
+                                    cursor: pointer; 
+                                    position: relative;
+                                ">
+                                    <div class="svg-container">
+                                        <img src="{{ color_image }}" alt="{{ child_product.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                </div>
+                            {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="upsell-row">
+                <div class="upsell-size-options mb-2">
+                    <select class="upsell-size-selector">
+                        <option value="">Select Size</option>
+                    </select>
+                </div>
+                <button class="upsell-add-to-cart btn btn-primary mt-4" onclick="upsellAddToCart(this)">
+                Add
+            </button>
+            </div>
+            
+
+            <input type="hidden" class="upsell-variant-selector" value="">
+        </div>
+    </div>
+</div>
+
+<script>
+function handleColorSelection(colorSwatch) {
+
+    document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('selected'));
+    colorSwatch.classList.add('selected');
+
+    const productUrl = colorSwatch.getAttribute('data-product-url');
+    const selectedProductTitle = colorSwatch.getAttribute('data-color');
+    const productHandle = productUrl.split('/products/')[1].split('?')[0];
+
+    updateSelectedOptions(selectedProductTitle, '');
+
+    const productImage = colorSwatch.getAttribute('data-product-image').replace('150x', '400x');
+    const upsellProductImage = document.querySelector('.upsell-product .rimage img');
+
+    if (upsellProductImage) {
+        if (upsellProductImage.hasAttribute('data-src')) {
+            upsellProductImage.setAttribute('data-src', productImage);
+            upsellProductImage.setAttribute('srcset', `${productImage} 1x, ${productImage.replace('400x', '800x')} 2x, ${productImage.replace('400x', '1200x')} 3x`);
+        } else {
+            upsellProductImage.src = productImage;
+            upsellProductImage.setAttribute('srcset', `${productImage} 1x, ${productImage.replace('400x', '800x')} 2x, ${productImage.replace('400x', '1200x')} 3x`);
+        }
+    } else {
+        console.error('Upsell product image element not found');
+    }
+
+    fetch(`/products/${productHandle}.js`)
+    .then(response => response.json())
+    .then(product => {
+        const selectedProductId = product.id;
+        
+        let sizeSelector = document.querySelector('.upsell-size-selector');
+        sizeSelector.innerHTML = '<option value="">Select Size</option>';
+        
+        if (product.variants && product.variants.length > 0) {
+            const sortedVariants = product.variants.sort((a, b) => {
+                const getSize = (str) => {
+                    const matches = str.match(/M(\d+\.?\d*)/);
+                    return matches ? parseFloat(matches[1]) : 0;
+                };
+                
+                const sizeA = getSize(a.title);
+                const sizeB = getSize(b.title);
+                return sizeA - sizeB;
+            });
+
+            sortedVariants.forEach(variant => {
+                let option = document.createElement('option');
+                option.value = variant.id;
+                
+                const sizeOnly = variant.title.split(' / ').pop();
+                option.textContent = sizeOnly;
+                option.disabled = !variant.available;
+                
+                // if (!variant.available) {
+                //     option.textContent += ' (Sold Out)';
+                // }
+                
+                option.dataset.variantId = variant.id;
+                option.dataset.productId = selectedProductId;
+                option.dataset.available = variant.available;
+                option.dataset.size = sizeOnly;
+                option.dataset.price = variant.price;
+                option.dataset.comparePrice = variant.compare_at_price || '';
+                
+                sizeSelector.appendChild(option);
+            });
+
+            const firstAvailableVariant = sortedVariants.find(v => v.available);
+            if (firstAvailableVariant) {
+                const selectedVariantId = firstAvailableVariant.id;
+                const selectedVariantPrice = firstAvailableVariant.price;
+                const selectedVariantComparePrice = firstAvailableVariant.compare_at_price || '';
+                
+                document.querySelector('.upsell-variant-selector').value = selectedVariantId;
+                sizeSelector.value = firstAvailableVariant.id;
+                
+                const sizeOnly = firstAvailableVariant.title.split(' / ').pop();
+                updateSelectedOptions(selectedProductTitle, sizeOnly);
+                updatePrice(selectedVariantPrice, selectedVariantComparePrice);
+            }
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching product:", error);
+        document.querySelector('.upsell-size-selector').innerHTML = '<option value="">Select Size</option>';
+    });
+}
+
+function updateSelectedOptions(color, size) {
+    const selectedColorEl = document.querySelector('.selected-color');
+    const selectedSizeEl = document.querySelector('.selected-size');
+    
+    if (color) {
+        selectedColorEl.textContent = `Color: ${color}`;
+    }
+    if (size) {
+        selectedSizeEl.textContent = size ? `Size: ${size}` : '';
+    }
+}
+
+function updatePrice(price, comparePrice) {
+    let upsellProductSection = document.querySelector('.upsell-product');
+    
+    if (!upsellProductSection) {
+        const currentSwatch = document.querySelector('.color-swatch.selected');
+        if (currentSwatch) {
+            upsellProductSection = currentSwatch.closest('.product-cart');
+        }
+    }
+    
+    if (!upsellProductSection) {
+        return;
+    }
+    
+    const priceValueEl = upsellProductSection.querySelector('.product-cart__price-value');
+    const comparePriceEl = upsellProductSection.querySelector('.product-cart__compare-price');
+    
+    if (priceValueEl && price) {
+        try {
+            // Calculate half price
+            const halfPrice = price / 2;
+            // Format prices
+            const originalPrice = formatMoney(price);
+            const discountedPrice = formatMoney(halfPrice);
+            
+            // Update the display
+            priceValueEl.textContent = discountedPrice;
+            priceValueEl.setAttribute('data-price', halfPrice);
+            priceValueEl.style.transition = 'color 0.3s';
+            priceValueEl.style.color = '#f17849';
+            
+            // Show original price below
+            if (comparePriceEl) {
+                comparePriceEl.textContent = originalPrice;
+                comparePriceEl.style.display = 'block';
+                comparePriceEl.style.textDecoration = 'line-through';
+                comparePriceEl.style.fontSize = '0.9em';
+            }
+            
+        } catch (error) {
+            console.error("Error updating upsell price:", error);
+        }
+    }
+}
+
+function formatMoney(cents) {
+    let value = cents;
+    if (typeof value === 'string') {
+        value = value.replace(/[^\d]/g, '');
+    }
+    value = parseFloat(value);
+    if (isNaN(value)) {
+        return '$0';
+    }
+    const dollars = value / 100;
+    return '$' + dollars.toFixed(2).replace(/\.00$/, '');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeEventListeners();
+});
+
+function initializeEventListeners() {
+    // Use event delegation for color swatches
+    document.querySelector('.upsell-color-options').addEventListener('click', function(event) {
+        if (event.target.closest('.color-swatch')) {
+            handleColorSelection(event.target.closest('.color-swatch'));
+        }
+    });
+
+    // Use event delegation for size selector
+    document.querySelector('.upsell-size-options').addEventListener('change', function(event) {
+        if (event.target.classList.contains('upsell-size-selector')) {
+            const selectedVariantId = event.target.value;
+            document.querySelector('.upsell-variant-selector').value = selectedVariantId;
+            
+            const selectedOption = event.target.options[event.target.selectedIndex];
+            const selectedSize = selectedOption.dataset.size;
+            const selectedVariantPrice = selectedOption.dataset.price;
+            const selectedVariantComparePrice = selectedOption.dataset.comparePrice;
+            
+            const selectedProductTitle = document.querySelector('.color-swatch.selected')?.getAttribute('data-color') || '';
+
+            updateSelectedOptions(selectedProductTitle, selectedSize);
+            updatePrice(selectedVariantPrice, selectedVariantComparePrice);
+        }
+    });
+}
+
+function upsellAddToCart(button) {
+
+    const selectedColorSwatch = document.querySelector('.color-swatch.selected');
+    const selectedSize = document.querySelector('.upsell-size-selector').value;
+
+    
+    if (!selectedColorSwatch || !selectedSize) {
+        alert('Please select both color and size before adding to cart.');
+        return;
+    }
+
+
+    const sizeSelector = document.querySelector('.upsell-size-selector');
+    const selectedOption = sizeSelector.options[sizeSelector.selectedIndex];
+    const selectedVariantId = selectedOption.value;
+
+    if (!selectedVariantId) {
+        alert('Please select a size before adding to cart.');
+        return;
+    }
+
+    fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id: selectedVariantId,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (theme.Cart && typeof theme.Cart.updateCart === 'function') {
+            theme.Cart.updateCart().then(() => {
+                showAddToCartFeedback(button);
+            });
+        } else {
+            fetch('/cart.js')
+                .then(res => res.json())
+                .then(cart => {
+                    console.log('Cart updated:', cart);
+                    showAddToCartFeedback(button);
+                });
+        }
+    })
+    .catch(error => {
+        console.error('Error adding to cart:', error);
+        alert('There was an error adding the item to cart. Please try again.');
+    });
+}
+
+function showAddToCartFeedback(button) {
+    const originalText = button.textContent;
+    button.textContent = 'Added!';
+    setTimeout(() => {
+        button.textContent = originalText;
+        resetFormState();
+    }, 2000);
+}
+
+function resetFormState() {
+    document.querySelector('.upsell-variant-selector').value = '';
+    document.querySelector('.upsell-size-selector').selectedIndex = 0;
+    document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('selected'));
+    handleColorSelection(document.querySelector('.color-swatch')); // Reinitialize to ensure event listeners are attached
+}
+</script>
+
+<style>
+.color-swatch {
+    width: 24px; 
+    height: 24px; 
+    margin-right: 5px; 
+    cursor: pointer; 
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.svg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.svg-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.color-swatch.selected {
+    border: 1px solid #333333;
+}
+</style>

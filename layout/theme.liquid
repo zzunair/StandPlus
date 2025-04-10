@@ -1,0 +1,634 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"{% if settings.layout_enable_rtl %} dir="rtl"{% endif %}> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+  <html class="no-js supports-no-cookies" lang="{{ shop.locale }}" contenteditable="false"
+  {% if settings.layout_enable_rtl %}
+  dir="rtl"
+  {% endif %}> <!--<![endif]-->
+   {% comment %} <!-- <div>{{  canonical_url }}</div> --> {% endcomment %}
+   {% comment %} {%- if product.tags contains "hide" or page.tags contains "hide" -%} {% endcomment %}
+  {%- assign showpage = false -%}
+  {%- if false -%}
+    <script>
+      window.location.replace("/error");
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/?noscript=true">
+    </noscript>
+  {% elsif product.metafields.furnace.parent_product %}
+    <head>  
+      {% assign child = canonical_url | split: "/" | last %}
+      {% assign canonical_parent = canonical_url | replace: child, product.metafields.furnace.parent_product %}
+      {% assign variant = product.first_available_variant.id %}
+      {% assign vrnt_color = product.first_available_variant.option1 | handleize %}
+      <meta name="robots" content="noindex">
+      <link rel="canonical" href="{{ canonical_parent }}">
+      <script>
+        window.now = window.now || Date.now();
+        if (!window.sessionStorage.getItem("gales_src")) {
+          window.sessionStorage.setItem("gales_src", JSON.stringify({src: window.location.href, time: now}))
+        }
+        if (!window.localStorage.getItem("gales_src")) {
+          window.localStorage.setItem("gales_src", JSON.stringify({src: window.location.href, time: now}))
+        }
+        {% comment %}console.log("vrnt_color:  {{ vrnt_color }}"){% endcomment %}
+
+        // console.log("{{ canonical_parent | split: "/" | json }}") 
+        const urlArray = {{ canonical_parent | split: "/" | json }};
+        const root = urlArray[0] + "//" + urlArray[2];
+        const canonical_parent = "{{ canonical_parent }}";
+        // console.log("canonical_parent:", canonical_parent);
+        const paramchar = canonical_parent.includes("?")
+          ? "&"
+          : "?"
+        const domain = canonical_parent.replace(root, window.location.origin) + paramchar + "color={{ vrnt_color }}";
+        // console.log("domain:", domain);
+        // console.log("search:", window.location.search);
+        const newDomain = domain + (
+          window.location.search
+            ? "&" + window.location.search.slice(1)
+            : ""
+        );
+        // console.log("newDomain:", newDomain);
+
+        // if (window.location.search.search("dev") == -1) {
+        window.location.replace(newDomain);
+
+  // }
+      </script>
+      <noscript>
+        <meta http-equiv="refresh" content="0;url={{ canonical_parent }}?color={{ vrnt_color }}&noscript=true">
+      </noscript>
+    </head>
+  {% elsif page.handle == "ab-split" %}
+    <head>
+      <meta name="robots" content="noindex">
+      <script>
+        {% assign defaultPath = "/collections/best-sellers" %}
+        const optionsAB = [ 
+          {name: "best-sellers", url: "/collections/best-sellers"},
+          {name: "cloudlike-comfort", url: "/pages/cloudlike-comfort"}
+        ];
+        
+        {% comment %} console.log("x page.handle: {{ page.handle }}", "optionsAB:", optionsAB); {% endcomment %}
+        const abfurnaceJSON = localStorage.getItem("ABFurnace");
+        let abfurnace= null;
+        {% comment %} console.log("abfurnaceJSON:", abfurnaceJSON); {% endcomment %}
+        if (abfurnaceJSON) {
+          try { abfurnace = JSON.parse(abfurnaceJSON) }
+          catch(e) {  }
+        }
+        {% comment %} console.log("abfurnace:", abfurnace) {% endcomment %}
+        let abNum = 1;
+        let ab = optionsAB[abNum].name
+        if (!abfurnace || (abfurnace.ab != optionsAB[0].name && abfurnace.ab != optionsAB[1].name)) {
+          {% comment %} console.log("setting new AB", abfurnace) {% endcomment %}
+          if (Math.random() < 0.5) {
+            abNum = 0;
+            ab = optionsAB[abNum].name
+          }
+          window.now = window.now || Date.now();
+          abfurnace = {ab: optionsAB[abNum].name, path: optionsAB[abNum].url, date: window.now}
+          localStorage.setItem("ABFurnace", JSON.stringify(abfurnace));
+        } else {
+          {% comment %} console.log("stored:", abfurnace); {% endcomment %}
+          ab = abfurnace.ab;
+        }
+        console.log("ab:", ab, "abfurnace:", abfurnace);
+        {% comment %} console.log("canonical_url: {{ canonical_url }}");
+        console.log("shop.url: {{ shop.url }}");
+        console.log("window.location:", window.location); {% endcomment %}
+        if (abfurnace.path) window.location.replace(abfurnace.path + window.location.search);
+        else window.location.replace(optionsAB[abNum].path + window.location.search);
+        
+      </script>
+      <noscript>
+        <meta http-equiv="refresh" content="0;url={{ defaultPath }}?noscript=true">
+      </noscript>
+    </head>
+  {%- elsif page.handle contains "hardrock" and settings.enable_hardrock_login == true and request.design_mode == false -%}
+      {% assign password_check == false %}
+      {% include 'url-params' %}
+      {% if password_check == false %}
+          <script>
+              window.location.replace("/pages/hrni");
+          </script>
+          <noscript>
+              <meta http-equiv="refresh" content="0;url=/pages/hrni?noscript=true">
+          </noscript>
+      {% else %}
+      {%- assign showpage = true -%}
+      <script>
+          {% comment %} console.log("url: {{ url_cfh }}") {% endcomment %}
+          window.history.replaceState({}, document.title, "{{ url_cfh | split: ".com" | last }}"); 
+      </script>
+      {% endif %}
+  {%- elsif product.handle contains "onward" -%}
+    <script>
+      window.location.replace("/");
+    </script>
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/?noscript=true">
+    </noscript>
+  {%- else -%}
+    {%- assign showpage = true -%}
+  {% endif %}
+
+  {%- if showpage -%}    
+    <head>      <meta charset="utf-8">
+      {% if product.metafields.seo.hidden %}
+        <meta name="robots" content="noindex">
+      {% endif %}
+      <link rel="canonical" href="{{ canonical_url }}">
+      <link rel="preconnect" href="https://config.gorgias.chat/">
+      <link rel="icon" href="https://cdn.shopify.com/s/files/1/0291/3724/0142/files/S_Mini.svg?v=1710468088">
+      <link rel="dns-prefetch" href="https://cdn.shopify.com">
+      <link rel="dns-prefetch" href="https://cdn.attn.tv">
+      <link rel="preload" href="//www.standshoes.com/cdn/fonts/avenir_next/avenirnext_n4.7fd0287595be20cd5a683102bf49d073b6abf144.woff2?h1=d2VhcmdhbGVzLmNvbQ&h2=d2VhcmdhbGVzLmFjY291bnQubXlzaG9waWZ5LmNvbQ&h3=c3RhbmRzaG9lcy5jb20&hmac=85259738bb3e4040f45dc3bc4c22402bb79e8d4382bcbdf6b8b563f9d853a88d" as="font" type="font/woff2" crossorigin="anonymous">
+      <link rel="preload" href="//www.standshoes.com/cdn/fonts/avenir_next/avenirnext_n6.08f6a09127d450aa39c74986de08fd8fa84e6a11.woff2?h1=d2VhcmdhbGVzLmNvbQ&h2=d2VhcmdhbGVzLmFjY291bnQubXlzaG9waWZ5LmNvbQ&h3=c3RhbmRzaG9lcy5jb20&hmac=bdac2b291e72a36531f70eedebd9f6f876fcfe46bd736b2b43997ee6bf660f2b" as="font" type="font/woff2" crossorigin="anonymous">
+      <link rel="preload" href="//www.standshoes.com/cdn/fonts/avenir_next/avenirnext_n7.8cfc646eab1e39e2d81a26284624600ccae49d55.woff2?h1=d2VhcmdhbGVzLmNvbQ&h2=d2VhcmdhbGVzLmFjY291bnQubXlzaG9waWZ5LmNvbQ&h3=c3RhbmRzaG9lcy5jb20&hmac=d1b4cb2f4c652302d1c3fd29af7ccbca2243503d374b1794908b675facc343ac" as="font" type="font/woff2" crossorigin="anonymous">
+      <link rel="preload" href="//www.standshoes.com/cdn/fonts/avenir_next/avenirnext_n8.b0dce42f90d49abe0edb10d18b5240db8dd5441f.woff2?h1=d2VhcmdhbGVzLmNvbQ&h2=d2VhcmdhbGVzLmFjY291bnQubXlzaG9waWZ5LmNvbQ&h3=c3RhbmRzaG9lcy5jb20&hmac=817c26645ba5f6f5a6e86dc5698470694c929929462e2cc6d7db12d5b8500e50" as="font" type="font/woff2" crossorigin="anonymous">
+      <link rel="preload" href="//www.standshoes.com/cdn/fonts/avenir_next/avenirnext_i4.f1583d9f457b68e44fbda187a48b4096d547d7f4.woff2?h1=d2VhcmdhbGVzLmNvbQ&h2=d2VhcmdhbGVzLmFjY291bnQubXlzaG9waWZ5LmNvbQ&h3=c3RhbmRzaG9lcy5jb20&hmac=56b1c546ff21d16b920c3a07114b901fd8c51fcfc63f02c2ea4c4937380fe71d" as="font" type="font/woff2" crossorigin="anonymous">
+      {% comment %} <link rel="preload" href="//www.standshoes.com/cdn/shop/files/AntiGrav1-Onyx-1.jpg?v=1712117138&width=1200" as="image"> {% endcomment %}
+      {% comment %}     
+      <link rel="preload" href="" as="font" type="font/woff2" crossorigin="anonymous">
+     {% endcomment %}
+      <script>
+        const icon = document.querySelector("link[rel='icon']")
+        // Update favicon on Mode change 
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => icon.href = e.matches ? "https://cdn.shopify.com/s/files/1/0291/3724/0142/files/S_Mini_White.svg?v=1710468040" : "https://cdn.shopify.com/s/files/1/0291/3724/0142/files/S_Mini.svg?v=1710468088");
+        icon.href = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? "https://cdn.shopify.com/s/files/1/0291/3724/0142/files/S_Mini_White.svg?v=1710468040" : "https://cdn.shopify.com/s/files/1/0291/3724/0142/files/S_Mini.svg?v=1710468088";
+      </script>
+      {% if true %}
+        <script>
+          {% comment %} console.log("page.handle: {{ page.handle }}"); {% endcomment %}
+          const abfurnace = localStorage.getItem("ABFurnace");
+          let ab = "b"
+          if (!abfurnace) {
+            if (Math.random() < 0.5) ab = "a"
+            {% comment %} console.log("new ab:", ab); {% endcomment %}
+            window.now = window.now || Date.now();
+            localStorage.setItem("ABFurnace", JSON.stringify({ab: ab, date: window.now}));
+          } else {
+            {% comment %} console.log("stored:", JSON.parse(abfurnace)); {% endcomment %}
+            try { ab = JSON.parse(abfurnace).ab }
+            catch(e) { ab = "" }  
+          }
+          console.log("ab:", ab);      
+        </script>
+      {%- endif -%}
+      {% render 'replo-head' %}
+      <script>
+        window.now = window.now || Date.now();
+        if (!window.sessionStorage.getItem("gales_src")) {
+          window.sessionStorage.setItem("gales_src", JSON.stringify({src: window.location.href, time: now}))
+        }
+        if (!window.localStorage.getItem("gales_src")) {
+          window.localStorage.setItem("gales_src", JSON.stringify({src: window.location.href, time: now}))
+        }
+      </script>
+      
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        {% comment %} const abf = localStorage.getItem("ABFurnace"); {% endcomment %}
+        if (typeof ab != "undefined" && ab) {
+          window.dataLayer.push({
+            {% comment %} 'event': 'page_view', {% endcomment %}
+            'ABFurnace': ab
+          });
+        }
+      </script>
+      <!-- Google Tag Manager -->
+      <script>
+        (function(w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer'
+              ? '&l=' + l
+              : '';
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-T244WZG');
+      </script>
+      <!-- End Google Tag Manager -->
+      {% capture get_content_for_header %}
+        {{ content_for_header }}{% endcapture %}
+      {% include 'head' %}
+      {% comment %} {% render 'judgeme_core' %} {% endcomment %}
+      {% render 'product-datalayer' %}
+
+      <!--Gem_Page_Header_Script-->
+      {% render 'gem-app-header-scripts' %}
+      <!--End_Gem_Page_Header_Script-->
+      <script src="https://www.pledge.to/assets/widget.js" async="async"></script>
+      {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag: preload: true }}
+      {{ 'custom-main.min.css' | asset_url | stylesheet_tag: preload: true }}
+
+      
+      {% comment %} ADDED BY SYMETRICS FOR REPLO {% endcomment %}
+      {% if page.id == 130665677078 %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mhayes-twentytwenty/1.0.0/css/foundation.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mhayes-twentytwenty/1.0.0/css/twentytwenty.min.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mhayes-twentytwenty/1.0.0/js/jquery.event.move.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mhayes-twentytwenty/1.0.0/js/jquery.twentytwenty.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", (event) => {
+              setTimeout(function(){
+                $("#twentytwentyCompare").twentytwenty();
+                $("#twentytwentyCompare2").twentytwenty();
+              },500)
+            });
+        </script> 
+      {% endif %}
+    {% comment %} CRITICAL CSS {% endcomment %}
+    <style>
+      .header__tape.header__tape--style-1 {
+        background-color: #333;
+      }
+      .header__tape {
+        min-height: 38px !important;
+        font-size: 14px;
+        line-height: 19px;
+      }
+      .header__line--colorize-2 {
+        box-shadow: 0 0 20px #00000026;
+      }
+      @media (min-width: 925px) {
+        .d-lg-flex {
+          display: flex !important;
+        }
+      }
+      .header__nav {
+        width: 60%;
+      }
+      .menu {
+        width: 100%;
+      }
+      
+      .hide-h5-title h5, .js-currencies-form {
+        display: none;
+      }
+      div.slick-track {
+        display: flex;
+        margin-bottom: 2px;
+      }
+      div.stand-banner.stand-banner-background .rimage {
+        background: radial-gradient(circle at bottom left,#121713 0,#070707 37%);
+      }
+      .rimage {
+        width: 100%;
+        height: 100%;
+      }
+      img {
+        object-fit: contain;
+        height: auto;
+      }
+      div.stand-banner .promobox__content {
+        padding-left: 5vw;
+        padding-right: 5vw;
+        display: block !important;
+      }
+      div.stand-banner .promobox__content_inner {
+        padding: 0;
+        justify-content: left !important;
+        align-items: start !important;
+        bottom: 4vw;
+        top: 4vw;
+        left: 5vw;
+        right: 5vw;
+      }
+      .proline-banner .promobox__content_inner, .stand-banner .promobox__content_inner {
+        padding-top: 6.9vw;
+        letter-spacing: 0px !important;
+      }
+      .proline-banner .p-15.p-lg-30, .stand-banner .p-15.p-lg-30 {
+        padding: 0 !important;
+      }
+      div.stand-banner .promobox__text-1 {
+        letter-spacing: 0 !important;
+        margin-top: 2vw !important;
+        font-size: 6.2vw;
+        line-height: 6vw;
+        font-weight: 800;
+        margin-bottom: 0;
+        text-shadow: 1px 1px 3px #1a252b38;
+      }
+      div.stand-banner .promobox__text-2 {
+        line-height: 3.3vw;
+        font-size: 2.7vw;
+        letter-spacing: 0px !important;
+        text-shadow: 1px 1px 3px #1a252b38;
+        margin-bottom: 0;
+        margin-top: 2vw !important;
+        font-weight: 400;
+      }
+      div.stand-banner .promobox__text-3 {
+        font-size: 2.7vw !important;
+        font-style: italic;
+        margin-top: 0 !important;
+        text-shadow: 1px 1px 3px #1a252b38;
+      }
+      .promobox .fs-lg { line-height: var(--body-line-height) !important; }
+      div.stand-banner .btn.btn--invert {
+        color: #e3e1d8;
+        border-color: #e3e1d8;
+        border-width: 2px;
+        font-size: 22px;
+        padding: 13px 30px !important;
+        width: unset;
+      }
+      div.stand-banner .promobox__btns .col-12 {
+        margin-left: 0;
+      }
+      .promobox__btns .col-12 {
+        flex: 1 0 50%;
+        padding-right: 5px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      div.stand-banner .promobox__btns {
+        margin-top: 3.5vw !important;
+      }
+      .promobox__btns.mt-25 {
+        max-width: 450px;
+      }
+      .proline-banner .promobox__btns {
+        margin-top: 4.5vw !important;
+        margin-right: unset;
+        margin-left: 0;
+      }
+      @media (min-width: 925px) {
+        .menu__panel {
+          padding-left: 0 !important;
+          justify-content: space-evenly;
+        }
+      }
+      @media screen and (max-width: 540px) {
+        .proline-banner .promobox__text-1 {
+          font-size: 10vw !important;
+          line-height: 10vw;
+          margin-top: 11vw;
+        }
+        div.proline-banner .promobox__text-2 {
+          font-size: 3.5vw !important;
+          margin-top: 13px !important;
+          letter-spacing: 0px !important;
+        }
+        div.stand-banner .promobox__text-1 {
+          font-size: 12vw !important;
+          line-height: 12vw !important;
+          margin-top: 6vw !important;
+        }
+        div.stand-banner .promobox__text-2 {
+          font-size: 4vw !important;
+          margin-top: 19px !important;
+          line-height: 5vw !important;
+        }
+        .proline-banner .promobox__content_inner {
+          padding-top: 0;
+          letter-spacing: 0px !important;
+          text-align: center;
+          position: unset !important;
+        }
+        div.stand-banner div.promobox__content_inner {
+          justify-content: center !important;
+        }
+      }
+      @media screen and (max-width: 1025px) {
+        .proline-banner div.promobox__btns.mt-25 {
+          max-width: 400px;
+        }
+      }
+      .popup-cart__discounts {
+        display: none !important;
+      }
+      {%- if settings.reviews_type == 'loox' -%}
+        .loox-rating .loox-icon {
+          font-size: 1.22em;
+        }
+        .loox-rating .loox-icon:not(:last-child) {
+          margin-right: 5px;
+        }
+        .loox-rating span {
+          margin-left: 2px;
+          vertical-align: 2px;
+        }
+      {%- endif -%}
+    </style>
+    </head>
+    <body {% render 'layout-get-body-attributes' %}>
+      {% include 'layout-get-includes-start' %}
+      {%- if settings.product_show_custom_options and settings.product_enable_variants_section -%}
+        {% section 'product-variants' %}
+      {%- endif -%}
+        {% if page.handle == '5-reasons-why-nurses-everywhere-are-choosing-gales' or page.handle == 'gales-ft-alexs-lemonade-stand-foundation' %}
+          {% style %}
+            #smile-ui-lite-launcher-frame-container, #gorgias-chat-container {
+              display: none !important;
+            }
+          {% endstyle %}
+      {% else %}
+        {% section 'header' %}
+      {% endif %}
+      <main id="MainContent">
+        {%- if request.page_type == 'page' -%}
+          {% include 'breadcrumbs' %}
+        {%- endif -%}
+        {% comment %} {% if page.handle != 'gales-ft-alexs-lemonade-stand-foundation' %}
+          {% section 'er-scrollable-navigation' %}
+        {% endif %} {% endcomment %}
+        {{ content_for_layout }}
+      </main>
+      {% section 'footer' %}
+      {% include 'popups' %}
+      {% render 'er-modal-atc', anchor: 'atcModal' %}
+      {% include 'footbar' %}
+      {%- if settings.presentation_enable or template == 'product' and settings.product_info_page_show_usage_info_sidebar -%}
+        {% include 'fixed-sidebar' %}
+      {%- endif -%}
+      {% include 'templates' %}
+      {% include 'layout-get-includes-end' %}
+      <!-- START APPS -->
+      {%- if settings.app_klarna_enable -%}
+        <!-- start Klarna app -->
+        <script>
+          window.KlarnaThemeGlobals = {};{%case template.name%}{%when"product"%}
+            window.KlarnaThemeGlobals.data_purchase_amount = {{product.first_available_variant.price}};
+            window.KlarnaThemeGlobals.productVariants = {{product.variants|json}};
+            window.KlarnaThemeGlobals.documentCopy = document.cloneNode(true);
+            {%when"cart"%}window.KlarnaThemeGlobals.data_purchase_amount = {{cart.total_price}};
+            window.KlarnaThemeGlobals.documentCopy = document.cloneNode(true);{%endcase%}
+        </script>
+        <!-- end Klarna app -->
+      {%- endif -%}
+      {%- if settings.app_growave_enable -%}
+        <!-- start Growave app -->
+        {% capture the_snippet_content %}
+          {% render 'socialshopwave-helper' %}{% endcapture %}
+        {%- unless the_snippet_content contains 'Liquid error' -%}
+          {{ the_snippet_content }}
+        {%- endunless -%}
+        <script>
+          sswRun(function() {
+            var intervalId = setInterval(function() {
+              if (ssw('.ssw-stars.ssw-stars-large').length) {
+                ssw('.ssw-stars.ssw-stars-large').on('click', function() {
+                  ssw('.product-page__tabs .tabs__btn[data-tab="reviews"]').click();
+                  ssw('html, body').animate({
+                    scrollTop: ssw("#ssw-widget-recommends-html").offset().top - 200
+                  }, 100);
+                });
+                clearInterval(intervalId);
+              }
+            }, 1000);
+          });
+        </script>
+        <!-- end Growave app -->
+      {%- endif -%}
+      {%- if settings.reviews_type == 'loox' -%}
+        {{ shop.metafields.loox["global_html_body"] }}
+      {%- endif -%}
+      <!-- END APPS -->
+      
+      {% comment %} Custom DEBUG error logging to Scott's server
+        <script>
+        const ignoreMsg = ['_AutofillCallbackHandler', '_pcmBridgeCallbackHandler', 'ethereum.selectedAddress'];
+        const ignoreFile = ['pay.js','dbilanlcioamaadkbepcenpombaejbla']; 
+        window.addEventListener("error", (error) => {
+        // console.error("error event:", error);
+        const file = error.filename;
+        if (!ignoreMsg.some(m => error.message.includes(m)) 
+        && !ignoreFile.some(f => error.filename.includes(f))
+        && error.filename !=""
+        ) {
+        const agent = window.navigator.userAgent;
+        const log = "tag:eventListener,__agent:" + agent + ",__lineNo:" + error.lineno + ",__colNo:" 
+        + error.colno + ",__message:" + error.message + ",__filename:" + error.filename;
+        // Send info to Scott's furnace-brook server for data logging.
+        console.log("errorLogger:", log, error);
+        fetch("https://apps.furnace-brook.com/liquid/weargales?log=" + log);
+        }
+        });
+        </script> {% endcomment %}
+        {% comment %}
+        {% render 'js-api' %}
+      {% endcomment %}
+      <!--Gorgias Chat Widget Start-->
+      <script id="gorgias-chat-widget-install-v3" 
+        src="https://config.gorgias.chat/bundle-loader/01GYCC9REP5M46RB01N7YAXPAW">
+      </script>
+      <script>
+        window.GORGIASCHAT_DISABLE_CONTRAST_COLOR = true
+        var initGorgiasChatPromise = (window.GorgiasChat)
+          ? window.GorgiasChat.init()
+          : new Promise(function(resolve) {
+            window.addEventListener('gorgias-widget-loaded', function() {
+              resolve();
+            })
+          });
+        initGorgiasChatPromise.then(async () => {
+          GorgiasChat.hidePoweredBy(true);
+          var timer = setInterval(function() {
+            var chatButtonHead = document.querySelector('#gorgias-chat-container') ?. querySelector('#chat-button') ?. contentWindow.document.querySelector('head');
+            if (! chatButtonHead || ![... chatButtonHead ?. children].some(x => x.getAttribute("data-emotion"))) {
+              return;
+            }
+            clearInterval(timer);
+            var buttonStyle = document.createElement('style');
+            buttonStyle.textContent = '.frame-content svg {filter: brightness(0) saturate(100%) invert(1);} span[class*="messenger-button-iframe"]{color: white;}';
+            chatButtonHead.appendChild(buttonStyle);
+          }, 50);
+        })
+      </script>
+      <!--Gorgias Chat Widget End-->
+      {% comment %} sc_discountbox include DiscountHero scDiscount {% endcomment %}
+      {% render 'scThemeConfig' %}
+      {% if product.url %}
+        {% unless product.url contains "wholesale" %}
+          {% include 'product-discount-calc' %}
+        {% endunless %}
+      {% endif %}
+      {% comment %} end of sc_discountbox include {% endcomment %}
+
+      <!--Gem_Page_Footer_Script-->
+  {%- liquid
+    assign gpTemplateSuffix = template.suffix
+    assign arrSplitSuffix = gpTemplateSuffix | split: '-'
+    if gpTemplateSuffix contains 'gem-' and gpTemplateSuffix contains '-template' and arrSplitSuffix.size == 3
+      assign isV6GpTemplate = true
+    endif
+    assign gpShopMeta = shop.metafields.gempages
+    if gpShopMeta
+      if gpShopMeta['productV6-default'] == 'true' and request.page_type == 'product'
+        assign isProductDefault = true
+      endif
+      if gpShopMeta['collectionV6-default'] == 'true' and request.page_type == 'collection'
+        assign isCollectionDefault = true
+      endif
+      if gpShopMeta['indexV6-default'] == 'true' and request.page_type == 'index'
+        assign isIndexDefault = true
+      endif
+      if isProductDefault or isCollectionDefault or isIndexDefault or isPreviewV6
+        assign isV6GpTemplate = true
+      endif
+    endif
+  %}
+  {% if isV6GpTemplate %}
+    {% render 'gem-app-footer-scripts', GEM_FOOTER_SCRIPT: GEM_FOOTER_SCRIPT %}
+  {% endif %}
+<!--End_Gem_Page_Footer_Script-->
+
+    <script>
+      window.performance.mark('theme:DOM:loaded');
+    </script>
+
+      {% include 'smile-initializer' %}
+
+      <script src="{{ 'swiper-bundle.min.js' | asset_url }}"></script>
+      {% if content_for_layout contains 'er-media-gallery__wrapper' %}
+        <script src="{{ 'er-slick-media-gallery.min.js' | asset_url }}" defer></script>
+      {% endif %}
+      {% if content_for_layout contains 'er-infographics__wrapper' %}
+        <script src="{{ 'er-swiper-infographics.min.js' | asset_url }}" defer></script>
+      {% endif %}
+      <script src="{{ 'er-modal-atc.min.js' | asset_url }}" defer></script>
+
+      {% comment %} {% assign ctags = customer.tags | join: "," | downcase %}
+      {% if ctags contains "wholesale" %}
+        {% assign whsl = "Yes" %}
+        {% liquid
+          assign ptags = product.tags | join: ',' | downcase 
+          if ctags contains 'wholesale'
+            assign wholesale = true
+            if ptags contains 'giftcodes'
+                assign defaultDiscounts = shop.metafields.furnacebrook.wholesale_giftcodes
+            else
+                assign defaultDiscounts = shop.metafields.furnacebrook.wholesale_default
+            endif
+            for ctag in customer.tags
+              assign dctag = ctag | downcase
+              if dctag contains 'wholesale' and dctag != 'wholesale'
+                assign customDiscount = dctag
+                break
+              endif
+            endfor
+            assign discounts = customer.metafields.furnacebrook.automatic_discount_code.value
+          endif
+        %}
+      {% else %}
+        {% assign whsl = "" %}
+      {% endif %} {% endcomment %}
+      {% render 'cart-attributes-update' %}
+      <!-- GoAudience pixels -->
+      <img src='https://rdcdn.com/rt?aid=26546&e=1&img=1' height='1' width='1' referrerpolicy='no-referrer-when-downgrade' />
+      {%  if page.handle == "groups-and-wholesale" %}
+        <img src='https://rdcdn.com/rt?aid=26547&e=1&img=1' height='1' width='1' referrerpolicy='no-referrer-when-downgrade' />
+      {% endif %}
+    </body>
+  {% endif %}
+
+</html>

@@ -1,0 +1,100 @@
+{% style %}
+  .er-nurses-lp-hero__wrapper.section-{{ section.id }} {
+    {% if section.settings.bg_image != blank %}
+      background: url('{{ section.settings.bg_image | image_url: width: 1920 }}');
+    {% else %}
+      background: {{ section.settings.bg_color }};
+    {% endif %}
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center bottom;
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  @media screen and (max-width: 992px) {
+    .er-nurses-lp-hero__wrapper.section-{{ section.id }} {
+      background: {{ section.settings.bg_color }};
+    }
+  }
+{% endstyle %}
+
+<div class="er-nurses-lp-hero__wrapper section-{{ section.id }}">
+  <img src="{{ section.settings.bg_image_mobile | image_url: width: 992 }}" loading="lazy" width="992" height="396" />
+  <div class="container">
+    <div class="er-nurses-lp-hero__content">
+      {% if section.settings.title != blank %}
+        <h1>{{ section.settings.title }}</h1>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <h2>{{ section.settings.subtitle }}</h2>
+      {% endif %}
+      {% if section.settings.description != blank %}
+        <p>{{ section.settings.description }}</p>
+      {% endif %}
+      {% if section.settings.btn_text != blank and section.settings.btn_url != blank %}
+        <div class="btn__wrapper">
+          <a class="btn w-100" href="{{ section.settings.btn_url }}">{{ section.settings.btn_text }}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ER Nurses LP Hero",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Experience Unmatched Comfort:"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Unveiling the Perfect Shoes for Nurses"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Elevate Your Long Shifts with Our Collection of Top-tier, Ultra-Comfy Nurse Shoes"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button url"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#3E5E7B"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "Background image mobile"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER Nurses LP Hero"
+    }
+  ]
+}
+{% endschema %}

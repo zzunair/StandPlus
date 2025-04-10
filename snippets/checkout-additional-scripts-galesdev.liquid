@@ -1,0 +1,119 @@
+<script>
+	console.log("datalayer script start", window.dataLayer);
+	window.dataLayer = window.dataLayer || [];                                            
+	var shipping_price = '{{ shipping_price | money_without_currency }}';
+	shipping_price  = shipping_price.replace(",", ".");
+	var total_price = '{{ total_price | money_without_currency }}';
+	total_price  = total_price.replace(",", ".");
+	var tax_price = '{{ tax_price | money_without_currency }}';
+	tax_price  = tax_price.replace(",", ".");
+	var total_discounts = '{{ discount_amount | money_without_currency }}';
+	total_discounts = total_discounts.replace(",", ".");
+	var orderItemsName = []
+	var orderItemsPrice = []
+	var orderItemsQuantity = []
+	var orderItemsId = []
+	var orderItemsVarId = []
+	var orderItemsSku = []
+	var totalQuantity = 0;
+	{% for line_item in line_items %}
+		orderItemsName.push('{{ line_item.title | remove: "'" | remove: '"' }}');
+		orderItemsPrice.push('{{ line_item.price | money_without_currency }}');
+		orderItemsQuantity.push('{{ line_item.quantity }}');
+		orderItemsId.push('{{ line_item.product_id }}');
+		orderItemsVarId.push('{{ line_item.variant_id }}');
+		orderItemsSku.push('{{ line_item.sku }}');
+		totalQuantity +=  {{ line_item.quantity }};
+	{% endfor %}
+	window.purchase = false;
+	{% if first_time_accessed %} 
+		let GtmOrderId_session = sessionStorage.getItem("GtmOrderId");
+		let GtmOrderId_local = localStorage.getItem("GtmOrderId")
+		window.dataLayer.push({
+			'page_type': 'purchase',
+			'event': 'purchase',
+			'currency': "{{ shop.currency }}",
+			'subtotalValue': '{{ line_items_subtotal_price | money_without_currency }}',
+			'totalValue': total_price,
+			'totalDiscounts': '{{ discounts_amount | money_without_currency }}'),
+			'shipping': shipping_price,
+			'tax': tax_price,
+			'payment_type': '{{ transactions[0].gateway }}',
+			'transaction_id': "{{ order_name }}",
+			'checkout_id' : "{{ id }}",
+			'checkout_name' : '{{ name }}',
+			'order_id' : "{{ order_id }}",
+			'item_count' : "{{ item_count }}",
+			'shopify_transaction_id': '{{ order_number }}',
+			'attributes' : '{{ attributes | json }}',
+			'productName': orderItemsName,
+			'productPrice': orderItemsPrice,
+			'productQuantity': orderItemsQuantity,
+			'variantSku' : orderItemsSku,
+			'productId': orderItemsId,
+			'variantId': orderItemsVarId,
+			'devDate': "7/20/23 3:56pm MT",
+			'GtmOrderId_session' : GtmOrderId_session,
+			'GtmOrderId_session_check' : GtmOrderId_session == "{{ order_id }}",
+			'GtmOrderId_local' : GtmOrderId_local,
+			'GtmOrderId_local_check' : GtmOrderId_local == "{{ order_id }}"
+		});
+		window.purchase = true;          
+	{% endif %}
+	console.log("datalayer script end", window.dataLayer);
+</script>
+
+<script>
+	console.log("enhance script start");
+	window.enhanced_conversion_data = {
+		email: "{{ checkout.email }}",
+		phone_number: "{{ checkout.customer.default_address.phone }}",
+		address: {
+			first_name: "{{ checkout.customer.first_name }}",
+			last_name: "{{ checkout.customer.last_name }}",
+			street: "{{ checkout.billing_address.address1 }}", 
+			city: "{{ checkout.billing_address.city }}", 
+			region: "{{ checkout.billing_address.province }}", 
+			postal_code: "{{ checkout.billing_address.zip }}",
+			country: "{{ checkout.billing_address.country_code }}"
+		}
+	};
+	console.log("enhance script end", window.enhanced_conversion_data);
+</script>
+
+<script>
+	let options = {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify(window.dataLayer)
+    }
+	{% comment %} fetch("http://logs-01.loggly.com/inputs/74f4b993-9009-475b-b03f-e5e5c17cfc9c/tag/http/", options); {% endcomment %}
+	console.log("running GTM script");
+	let GtmOrderId = sessionStorage.getItem("GtmOrderId");
+	if (!window.purchase || !GtmOrderId || GtmOrderId != "{{ order_id }}") {
+		window.dataLayer = window.dataLayer || [];
+		window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js','devDate': '7/20/2023 5:03pm MT'});
+		console.log("calling GTM");
+		options.body = JSON.stringify(window.dataLayer);
+		{% comment %} fetch("http://logs-01.loggly.com/inputs/74f4b993-9009-475b-b03f-e5e5c17cfc9c/tag/http/", options); {% endcomment %}
+	} else {
+		console.log("skipped GTM");
+	}
+	sessionStorage.setItem("GtmOrderId", "{{ order_id }}");
+	localStorage.setItem("GtmOrderId", "{{ order_id }}");
+	console.log("GTM Script End", sessionStorage.getItem("GtmOrderId"));
+</script>
+<script>
+	setTimeout(() => {
+		let options = {
+			method: "POST",
+			headers: {
+				"Content-Type":"application/json",
+			},
+			body: JSON.stringify(window.dataLayer)
+		}
+		{% comment %} fetch("http://logs-01.loggly.com/inputs/74f4b993-9009-475b-b03f-e5e5c17cfc9c/tag/http/", options); {% endcomment %}
+	}, 3000)
+</script>

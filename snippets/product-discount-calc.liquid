@@ -1,0 +1,256 @@
+<!-- snippets/product-discount-calc.liquid -->
+<!-- Syncube Dcart Set Locations for Discounts in Cart in custom.js file -->
+<script async type="text/javascript">
+    const url = new URL(window.location);
+    const disable_storage = url && url.searchParams.get("disable_storage") ? true : false;
+    const force_error = url && url.searchParams.get("force_error") == "true" ? true : false;
+    const pdc_debug = false;
+    // const disable_storage = false;
+
+   // if (force_error) {
+        // window.onerror = function (msg, url, lineNo, columnNo, error) {
+        //    console.error(msg, url, lineNo, columnNo, error);
+        //}
+        // window.addEventListener("error", (event) => {
+        //    console.error("error event:", event);
+        //    errorLogger("eventlistener", event);
+        //});
+    // }
+    pdc_debug && console.log("disable_storage:", disable_storage, "force_error:", force_error);
+
+    {% comment %} NOTE: scThemeConfig is set in custom.js file {% endcomment %}
+
+    let predictEvent = null;
+    let discountData = null;
+    let startTime;
+    let log = "";
+    const pdcStart = Date.now();
+
+    pdc_debug && console.log("product-discount-calc loading")
+  
+    const errorLogger = (tag, error) => {
+        const log = "tag:" + tag + ",__lineNo:" + error.lineno + ",__colNo:" 
+            + error.colno + ",__message:" + error.message + ",__filename:" + error.filename;
+        // Send info to Scott's furnace-brook server for data logging.
+        pdc_debug && console.log("errorLogger:", log, error);
+        fetch("https://apps.furnace-brook.com/liquid/weargales?log=" + log);
+    }
+    const updateError = (scDiscountError) => {
+      pdc_debug && console.log("scDiscountError:", scDiscountError);  
+      if (scDiscountError && 
+            scDiscountError.innerText.includes("code isn’t valid for the items in your cart")) {
+        const discountJSON = window.sessionStorage.getItem('scDiscountData');
+        try {
+            const discount = JSON.parse(discountJSON);
+            if (discount.code && discount.code.includes("BOGO")) {
+                scDiscountError.innerHTML = "Please add more items to your cart to qualify for the discount."
+            }
+        } catch (error) {
+            console.log("error json_parse #1:", error);
+            errorLogger("json_parse#1", error);
+        }
+      }
+    }
+  
+    {% comment %} window.addEventListener('sc:discount.rendered', (e) => {
+      pdc_debug && console.log("discount rendered:", e);
+      const cart = document.querySelector([".cart .cart__sidebar", ".popup-cart__footer"]);
+      try {
+          pdc_debug && console.log("discount cart:", JSON.parse(JSON.stringify(cart)));
+      } catch (error) {
+        console.log("error json_parse #2:", error);
+        errorLogger("json_parse#2", error);
+      }
+  
+      MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+      var observer2 = new MutationObserver(function(mutations, observer) {
+          // fired when a mutation occurs
+          const scDiscountError = cart.querySelector("#scDiscountApp .scError");
+          updateError(scDiscountError);
+      });
+  
+      // define what element should be observed by the observer
+      // and what types of mutations trigger the callback
+      if (cart) {
+        observer2.observe(cart, {
+          subtree: true,
+          attributes: true,
+          childList: true
+        });
+      }
+    }); {% endcomment %}
+
+
+
+    pdc_debug && console.log('product-discount-calc start time:', pdcStart)
+
+    pdc_debug && document.addEventListener("DOMContentLoaded", () => {
+        // scLoadInstaller()
+        pdc_debug && console.log('discount DOMContentLoaded:', Date.now() - pdcStart, "ms")
+        // log += "DOMContentLoaded:" + (Date.now()-pdcStart) + "ms,";
+    });
+    pdc_debug && (window.onload = () => {
+        pdc_debug && console.log('discount onload event:', Date.now() - pdcStart, "ms")
+        // log += "ONLOAD:" + (Date.now()-pdcStart) + "ms,";
+    });
+
+    function displayDiscount(price, $price) {
+        console.log("returning from displayDiscount Function")
+        return null;
+        let discountPrice = null;
+        pdc_debug && console.log("pre-discount price:", price, Date.now() - pdcStart, "ms");
+        pdc_debug && console.log("discount:", discountData);
+        for (const priceElem of $price) {
+            const innerPriceElem = priceElem.querySelector('.price');
+    
+            if (discountData && discountData.applicable) {
+                const discountPriceElem = document.createElement("span");
+                discountPriceElem.classList.add("discount-price", "price");
+                if (discountData.value_type == "percentage") {
+                    discountPrice =  price * (100 - discountData.value) / 100
+                } else if (discountData.value_type == "fixed_amount") {
+                    discountPrice =  Math.max(0, price - (discountData.value * 100));
+                }
+                pdc_debug && console.log("discount price:", discountPrice);
+                if (discountPrice !== null) {
+                    innerPriceElem.classList.add("discounted")
+                    discountPriceElem.innerText = scMoneyFormat.replace("\{\{amount\}\}", (Math.round(discountPrice) / 100).toFixed(2));
+                    priceElem.insertBefore(discountPriceElem, innerPriceElem);
+                }
+            } else {
+                innerPriceElem.classList.remove("discounted")
+                const discountPriceElem = priceElem.querySelector('.discount-price.price');
+                if (discountPriceElem) discountPriceElem.style.display = "none";
+            }
+        
+        }
+        
+    }
+
+    function getDiscount() {
+        if (force_error) {
+            force_error = false;
+        }
+
+        const discountJSON = window.sessionStorage.getItem('scDiscountData');
+        let discount = null;
+        if (discountJSON) {
+            try {
+                discount = JSON.parse(discountJSON);
+            } catch (error) {
+                console.log("error json_parse #3:", error);
+                errorLogger("json_parse#3", error);
+                discount = null;
+            }
+            if (discount && discount.code) {
+                pdc_debug && console.log("discount code:", discount.code, meta, Date.now() - pdcStart, "ms");
+                pdc_debug && console.log("discount data:", discount.discount.title, discount);
+                // log += discount.code + "," + getBrowser().trim().replace(" ", "|") + ",start:" + (Date.now()-pdcStart) + "ms,";
+                if (meta && meta.product && meta.product.id) {  // on product page
+                    pdc_debug && console.log("discount: on product page id:", meta.product.id, Date.now() - pdcStart, "ms")
+                    const productDiscountJSON = !disable_storage && window.sessionStorage.getItem('scDiscount_' + meta.product.id);
+                    try {
+                        discountData = productDiscountJSON ? JSON.parse(productDiscountJSON) : null;
+                    } catch (error) {
+                        console.log("error json_parse #4:", error);
+                        errorLogger("json_parse#4", error);
+                        discountData = null;
+                    }
+                    pdc_debug && console.log("discountData:", discountData.discount.title, discountData);
+                    {% comment %} if (discountData && discountData.discount.title == discount.code) { // already know discount for product {% endcomment %}
+                    if (discount && discount.discount.title == discount.code) { // already know discount for product
+                            pdc_debug && console.log("known discount:", discountData);
+                        //variantChanged();
+                    } else { // don't know discount for product
+                        discountData = null;
+                        pdc_debug && console.log("don't know discount yet", Date.now() - pdcStart, "ms");
+                        let discountInit = false;
+                        window.addEventListener('sc:discount.init', function() {
+                            pdc_debug && console.log("sc:discount.init event fired time:", Date.now() - pdcStart, "ms");
+                            // log += "SCDiscountInit:" + (Date.now()-pdcStart) + "ms,";
+                            if (!discountInit) { // only do this once
+                                predictEvent = new CustomEvent('sc:discount.predict', {
+                                    detail: {
+                                        variant_id: meta.product.variants[0].id,
+                                        quantity: 1,
+                                        discount_code: discount.code,
+                                    },
+                                });
+                                pdc_debug && console.log("dispatching discount check", predictEvent, Date.now() - pdcStart, "ms");
+                                startTime = Date.now();
+                                window.dispatchEvent(predictEvent);
+                                discountInit = true;
+                            }
+                        });
+                    }
+                }
+            } else pdc_debug && console.log("discount not found", discount, Date.now() - pdcStart, "ms");
+        }
+        theme.AssetsLoader.onPageLoaded(function() {
+            const $price = document.querySelectorAll([".product-page-info__price", ".footbar-product__price"]);
+            {% assign price = product.selected_or_first_available_variant.price %}
+            {% if price != blank %}
+                const price = {{ price }}; 
+                pdc_debug && console.log("price: ", price, $price);
+                displayDiscount(price, $price);
+            {% endif %}
+        });
+    }
+
+    {% comment %} window.addEventListener('sc:discount.prediction', function(e) {
+        pdc_debug && console.log('Discount Browser:', Date.now() - pdcStart, "ms");
+        pdc_debug && console.log('Discount PREDICTED!', e.detail, Date.now() - pdcStart, "ms");
+        const endTime = Date.now();
+        pdc_debug && console.log("Discount Predicted time:", endTime, Date.now() - pdcStart, "ms");
+        pdc_debug && console.log("Discount Shopify Checkout Time:", endTime - startTime, "ms");
+        // log += "PREDICTED:" + (Date.now()-pdcStart) + "ms,CHECKOUT:" + (endTime-startTime) + "ms";
+        // pdc_debug && console.log("Discount Log:", log);
+        // Send info to Scott's furnace-brook server for data logging.
+        // fetch("https://apps.furnace-brook.com/liquid/weargales?log=" + log);
+        if (e.detail && e.detail.status && e.detail.data && e.detail.data.checkout
+                && e.detail.data.checkout.applied_discount) {
+            discountData = {value: e.detail.data.checkout.applied_discount.value,
+                value_type: e.detail.data.checkout.applied_discount.value_type,
+                title: e.detail.data.checkout.applied_discount.title,
+                applicable: e.detail.data.checkout.applied_discount.applicable
+            }
+            if (!disable_storage) window.sessionStorage.setItem('scDiscount_' + meta.product.id, JSON.stringify(discountData));
+            pdc_debug && console.log("discount values:", discountData), Date.now() - pdcStart, "ms";
+            // variantChanged();
+        }
+        getDiscount()
+    });
+
+    getDiscount(); {% endcomment %}
+    
+    </script>
+
+    <style>
+        .product-page-info__price .price.discounted, .footbar-product__price .price.discounted {
+            color: #00B0B9;
+            position: relative;
+        }
+        .product-page-info__price .price.discounted::before, .footbar-product__price .price.discounted::before {
+            content: '';
+            width: 100%;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            border-bottom: 2px solid;
+            -webkit-transform: skewY(-9deg);
+            transform: skewY(-9deg);
+            display: inline-block;
+        }
+        .product-page-info__price .discount-price, .footbar-product__price .discount-price {
+            // display: none;
+            color: #00B0B9;
+            padding-right: 10px;
+        }
+        .product-page-info__price .discount-price #discount-code {
+            color: #1A252B;
+            padding-left: 10px;
+            font-size: xx-small;
+            display: none; /* Decided to to not show discount code. remove this to show code. */
+        }
+
+    </style>

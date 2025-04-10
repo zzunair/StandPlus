@@ -1,0 +1,288 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "home_builder_gFH89k": {
+      "type": "home-builder",
+      "blocks": {
+        "promobox_whN7TA": {
+          "type": "promobox",
+          "settings": {
+            "url": "",
+            "svg_file": false,
+            "image": "shopify://shop_images/CORPORATE_PROGRAM_BANNER.jpg",
+            "image_size": 1450,
+            "image_mobile_size": 550,
+            "image_position_x": 50,
+            "color_image_mask": "",
+            "image_mask_opacity": 0.5,
+            "corner_text": "",
+            "text_line_1": "",
+            "text_line_2": "",
+            "text_line_3": "",
+            "style": "6",
+            "button_1": "",
+            "button_1_url": "",
+            "color_button_type_1": "default",
+            "button_2": "",
+            "button_2_url": "",
+            "color_button_type_2": "default",
+            "list_1": "",
+            "custom_html": "",
+            "video_external_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "video_muted": true,
+            "video_controls": false,
+            "type": "type-1-2",
+            "content_position": "top_left",
+            "content_align": "left",
+            "add_container": false,
+            "content_width": 100,
+            "text_width": 0,
+            "height": "auto",
+            "min_height": 0,
+            "size_of_column": "auto",
+            "visible": "desktop_mobile",
+            "parallax": "disable",
+            "animation_to": "none",
+            "animation_from": "none",
+            "animation_opacity": "none",
+            "animation_text": "none",
+            "color_text_1": "#e3e1d8",
+            "color_text_2": "#e3e1d8",
+            "color_text_3": "",
+            "color_text_bg": "",
+            "color_curtain_bg": "",
+            "customization_class": "proline-banner stand-banner wholesale-banner"
+          }
+        }
+      },
+      "block_order": [
+        "promobox_whN7TA"
+      ],
+      "settings": {
+        "title": "",
+        "container": "fullwidth",
+        "size_of_columns": "1",
+        "size_of_columns_mobile": "1",
+        "margins_for_columns": "none",
+        "align_of_columns": "top_center",
+        "disable_column_paddings": false,
+        "precedence": "",
+        "customization_class": "",
+        "url": ""
+      }
+    },
+    "spacer_zefqE7": {
+      "type": "spacer",
+      "settings": {
+        "margin_top": 10,
+        "margin_bottom": 10,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "fullwidth",
+        "show_separator": false,
+        "title": "<p>&lt;div class=\"wholesale-title\"&gt;#1 RATED COMFORT & PROTECTION&lt;/div&gt;</p>"
+      }
+    },
+    "carousel_products_HbkQta": {
+      "type": "carousel-products",
+      "blocks": {
+        "collection_U3RmU9": {
+          "type": "collection",
+          "settings": {
+            "title": "Order Individually",
+            "collection": "toplevel-products"
+          }
+        }
+      },
+      "block_order": [
+        "collection_U3RmU9"
+      ],
+      "settings": {
+        "show_title": true,
+        "container": "boxed",
+        "size_of_columns": "4",
+        "max_count": 6,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true,
+        "arrows": true,
+        "bullets": false,
+        "prefer_meta_name": true,
+        "prefer_parent_images": true,
+        "show_price": false,
+        "customer_tags": "wholesale,Wholesale",
+        "customization_class": "mb-60 wholesale-nosale"
+      }
+    },
+    "1628287292f47cc491": {
+      "type": "spacer",
+      "disabled": true,
+      "settings": {
+        "margin_top": 60,
+        "margin_bottom": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "carousel_products_8MwRqB": {
+      "type": "carousel-products",
+      "blocks": {
+        "collection_WLErGW": {
+          "type": "collection",
+          "settings": {
+            "title": "Order in Bulk",
+            "collection": "wholesale-top-level"
+          }
+        }
+      },
+      "block_order": [
+        "collection_WLErGW"
+      ],
+      "settings": {
+        "show_title": true,
+        "container": "boxed",
+        "size_of_columns": "4",
+        "max_count": 6,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true,
+        "arrows": true,
+        "bullets": false,
+        "prefer_meta_name": true,
+        "prefer_parent_images": true,
+        "show_price": false,
+        "customer_tags": "wholesale,Wholesale",
+        "customization_class": "mb-60 wholesale-nosale"
+      }
+    },
+    "spacer_EnTKAF": {
+      "type": "spacer",
+      "disabled": true,
+      "settings": {
+        "margin_top": 60,
+        "margin_bottom": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "er_custom_liquid_derwKi": {
+      "type": "er-custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"ws-page\">\n<p class=\"ws-line-1\">\n<span class=\"logo-inline-stand\"> Your team deserves the best protection and comfort - <b>STAND+</b> delivers both. We’re not just a shoe — we’re a solution to workplace fatigue, injuries, and discomfort. Our slip-resistant shoes are engineered with energy-dispersive technology to minimize fatigue and pain and keep your team performing at their best.\n</p>\n<p style=\"font-size: clamp(0px, 7vw, 27px);letter-spacing: .5px;font-weight: 800;\"> WHY PARTNER WITH STAND+?</p>\n<p>\n<p class=\"ws-bullet\">\n<span class=\"logo-inline-stand-plus\">{% render: \"icon-stand-plus-svg\" %}</span> <u>Advanced Slip-Resistance:</u> Our shoes exceed ASTM slip resistance standards, ensuring maximum safety.</p>\n<p class=\"ws-bullet\">\n<span class=\"logo-inline-stand-plus\">{% render: \"icon-stand-plus-svg\" %}</span> <u>Cloudlike Comfort:</u> Designed to reduce foot and joint pain, perfect for employees standing all day.</p>\n<p class=\"ws-bullet\">\n<span class=\"logo-inline-stand-plus\">{% render: \"icon-stand-plus-svg\" %}</span> <u>Custom Corporate Solutions:</u> Tailor-made programs with bulk discounts, fast exchanges, and customized promotional support.</p>\n<p class=\"ws-bullet\">\n<span class=\"logo-inline-stand-plus\">{% render: \"icon-stand-plus-svg\" %}</span> <u>Trusted by Industry Leaders:</u> Healthcare, food service, hospitality — our shoes protect employees across all sectors.</p>\n<span class=\"logo-inline-stand\"> <b>SAVE UP TO 50%</b> and get a free quote today by contacting us below."
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": false,
+        "show_content": false
+      }
+    },
+    "spacer_7Q6VyA": {
+      "type": "spacer",
+      "settings": {
+        "margin_top": 60,
+        "margin_bottom": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "165671862424197f1b": {
+      "type": "wholesale-form",
+      "settings": {
+        "title": "",
+        "show_input_label": false,
+        "show_phone_input": true,
+        "button_type": "invert",
+        "hubspot_form": "hubspot_api",
+        "hubspot_portalid": "45737837",
+        "hubspot_formid": "833d2c93-3ffa-4494-aea7-5fc251593d51",
+        "customization_class": ""
+      }
+    },
+    "6699a6f2-aa39-41d9-ba7c-24a62420ce44": {
+      "type": "wholesale-loggedin2",
+      "settings": {
+        "apply": false
+      }
+    },
+    "spacer_XKHFmQ": {
+      "type": "spacer",
+      "settings": {
+        "margin_top": 60,
+        "margin_bottom": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    },
+    "er_custom_liquid_YtKHJC": {
+      "type": "er-custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"ws-why-stand-container\">\n<p class=\"ws-why-stand-title\">WHY STAND+</p>\n<p class=\"ws-why-stand\">In a world where slips and falls are all too common, ensuring employee safety isn't just a priority; it's a necessity. That's where we come in. With our comprehensive program tailored for businesses of all sizes, you can say hello to a safer, more productive environment.</p>\n<p class=\"ws-why-stand\">\n<span>CUSTOMIZED SOLUTIONS:</span> We make it easy. Our flexible corporate programs are built around your needs—whether you prefer fully-paid options or payroll deductions. No matter your industry, we’ve got the perfect fit for your team.\n</p>\n<p class=\"ws-why-stand\">\n<span>WORKPLACE SAFETY MEETS ALL-DAY COMFORT:</span> With ASTM slip-resistant compliant, antimicrobial, and easy-to-clean designs, STAND+ shoes go beyond just preventing slips—they actively improve employee well-being. Companies that switch to STAND+ see reduced workplace injuries and happier, more productive teams.</p>\n<p class=\"ws-why-stand\">\n\n<span> TAILORED PROGRAMS FOR EVERY BUSINESS:</span> We make it easy. Our flexible corporate programs are built around your needs — whether you prefer fully-paid options or payroll deductions, we’ve got the perfect fit for your team.</p>\n\n<p class=\"ws-why-stand\">\n<span> JOIN THE COMPANIES PROTECTING THEIR TEAMS WITH STAND+:</span> When you choose STAND+, you’re choosing more than a product—you’re investing in your people. Our shoes have been shown to reduce slip-and-fall claims by up to 67%, minimizing workplace incidents and protecting your workforce.</p>\n<p class=\"ws-why-stand\">\n<span> GET STARTED TODAY:</span> Safety shouldn’t wait. Contact us now for a free consultation and custom workplace safety plan. Protect your team, reduce costs, and keep everyone standing strong.\n</p>\n<p class=\"ws-why-stand-title\">STAND+ WE'RE BUILT FOR IT</p>"
+      }
+    },
+    "93a97c24-de66-4f31-b30f-0e196a0ae640": {
+      "type": "sorting-collections",
+      "blocks": {
+        "5a12a4f6-6238-46cd-9a4d-6e14f5eb2104": {
+          "type": "collection",
+          "settings": {
+            "title": "All Wholesale",
+            "collection": "wholesale-top-level"
+          }
+        }
+      },
+      "block_order": [
+        "5a12a4f6-6238-46cd-9a4d-6e14f5eb2104"
+      ],
+      "disabled": true,
+      "settings": {
+        "show_title": false,
+        "prefer_parent_images": true,
+        "show_price": false,
+        "size_of_columns": "3",
+        "max_count": 12,
+        "show_btn_more_products": false
+      }
+    }
+  },
+  "order": [
+    "home_builder_gFH89k",
+    "spacer_zefqE7",
+    "carousel_products_HbkQta",
+    "1628287292f47cc491",
+    "carousel_products_8MwRqB",
+    "spacer_EnTKAF",
+    "er_custom_liquid_derwKi",
+    "main",
+    "spacer_7Q6VyA",
+    "165671862424197f1b",
+    "6699a6f2-aa39-41d9-ba7c-24a62420ce44",
+    "spacer_XKHFmQ",
+    "er_custom_liquid_YtKHJC",
+    "93a97c24-de66-4f31-b30f-0e196a0ae640"
+  ]
+}

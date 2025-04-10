@@ -1,0 +1,76 @@
+{% comment %} {% liquid
+  assign show = false
+  if section.settings.show_only_home
+    if template.name != 'index'
+      assign show = false
+    endif
+  endif
+%}
+
+{% if show %}
+  <carousel-scrolla-nav class="er-scrollable-navigation__wrapper">
+    <div class="container" data-js-carousel>
+      {% if section.blocks.size > 0 %}
+        <div class="menu-items__wrapper" data-js-carousel-slick>
+          {% for block in section.blocks %}
+            <a href="{{ block.settings.url }}" class="menu-items--item-outer">
+              <div class="menu-items--item-inner {% if block.settings.url == request.path %}active{% endif %}">
+                <div class="image">
+                  <img
+                    src="{{ block.settings.image | image_url: width: '72' }}"
+                    loading="eager"
+                    width="72"
+                    height="72"
+                    alt="{{ block.settings.text }}"
+                  >
+                </div>
+                <div class="text">{{ block.settings.text }}</div>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </carousel-scrolla-nav>
+{% endif %}
+
+<script>
+  theme.AssetsLoader.require('scripts', 'carousel_scrollable_nav');
+</script>
+
+{% schema %}
+{
+  "name": "ER scrollable navigation",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_only_home",
+      "label": "Show only on homepage",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_item",
+      "name": "Menu Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Menu item link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Menu item image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} {% endcomment %}

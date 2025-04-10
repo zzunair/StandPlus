@@ -1,0 +1,19 @@
+{% comment %} <!-- snippets/url-params.liquid -->
+{% assign password_check == false %}
+{% include 'url-params' %}
+{% if password_check == false %}
+    <script>
+        window.location.replace("/pages/hrni");
+    </script>
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/pages/hrni?noscript=true">
+    </noscript>
+{% else %}
+<script>
+    console.log("url: {{ url_cfh }}")
+    window.history.replaceState({}, document.title, "{{ url_cfh | split: ".com" | last }}"); 
+</script>
+<div class="container">
+    <div>Password success</div>
+</div>
+{% endif %} {% endcomment %}

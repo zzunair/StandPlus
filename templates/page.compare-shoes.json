@@ -1,0 +1,29 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "custom_css": [
+        "div.container {padding: 0;}",
+        "div.container .rte {position: relative;}",
+        "@media (min-width: 1260px) {.container {max-width: 2000px; width: 98%; }}",
+        "@media (max-width: 924.5px) {.container {max-width: 100%; }}"
+      ],
+      "settings": {
+        "show_title": true,
+        "show_content": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

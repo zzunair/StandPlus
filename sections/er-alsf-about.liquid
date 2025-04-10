@@ -1,0 +1,85 @@
+<div class="er-alsf-about__grid">
+  <div class="images__wrapper">
+    <div>
+      <div class="mid-image">
+        <img
+          src="{{ section.settings.mid_image | image_url: width: '197' }}"
+          loading="lazy"
+          width="197"
+          height="200"
+          alt="{{ section.settings.mid_image.alt }}"
+        >
+      </div>
+      <div class="small-image">
+        <img
+          src="{{ section.settings.small_image | image_url: width: '125' }}"
+          loading="lazy"
+          width="125"
+          height="78"
+          alt="{{ section.settings.small_image.alt }}"
+        >
+        {% render 'er-icon-alsf-leave' %}
+      </div>
+    </div>
+    <div class="big-image">
+      <img
+        src="{{ section.settings.big_image | image_url: width: '374' }}"
+        loading="lazy"
+        width="374"
+        height="398"
+        alt="{{ section.settings.big_image.alt }}"
+      >
+    </div>
+  </div>
+  <div class="content">
+    {% if section.settings.title != blank %}
+      <h3>{{ section.settings.title }}</h3>
+    {% endif %}
+    {% if section.settings.content != blank %}
+      <div>{{ section.settings.content }}</div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ER ALSF about",
+  "class": "er-alsf-about__wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Section content"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "big_image",
+      "label": "Big image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mid_image",
+      "label": "Mid size image"
+    },
+    {
+      "type": "image_picker",
+      "id": "small_image",
+      "label": "Small image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ER ALSF about"
+    }
+  ]
+}
+{% endschema %}

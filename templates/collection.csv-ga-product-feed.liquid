@@ -1,0 +1,17 @@
+{% comment %} 
+{%- assign store_code = "" -%}
+{%- assign pickup_method = "buy" -%}
+{%- assign pickup_sla = "same day" -%}
+{%- assign col_header = "store_code,id,price,quantity,gtin,pickup_method,pickup_sla" -%} 
+{% endcomment %}
+{%- assign col_header = "id,gtin" -%}
+{%- layout none -%}
+{%- paginate collection.products by 50 -%}
+{{ col_header}}
+    {%- for product in collection.products -%}
+        {%- for variant in product.variants -%}
+            {% comment %} {{ store_code }},shopify_US_{{product.id}}_{{variant.id}},{{variant.price | money_without_currency | remove: ','}} USD,{{variant.inventory_quantity}},{{variant.barcode}},{{pickup_method}},{{- pickup_sla -}} {% endcomment %}
+            shopify_US_{{ product.id }}_{{ variant.id }},{{ variant.barcode }}
+        {%- endfor -%}
+    {%- endfor -%}
+{%- endpaginate -%}

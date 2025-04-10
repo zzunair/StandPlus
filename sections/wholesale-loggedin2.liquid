@@ -1,0 +1,25 @@
+<!-- section/wholesale-loggedin2 -->
+{% assign apply = section.settings.apply %}
+<div class="container">
+	{% render 'wholesale-loggedin', apply: apply %}
+</div>
+
+{% schema %}
+{
+  "name": "Wholesale Logged In Info",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "apply",
+      "label": "Show 'Apply' Content & Back Button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wholesale Logged In",
+      "category": "3) Static content"
+    }
+  ]
+}
+{% endschema %}

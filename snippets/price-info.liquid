@@ -1,0 +1,43 @@
+<!-- snippet/price-info.liquid -->
+{%- if settings.product_info_show_price -%}
+    <div class="product-page-info__price {% unless centered %}  text-md-left{% endunless %} mb-25">
+        {% include 'product-get-price' %}
+    </div>
+    {%- if settings.product_info_show_sale_details -%}
+        <p class="product-page-info__price-sale-details mt-5 mt-md-10 {% unless centered %} text-md-left{% endunless %}{% unless compare_at_price > price %} d-none-important{% endunless %}" data-js-product-price-sale-details>
+            {%- if compare_at_price > price -%}
+                {%- assign price_save = compare_at_price | minus: price -%}
+                {%- assign price_save_money = price_save | money -%}
+                {%- assign price_save_procent = price | times: 100 | divided_by: compare_at_price | minus: 100 | times: -1 -%}
+                {{ 'products.product.price_sale_details_html' | t: price: price_save_money, procent: price_save_procent }}
+            {%- endif -%}
+        </p>
+    {%- endif -%}
+    {%- if settings.product_info_show_taxes -%}
+        {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
+            <div class="product-page-info__policies mt-10 mb-20 {% unless centered %} text-md-left{% endunless %}">
+                {%- if shop.taxes_included -%}
+                    {{ 'products.product.include_taxes' | t }}
+                {% endif %}
+                {% if shop.shipping_policy.body != blank %}
+                    {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                {%- endif -%}
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+    {%- if settings.product_info_payment_terms -%}
+        {% capture payment_terms_html %}{{ form | payment_terms }}{% endcapture %}
+        {%- if payment_terms_html.size > 0 -%}
+            <div class="product-page-info__payment-terms mt-10 mb-25 {% unless centered %} text-md-left{% endunless %}">
+                {{ payment_terms_html }}
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+    {%- if settings.app_klarna_enable -%}
+        {%- assign klarna_app_blocks = section.blocks | where: 'type', 'klarna_app' -%}
+        {%- for block in klarna_app_blocks -%}
+            <div class="{{ block.settings.class_name }}"></div>
+        {%- endfor -%}
+    {%- endif -%}
+{%- endif -%}
+{% render "product-page-block-render" with blocks: section.blocks, custom_block_location: "below_price"  %}

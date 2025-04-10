@@ -1,0 +1,16 @@
+<!-- snippets/er-modal-atc.liquid -->
+
+<div id="{{ anchor }}" class="popup hidden">
+  <div class="popup__overlay hidden"></div>
+  <div class="body">
+    <div class="content">
+      <button class="close" type="button" onclick="(closeModalEr(event.target.parentNode.parentNode.parentNode.id))">
+        &times;
+      </button>
+      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+      <div id="contentAtcModal" class="content__product-detail">
+
+      </div>
+    </div>
+  </div>
+</div>

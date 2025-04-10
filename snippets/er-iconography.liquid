@@ -1,0 +1,29 @@
+{%- assign iconcount = 0 -%}
+    {% for block in blocks %}
+      {%- if block.type == "sidebar_custom_html" and block.settings.location == "below_addtocart" -%}
+        <div class="mt-20">
+          {% render 'custom-html-block' with block: block, fl_index: forloop.index %}        
+        </div>
+      {%- endif -%}
+      {% if block.type == 'iconography' %}
+        {%- assign iconcount = iconcount | plus: 1 -%}
+        {%- if iconcount == 1 -%}
+          <div class="er-iconography__wrapper">
+            <div class="er-iconography">
+        {%- endif -%}
+              <div class="er-iconography__icon">
+                <img
+                  src="{{ block.settings.image | image_url: width: '50' }}"
+                  loading="lazy"
+                  width="50"
+                  height="50"
+                  alt="{{ icon.name }}"
+                >
+                <div class="name">{{ block.settings.name }}</div>
+              </div>
+      {% endif %}
+    {% endfor %}
+  {%- if iconcount > 0 -%}
+      </div>
+    </div>    
+  {%- endif -%}

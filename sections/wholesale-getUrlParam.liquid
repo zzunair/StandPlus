@@ -1,0 +1,32 @@
+<!-- snippets/wholesale-getUrlParameter.liquid -->
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("{{ section.settings.parameter }}");
+    if (id) {
+        const urlInsert = document.querySelector('#urlParam');
+        urlInsert.textContent = id;
+    }
+</script>
+
+{% schema %}
+{
+    "name": "Insert URL Parameter",
+    "settings": [
+		{
+			"type": "text",
+			"id": "parameter",
+			"label": "URL Parameter Name"
+		},
+        {
+            "type": "paragraph",
+            "content": "Add <span id=\"urlParam\"></span> to your page html code" 
+        }
+	],
+    "presets": [
+        {
+            "name": "Insert URL Parameter",
+            "category": "3) Static content"
+        }
+    ]
+}
+{% endschema %}

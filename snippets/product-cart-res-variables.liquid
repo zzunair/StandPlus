@@ -1,0 +1,18 @@
+{%- assign title = item.product.title -%}
+{%- assign variant_title = item.variant.title -%}
+{%- assign id = item.variant_id -%}
+{%- assign url = item.url | within: collection -%}
+{%- assign quantity = item.quantity -%}
+{%- assign price = item.price -%}
+{%- assign image = item.image -%}
+
+{% comment %} {%- if title -%}
+    {%- assign titleParts = title | split: " - " -%}
+    {%- if variant_title contains titleParts[1] -%}
+        {%- assign title = titleParts[0] -%}
+    {%- endif -%}
+    {%- assign titleParts = title | split: " | " -%}
+    {%- if variant_title contains titleParts[1] -%}
+        {%- assign title = titleParts[0] -%}
+    {%- endif -%}
+{%- endif -%} {% endcomment %}

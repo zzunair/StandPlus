@@ -1,0 +1,144 @@
+<!-- snippets/wholesale-table.liquid -->
+<div class="table_colors">
+    <table class="wholesale-product product-options {{ options_type_class }}{% if centered %} product-options--centered{% endif %}{% if mobile_centered %} product-options--mobile-centered{% endif %}{% if mobile_start %} product-options--mobile-start{% endif %}{% unless trigger %} js-product-options{% endunless %}" data-js-product-options{% if options_type == 1 and settings.product_variant_change_on_hover %} data-js-options-onhover{% endif %}{% if change_history %} data-js-change-history{% endif %}>
+        <thead>
+            <tr>
+                <th class="colorcolumn"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {%- capture colorsHtml -%}
+                {%- for color in mov -%}
+                    {%- assign colorname = color | replace: "/", "/<wbr>" | split: " - " | last | strip -%}
+                    <tr>
+                        <th class="colorcolumn">
+                            {%- include 'product-get-options-res-image' with value: color -%}
+                            <div class="product-options__value product-options__value--square" data-option-sku="{{ option_sku }}" data-value="{{ color }}">
+                                {{ option_variant | image_url: width: 140 | image_tag: alt: color }}
+                                <div><span>{{ colorname }}</span></div>
+                            </div>
+                        </th>
+                    </tr>
+                {%- endfor -%}
+            {%- endcapture -%}
+            {{ colorsHtml }}
+            <tr>
+                <th>{{ 'wholesale.bulk.total' | t }}</th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="table_container">
+    <table class="wholesale-product product-options"> 
+        {%- capture sizeHeader -%}
+        <thead>
+            <tr>
+                {%- for size in sizes -%}
+                    {%- if split-unisex -%}
+                        {%- assign split-size = size | split: splitSizeCode | last | split: ' ' | first -%}
+                    {%- endif -%}
+                    <th class="product-options__value product-options__value--large-text border active{% if disabled_value %} disabled{% endif %}"
+                        data-value="{%- render 'product-get-options-strip-symbols' with value: size -%}"
+                        data-ml-index="{{ mlIndex }}" data-ml="{{ splitTitle }}"
+                    >{% if split-size %}{{ split-size }}{% else %}{{ size }}{% endif %}</th>
+                {%- endfor -%}
+            </tr>
+        </thead>
+        {%- endcapture -%}
+        {{ sizeHeader }}
+        <tbody>
+            {%- for color in mov -%}
+                {%- assign rownum = forloop.index -%}
+                <tr>
+                    {%- include 'product-get-options-res-image' with value: color -%}
+                    {% comment %} <div>option_sku: {{ option_sku }}</div> {% endcomment %}
+                    {%- for y in skuSizes -%}
+                        {%- capture sku -%}{{ option_sku }}-{{ y }}{%- endcapture -%}
+                        {%- assign invItem = inv | split: sku | last | split: "}&&" | first -%}
+                        {%- assign inventory = invItem | split: '"inventory":' | last | split: "," | first | plus: 0 -%}
+                        {%- assign price = invItem | split: '"price":"' | last | split: '",' | first -%}
+                        {%- assign size = invItem | split: '"size":"' | last | split: '",' | first -%}
+                        {%- assign sizeNum = size | split: splitSizeCode | last | split: ' ' | first -%}
+                        {%- assign size_attribute = splitTitle | append: " " | append: sizeNum -%}
+
+                        
+                        {%- assign invPolicy = invItem | split: '"inventory_policy":"' | last | split: '"' | first -%}
+                        {%- if invPolicy == "deny" and inventory <= 0 -%}
+                            {%- assign disabled = true -%}
+                        {%- else -%}
+                            {%- assign disabled = false -%}
+                        {%- endif -%}
+                        {%- assign id = invItem | split: '"id":"' | last | split: '",' | first | strip -%}
+                        {%- assign cartQty = "" -%}
+                        {%- assign backorderQty = "" -%}
+                        {%- for cartItem in cart.items -%}
+                            {%- assign cartItemId = cartItem.id | strip -%}
+                            {%- assign equalitem = false -%}
+                            {%- if cartItem.properties.Size -%}
+                                {%- if id == cartItemId and cartItem.properties.Size == size_attribute -%}
+                                    {%- assign equalitem = true -%}
+                                {%- endif -%}
+                            {%- else -%}
+                                {%- if id == cartItemId -%}
+                                    {%- assign equalitem = true -%}
+                                {%- endif -%}
+                            {%- endif -%}
+                            {%- if equalitem -%}
+                                {%- assign cartQty = cartItem.quantity -%}
+                                {%- if cartQty > inventory -%}
+                                    {%- assign backorderQty = cartQty | minus: inventory -%}
+                                {%- endif -%}
+                                {%- break -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                        <td {% if disabled %}class="td-disabled"{% endif %}>
+                            <div class="number-input{% if disabled %} disabled-input{% endif %}">
+                                {%- unless disabled -%}<i tabindex="-1" onclick="changeQuantity(this.parentNode.querySelector('input.quantity'), -1)" class="minus svg-minus"></i>{%- endunless -%}
+                                <input type="hidden" name="id" value="{{ id }}" data-js-product-variant-input>
+                                <input class="quantity" type="text" inputmode="numeric" pattern="[0-9]*" 
+                                    size="4" name="quantity" data-sku="{{ sku }}" data-inv="{{ inventory }}"
+                                    data-policy="{{ invPolicy }}" value="{{ cartQty }}" id="{{ id }}"
+                                    data-price="{{ price }}" autocomplete="off" data-size="{{ size }}" data-ml-index="{{ mlIndex }}"
+                                    data-size-attribute="{{ size_attribute }}"{% if disabled %} disabled{% endif %}>
+                                {%- unless disabled -%}<i tabindex="-1" onclick="changeQuantity(this.parentNode.querySelector('input.quantity'), 1)" class="plus svg-plus"></i>{%- endunless -%}
+                                <div class="backorderQty tooltip" style="z-index: {{ 9999 | minus: rownum }}">
+                                    <span class="qty"></span>
+                                    <div class="tip">    
+                                        <div class="bottom col{{ forloop.index }}">
+                                            <span class="units"></span> Unit<span class="plural">{%- unless backorderQty == 1 -%}s{%- endunless -%}</span> will be Backordered
+                                        </div>
+                                        <i></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    {%- endfor -%}
+                </tr>
+            {%- endfor -%}
+            <tr>
+                {%- for y in skuSizes -%}
+                    <th id="{{ y }}_{{ mlIndex }}">0</th>
+                {%- endfor -%}
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="table_totals">
+    <table class="wholesale-product product-options {{ options_type_class }}{% if centered %} product-options--centered{% endif %}{% if mobile_centered %} product-options--mobile-centered{% endif %}{% if mobile_start %} product-options--mobile-start{% endif %}{% unless trigger %} js-product-options{% endunless %}" data-js-product-options{% if options_type == 1 and settings.product_variant_change_on_hover %} data-js-options-onhover{% endif %}{% if change_history %} data-js-change-history{% endif %}>
+        <thead>
+            <tr>
+                <th class="totalcolumn">{{ 'wholesale.bulk.total' | t }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%- for color in skuColors -%}
+                <tr>
+                    <th id="{{ color }}_{{ mlIndex }}">0</th>
+                </tr>
+            {%- endfor -%}
+            <tr><th id="totalQty" data-ml-index="{{ mlIndex }}" class="totalQty">0</th></tr>
+        </tbody>
+    </table>
+</div>

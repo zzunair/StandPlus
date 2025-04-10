@@ -1,0 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "custom_css": [
+        ".btn.btn--full.btn--secondary.checkout-button {background-color: var(--button-h-bg);border-color: var(--button-h-bd);color: var(--button-h-c);}"
+      ],
+      "settings": {}
+    },
+    "9a41ba66-3ebb-440a-a744-f9ae6fcabbc0": {
+      "type": "carousel-products",
+      "blocks": {
+        "69435031-f459-4fcd-b17c-d22843a23d88": {
+          "type": "collection",
+          "settings": {
+            "title": "Add our new Gales® x Comrad socks to your order!",
+            "collection": "socks"
+          }
+        }
+      },
+      "block_order": [
+        "69435031-f459-4fcd-b17c-d22843a23d88"
+      ],
+      "disabled": true,
+      "settings": {
+        "show_title": true,
+        "container": "boxed",
+        "size_of_columns": "4",
+        "max_count": 6,
+        "autoplay": true,
+        "speed": 5,
+        "infinite": true,
+        "arrows": true,
+        "bullets": false,
+        "prefer_meta_name": true,
+        "prefer_parent_images": false,
+        "show_price": true,
+        "customer_tags": "",
+        "customization_class": ""
+      }
+    },
+    "102b08ad-4f74-4f62-b4e5-bb2a0be5cb55": {
+      "type": "spacer",
+      "settings": {
+        "margin_top": 60,
+        "margin_bottom": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "container": "boxed",
+        "show_separator": false,
+        "title": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "9a41ba66-3ebb-440a-a744-f9ae6fcabbc0",
+    "102b08ad-4f74-4f62-b4e5-bb2a0be5cb55"
+  ]
+}
