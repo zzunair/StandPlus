@@ -249,7 +249,7 @@
     "empty_cart_title": "Your cart is empty",
     "empty_cart_paragraph": "Looks like you have not added anything to your cart.",
     "empty_cart_button_text": "Shop now",
-    "empty_cart_button_url": "/",
+    "empty_cart_button_url": "shopify://collections/all",
     "popup_cart_checkout_button_color_override": true,
     "popup_cart_checkout_button_color": "#f17849",
     "popup_cart_hide_view_cart_button": true,
@@ -263,7 +263,9 @@
       "pro-line-nurse-blake-black-pink",
       "pro-line-charcoal-black",
       "pro-line-black-black",
-      "pro-line-alexs-lemonade-stand-lemon"
+      "pro-line-alexs-lemonade-stand-lemon",
+      "frontline-lavender",
+      "frontline-mint"
     ],
     "popup_cart_upsell_collection": "shopify://products/bogo-50-off-sale",
     "popup_cart_upsell_title": "",

@@ -165,7 +165,7 @@
                                     {%- capture inputId -%}
                                         {% render 'product-get-options-strip-symbols' with value: value -%}
                                     {%- endcapture -%}
-                                    <div>option value: {{ value }}</div>
+                                    {% comment %} <div>option value: {{ value }}</div> {% endcomment %}
                                     {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
                                     {%- assign std-colors = value | handleize | split: "-" -%}
                                     {% comment %} <div>std-colors: {{ std-colors | json }}</div> {% endcomment %}

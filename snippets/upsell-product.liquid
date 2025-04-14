@@ -13,7 +13,11 @@
             <div class="product-cart__title-wrapper">
                 <div class="product-cart__title mb-3">
                     <h3 class="h6 m-0">
-                        <a href="{{ parent_product.url }}">{{ parent_product.title }}</a>
+                        {% if settings.popup_cart_upsell_title != blank %}
+                            {{ settings.popup_cart_upsell_title }}
+                        {% else %}
+                            <a href="{{ parent_product.url }}">{{ parent_product.title }}</a>
+                        {% endif %}
                     </h3>
                 </div>
                 

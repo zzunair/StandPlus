@@ -2924,7 +2924,8 @@
       {
         "type": "text",
         "id": "popup_cart_upsell_title",
-        "label": "Title"
+        "label": "Title",
+        "default": "Last Chance!"
       },
       {
         "type": "image_picker",
