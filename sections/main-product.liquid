@@ -1,6 +1,7 @@
 <!-- main-product section -->
 {% comment %} {% if content_for_header contains 'furnace-brook' %}{% render 'made2order-gales-use-this-one' %}{% endif %} {% endcomment %}
 {% include 'global-variables' %}
+<link rel="stylesheet" href="{{ 'custom-product-page.css' | asset_url }}">
 {%- assign template_layout = settings.product_info_layout -%}
 {%- if product.tags contains 'gallery-layout-1' -%}
   {%- assign template_layout = '1' -%}
@@ -352,6 +353,13 @@
       "label": "Description Above Selectors",
       "info": "Will override 'Show tab for Description' setting",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "bottom_description",
+      "label": "Description Below Selectors",
+      "info": "Will override 'Show tab for Description' setting",
+      "default": true
     },
     {
       "type": "header",

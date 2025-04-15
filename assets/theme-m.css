@@ -1842,6 +1842,7 @@ form {
   height: 1px;
   top: 50%;
   left: 50%;
+  background-color: #fff;
 }
 
 .product-options__value.disabled-hidden span::before {
@@ -1888,7 +1889,7 @@ form {
   content: '';
   position: absolute;
   border: solid 1px transparent;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);

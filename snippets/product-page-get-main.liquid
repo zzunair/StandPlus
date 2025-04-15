@@ -70,6 +70,19 @@
                 {%- else -%}
                     {% include 'product-page-get-info' %}
                 {%- endif -%}
+                {%- if section.settings.bottom_description -%}
+                    <div class="js-variant-descriptions mt-20">
+                        {%- if description != blank -%}
+                            <div data-option1="">
+                                <div class="overflow-hidden">
+                                    {% include 'parse-for-icons' content: description %}
+                                </div>
+                            </div>
+                        {%- endif -%}
+                
+                        {{ descriptions }}
+                    </div>
+                {%- endif -%}
                 {%- if section.settings.show_tabs -%}
                     {% render 'er-iconography', blocks: section.blocks %}
                     <div class="product-page__tabs mt-30 mb-40">
