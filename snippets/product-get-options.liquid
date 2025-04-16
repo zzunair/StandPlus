@@ -21,7 +21,6 @@
         onclick='QuickViewClose(event)'>
         <span></span><i>{% render 'icon-theme-164' %}</i>
     </a>
-
     <div class="product-options {{ options_type_class }}{% if centered %} product-options--centered{% endif %}{% if mobile_centered %} product-options--mobile-centered{% endif %}{% if mobile_start %} product-options--mobile-start{% endif %}{% unless trigger %} js-product-options{% endunless %}" data-js-product-options{% if options_type == 1 and settings.product_variant_change_on_hover %} data-js-options-onhover{% endif %}{% if change_history %} data-js-change-history{% endif %}>
         {%- if section.settings.show_selected_style -%}
             <style>

@@ -2854,30 +2854,6 @@
         "default": "<p>Text content goes here!</p><p>You can make&nbsp;text <strong>bold</strong>, <em>italic</em> or add <a href=\"\/blogs\/news\" title=\"News\">link</a> using rich text editor.</p>"
       },
       {
-        "type": "header",
-        "content": "Empty Cart"
-      },
-      {
-        "type": "text",
-        "id": "empty_cart_title",
-        "label": "Empty Cart Title"
-      },
-      {
-        "type": "text",
-        "id": "empty_cart_paragraph",
-        "label": "Empty Cart Paragraph"
-      },
-       {
-        "type": "text",
-        "id": "empty_cart_button_text",
-        "label": "Empty Cart Button Text"
-      },
-       {
-        "type": "url",
-        "id": "empty_cart_button_url",
-        "label": "Empty Cart Button Link"
-      },
-      {
         "type": "checkbox",
         "id": "popup_cart_checkout_button_color_override",
         "label": "Enable Checkout Button Color Override",
@@ -2906,16 +2882,6 @@
         "content": "Popup Cart Upsell"
       },
       {
-        "type": "product",
-        "id": "upsell_product",
-        "label": "Upsell Product"
-      },
-       {
-        "type": "product_list",
-        "id": "upsell_product_list",
-        "label": "Upsell Product List"
-      },
-      {
         "type": "url",
         "id": "popup_cart_upsell_collection",
         "label": "Link",
@@ -2924,8 +2890,7 @@
       {
         "type": "text",
         "id": "popup_cart_upsell_title",
-        "label": "Title",
-        "default": "Last Chance!"
+        "label": "Title"
       },
       {
         "type": "image_picker",
