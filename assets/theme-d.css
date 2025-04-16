@@ -2587,13 +2587,13 @@ body.popup-bg-blur.popup-opened main {
 }
 
 .popup-cart {
-  width: 310px;
+  width: 400px;
   max-width: 100%;
 }
 
 .popup-cart__items > *:not(:first-child) {
   padding-top: 20px;
-  border-top: dashed 1px;
+  border-top: solid 1px;
 }
 
 .popup-wishlist {
@@ -5718,7 +5718,7 @@ h1.btn-link, h1.btn-link:visited, h1.btn-link:active, h1.btn-link:link, .h1.btn-
 }
 
 .popup-cart__items > *:not(:first-child) {
-  border-top-color: var(--theme5);
+  border-top-color: #CDCDCC;
 }
 
 .popup-cart__discount span {
