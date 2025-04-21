@@ -108,9 +108,11 @@
                     {%- endif -%}
                     {%- if show_fit_selector and clear_name == "size" -%}
                         {%- liquid 
+                            assign url_fit = "M"
                             if url_fit == "M" 
                                 assign m_active = "active"
                                 assign fit_sel_val = "Mens"
+                                assign w_active = ""
                             else
                                 assign w_active = "active"
                                 assign fit_sel_val = "Womens"
@@ -385,12 +387,12 @@
                     {%- elsif options_type_large_text contains clear_name -%}
                         <!-- product options: size --->
                         <div class="style-heading">
-                            <h3>Style: <span class="style-value mens-style{% if url_fit != 'M' %} d-none{% endif %}">Men</span><span class="style-value womens-style{% if url_fit == 'M' %} d-none{% endif %}">Women</span></h3>
+                            <h3>Style: <span class="style-value mens-style">Men</span><span class="style-value womens-style d-none">Women</span></h3>
                         </div>
                         <div class="size-selector-tabs w-100 mb-3">
                             <div class="tab-container">
-                                <button type="button" class="size-tab-btn men-tab{% if url_fit == 'M' %} active{% endif %}" data-fit="M">Men</button>
-                                <button type="button" class="size-tab-btn women-tab{% if url_fit != 'M' %} active{% endif %}" data-fit="W">Women</button>
+                                <button type="button" class="size-tab-btn men-tab active" data-fit="M">Men</button>
+                                <button type="button" class="size-tab-btn women-tab" data-fit="W">Women</button>
                             </div>
                             <p class="size-note">*Sizes are different for men & women</p>
                         </div>
@@ -568,14 +570,18 @@ div.footbar div.product-options label {
 <style>
 .style-heading, .size-heading {
     margin-bottom: 10px;
+    margin-top: 32px;
 }
 
 .style-heading h3, .size-heading h3 {
-    font-size: 16px;
-    font-weight: 500;
     margin: 0;
     font-family: var(--base-family);
     text-transform: none;
+    color: #717172;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
 
 .size-selector-tabs {
@@ -588,7 +594,11 @@ div.footbar div.product-options label {
 
 /* Style heading appearance */
 .style-value {
-    font-weight: 700;
+    color: #0D0D0D;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
 
 /* Tab styling */
@@ -597,7 +607,7 @@ div.footbar div.product-options label {
     border-radius: 50px;
     background-color: #f2f2f2;
     padding: 4px;
-    width: 100%;
+    width: 300px;
 }
 
 .size-tab-btn {
@@ -615,13 +625,19 @@ div.footbar div.product-options label {
 .size-tab-btn.active {
     background-color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    /* border: 1px solid #000; */
 }
-
+.size-tab-btn.active:focus {
+    /* border: 1px solid #000; */
+    outline: none;
+}
 .size-note {
     margin-top: 10px;
+    color: #717172;
     font-size: 14px;
-    color: #777;
     font-style: italic;
+    font-weight: 500;
+    line-height: normal;
 }
 
 /* Size buttons styling */
@@ -644,7 +660,7 @@ div.footbar div.product-options label {
     justify-content: center;
     position: relative;
     flex-basis: calc(25% - 10px);
-    max-width: calc(25% - 10px);
+    /* max-width: calc(25% - 10px); */
 }
 
 .product-options__value--large-text.active {
@@ -695,7 +711,10 @@ div.footbar div.product-options label {
 @media (max-width: 767px) {
     .product-options__value--large-text {
         flex-basis: calc(25% - 10px);
-        max-width: calc(25% - 10px);
+        /* max-width: calc(25% - 10px); */
+    }
+    .tab-container{
+        width: 100%;
     }
 }
 .color-label-container {
@@ -709,10 +728,12 @@ div.footbar div.product-options label {
     margin: 0;
     font-family: var(--base-family);
     text-transform: none;
+    color: #717172;
 }
 
 .selected-color-value {
     font-weight: 600;
+    color: #0D0D0D;
 }
 </style>
 
@@ -724,6 +745,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const womenSizes = document.querySelectorAll('.women-size');
     const mensStyle = document.querySelector('.mens-style');
     const womensStyle = document.querySelector('.womens-style');
+    const sizeValueElements = document.getElementsByClassName("product-options__size_value");
+
     
     // Track selected size
     const sizeValues = document.querySelectorAll('.product-options__size_value');
@@ -742,66 +765,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Check if a size is already selected on page load
-    setTimeout(function() {
-        const activeOption = document.querySelector('.product-options__size_value.active');
-        if (activeOption) {
-            const activeSize = activeOption.querySelector('.size-display:not(.d-none)');
-            if (activeSize) {
-                const menTabActive = document.querySelector('.men-tab.active');
-                const prefix = menTabActive ? "Men's " : "Women's ";
-                selectedSizeValue.textContent = prefix + activeSize.textContent;
-            }
-        }
-    }, 100);
-    
     // Auto-select first available variant on page load
     setTimeout(function() {
-        // Check if no size is already selected
-        const alreadyActiveSize = document.querySelector('.product-options__size_value.active');
-        if (!alreadyActiveSize) {
-            // Find first non-disabled size option
-            const firstAvailableSize = document.querySelector('.product-options__size_value:not(.disabled):not(.disabled-hidden)');
-            if (firstAvailableSize) {
-                // Trigger a click on the first available size option
-                firstAvailableSize.click();
-                firstAvailableSize.classList.add('active');
-                
-                // Also select the appropriate radio button
-                const radioInput = firstAvailableSize.querySelector('input[type="radio"]');
-                if (radioInput) {
-                    radioInput.checked = true;
-                }
-                
-                // Update size value display
-                const sizeDisplay = firstAvailableSize.querySelector('.size-display:not(.d-none)');
-                if (sizeDisplay && selectedSizeValue) {
-                    const menTabActive = document.querySelector('.men-tab.active');
-                    const prefix = menTabActive ? "Men's " : "Women's ";
-                    selectedSizeValue.textContent = prefix + sizeDisplay.textContent;
-                }
+        // Force men's tab activation and UI update
+        if(menTab) {
+            // Remove any existing active classes
+            document.querySelectorAll('.size-tab-btn').forEach(t => t.classList.remove('active'));
+            
+            // Force men's tab state
+            menTab.classList.add('active');
+            womenTab.classList.remove('active');
+            
+            // Directly update size displays instead of relying on click
+            menSizes.forEach(s => s.classList.remove('d-none'));
+            womenSizes.forEach(s => s.classList.add('d-none'));
+            
+            if (sizeValueElements.length > 0) {
+                const firstSizeValueElement = sizeValueElements[0];
+                firstSizeValueElement.click();
+            } else {
+                console.log("No elements with class 'product-options__size_value' found.");
             }
+
         }
-        
-        // Auto-select first available color if none selected
-        const alreadyActiveColor = document.querySelector('[data-style="color"] .product-options__value.active');
-        if (!alreadyActiveColor) {
-            const firstAvailableColor = document.querySelector('[data-style="color"] .product-options__value:not(.disabled):not(.disabled-hidden)');
-            if (firstAvailableColor) {
-                // Trigger a click on the first available color option
-                firstAvailableColor.click();
-                firstAvailableColor.classList.add('active');
-                
-                // Set the color label
-                if (firstAvailableColor && selectedColorValue) {
-                    const colorLabel = firstAvailableColor.querySelector('label');
-                    if (colorLabel) {
-                        selectedColorValue.textContent = colorLabel.textContent;
-                    }
-                }
-            }
-        }
-    }, 200);
+    }, 100);
     
     if (menTab && womenTab) {
         menTab.addEventListener('click', function(event) {
@@ -897,5 +884,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+
 });
 </script>

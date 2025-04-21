@@ -21,7 +21,7 @@
                     </div>
                 {%- endif -%}
                 <div class="dynamic-checkout__button{% if settings.product_info_styled_dynamic_checkout %} dynamic-checkout__button--styled{% endif %} mt-5{% if settings.product_info_show_dynamic_checkout_confirmation %} disabled{% endif %}" data-js-dynamic-checkout-button-wrapper>
-                    {{ form | payment_button }}
+                     {{ form | payment_button }}
                 </div>
             </div>
         </div>
@@ -352,3 +352,16 @@
         {%- endif -%}
     </div>
 {%- endif -%}
+
+
+<style>
+    .shopify-payment-button {
+        --shopify-accelerated-checkout-button-block-size: 48px;
+        --shopify-accelerated-checkout-button-border-radius: 40px;
+        --shopify-accelerated-checkout-button-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .shopify-payment-button__more-options {
+        display: none !important;
+    }
+</style>

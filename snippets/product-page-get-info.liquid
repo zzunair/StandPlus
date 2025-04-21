@@ -49,7 +49,7 @@
                     <div class="product-page-info__title mb-15 {% unless centered %} text-md-left{% endunless %}">
                             {%- if is_quick_view -%}
                             <a href="{{ url }}">{{ title }}</a>
-                    {%- else -%}
+                            {%- else -%}
                             <h1 class="m-0">{{ title }}</h1>
                             {%- if product.metafields.furnace.subtitle != blank -%}
                                 <h3 class="m-0 product-subtitle">{{ product.metafields.furnace.subtitle }}</h3>

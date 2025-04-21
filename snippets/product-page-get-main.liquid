@@ -70,6 +70,9 @@
                 {%- else -%}
                     {% include 'product-page-get-info' %}
                 {%- endif -%}
+                {%- if section.settings.show_HSA_text -%}
+                    {%- render 'hsa-text' -%}
+                {%- endif-%}
                 {%- if section.settings.bottom_description -%}
                     <div class="js-variant-descriptions mt-20">
                         {%- if description != blank -%}
