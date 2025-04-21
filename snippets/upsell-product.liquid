@@ -1,13 +1,16 @@
 {% assign parent_product = settings.upsell_product %}
 {% assign child_products = settings.upsell_product_list %}
+{% assign prodimage = settings.popup_cart_upsell_image %}
 
 <div class="product-cart upsell-product" data-js-product data-product-variant-id="{{ parent_product.variants.first.id }}">
     <div class="d-flex flex-row align-items-start">
-        <a href="{{ parent_product.url }}">
+        {% comment %} <a href="{{ parent_product.url }}"> {% endcomment %}
             <div class="product-cart__image mr-15">
-                {% render 'rimage' with image: parent_product.featured_image size: '400x' format: image_format image_class: 'w-100' %}
+                {% comment %} {% render 'rimage' with image: parent_product.featured_image size: '400x' format: image_format image_class: 'w-100' %} {% endcomment %}
+                {% render 'rimage' with image: prodimage size: '400x' format: image_format image_class: 'w-100' %}
+
             </div>
-        </a>
+        {% comment %} </a> {% endcomment %}
         <div class="product-cart__content d-flex flex-column align-items-start">
             
             <div class="product-cart__title-wrapper">
@@ -32,7 +35,11 @@
 
             </div>
 
-            <div class="selected-options mb-2" style="font-size: 12px;">
+            
+
+            <div class="selected-options mb-20" style="font-size: 12px;">
+                <span class="selected-style"></span>
+                {% comment %} <br> {% endcomment %}
                 <span class="selected-color"></span>
                 <br>
                 <span class="selected-size"></span>
@@ -45,17 +52,17 @@
                          {% assign colorInTitle = child_product.title | handleize | split: "-" %}
                          {% assign color_image = "" %}
                          {% if child_product.title contains "White/White" %}
-                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_30.png?v=1744140938' %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/Frame_64.png?v=1744740664' %}
                          {% elsif child_product.title contains "Orange/White" %}
-                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_31.png?v=1744140938' %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_30_da39fd8f-e1fb-45d2-bc4f-99f96d5d8ed3.png?v=1744740664' %}
                          {% elsif child_product.title contains "Tan/White" %}
-                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_32.png?v=1744140939' %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_31_fd133b9f-198b-4dcf-9013-7c3b9b075d8b.png?v=1744740665' %}
                          {% elsif child_product.title contains "Lemon" %}
-                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_33.png?v=1744140938' %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_32_319a70cb-01f8-47cc-ade0-934c3ea7697d.png?v=1744740664' %}
                          {% elsif child_product.title contains "Lavender" %}
-                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_34.png?v=1744140938' %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_33_9a2f175a-4099-4707-87d7-818cee06b91d.png?v=1744740665' %}
                          {% elsif child_product.title contains "Mint" %}
-                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_35.png?v=1744140938' %}
+                            {% assign color_image = 'https://cdn.shopify.com/s/files/1/0291/3724/0142/files/image_34_8ec26428-3ebc-4a80-b24c-517d02a2817e.png?v=1744740665' %}
                          {% endif %}
                          {% if color_image != blank %}
                             <div class="color-swatch"
@@ -84,12 +91,12 @@
             </div>
 
             <div class="upsell-row">
-                <div class="upsell-size-options mb-2">
+                <div class="upsell-size-options">
                     <select class="upsell-size-selector">
                         <option value="">Select Size</option>
                     </select>
                 </div>
-                <button class="upsell-add-to-cart btn btn-primary mt-4" onclick="upsellAddToCart(this)">
+                <button class="upsell-add-to-cart btn btn-primary" style="min-width: 68px;" onclick="upsellAddToCart(this)">
                 Add
             </button>
             </div>
@@ -193,6 +200,35 @@ function handleColorSelection(colorSwatch) {
 function updateSelectedOptions(color, size) {
     const selectedColorEl = document.querySelector('.selected-color');
     const selectedSizeEl = document.querySelector('.selected-size');
+    const selectedStyleEl = document.querySelector('.selected-style');
+    
+    // Extract style from the selected product title
+    const selectedSwatch = document.querySelector('.color-swatch.selected');
+    if (selectedSwatch) {
+        const productTitle = selectedSwatch.getAttribute('data-product-title');
+        console.log('Product title:', productTitle); // Debug: log the full title
+        let style = '';
+        
+        // Check for different variations of the style names
+        if (productTitle.includes('Pro Line') || productTitle.includes('ProLine')) {
+            style = 'Pro Line';
+        } else if (
+            productTitle.includes('Front Line') || 
+            productTitle.includes('Frontline') || 
+            productTitle.includes('Front-Line')
+        ) {
+            style = 'Front Line';
+        }
+        
+        console.log('Detected style:', style); // Debug: log what style was detected
+        
+        if (style) {
+            selectedStyleEl.textContent = `Style: ${style}`;
+            selectedStyleEl.style.display = 'block';
+        } else {
+            selectedStyleEl.style.display = 'none';
+        }
+    }
     
     if (color) {
         selectedColorEl.textContent = `Color: ${color}`;
