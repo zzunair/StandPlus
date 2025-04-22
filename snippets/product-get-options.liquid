@@ -174,23 +174,18 @@
                                 {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
                                 {%- assign std-colors = value | handleize | split: "-" -%}
                                 {% comment %} <div>std-colors: {{ std-colors | json }}</div> {% endcomment %}
-                                {%- if std-colors.size == 1 -%}
-                                    {%- assign colors-class1 = "standard-color-" | append: value | handleize -%}
-                                    {%- assign colors-class2 = "" -%}
-                                    {%- if ag2 == true -%}
-                                        {%- assign colors-class2 = "second-color-black" -%}
-                                    {%- endif -%}
+                                {%- if std-colors[0] == "nurse" and std-colors[1] == "blake" -%}
+                                    {%- assign color_name = "nurse-blake-" | append: std-colors[2] | append: "-" | append: std-colors[3] -%}
                                 {%- else -%}
-                                    {%- if std-colors[0] == "nurse" -%}
-                                        {%- assign colors-class1 = "standard-color-" | append: std-colors[2] | handleize -%}
-                                        {%- assign colors-class2 = "second-color-" | append: std-colors[3] | handleize -%}
-                                    {%- elsif std-colors[0] == "alexs" -%}
-                                        {%- assign colors-class1 = "standard-color-" | append: std-colors[3] | handleize -%}
-                                        {%- assign colors-class2 = "second-color-white" -%}
-                                    {%- else -%}        
-                                        {%- assign colors-class1 = "standard-color-" | append: std-colors[0] | handleize -%}
-                                        {%- assign colors-class2 = "second-color-" | append: std-colors[1] | handleize -%}
-                                    {%- endif -%} 
+                                    {%- assign color_name = value | handleize -%}
+                                {%- endif -%}
+                                {%- assign product_handle = product.handle | append: '-' | append: color_name -%}
+                                {% comment %} <div>product_handle: {{ product_handle }}</div> {% endcomment %}
+                                {%- include 'product-get-options-res-status' with option_index0: option_index0 -%}
+                                {%- assign colors-class1 = "standard-color-" | append: color_name -%}
+                                {%- assign colors-class2 = "" -%}
+                                {%- if ag2 == true -%}
+                                    {%- assign colors-class2 = "second-color-black" -%}
                                 {%- endif -%}
                                 <div class="product-options__value product-options__value--circle {{ colors-class1 }} {{ colors-class2 }} text-hide cursor-pointer{% if disabled_value %} disabled{% elsif hidden_value %} disabled-hidden{% endif %}{% if active_value %} active{% endif %}"
                                     data-js-option-value
@@ -210,29 +205,10 @@
                                     
                                     {% comment %} Generic solution to find and display images for any color {% endcomment %}
                                     {% if colors-class1 != blank %}
-                                        {% assign color_name = colors-class1 | replace: 'standard-color-', '' %}
-                                        {% assign product_handle = '' %}
-                                        
-                                        {% comment %} Check if we have a merge list and loop through to find the matching product {% endcomment %}
-                                        {% if product.metafields.furnace.product_merge_list != blank %}
-                                            {% for mph in merge_list %}
-                                                {% assign variant_product = all_products[mph] %}
-                                                {% assign variant_color = variant_product.variants[0].option1 | handleize %}
-                                                
-                                                {% if variant_color contains color_name or mph contains color_name %}
-                                                    {% assign product_handle = mph %}
-                                                    {% break %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                        
-                                        {% comment %} If no match found, try to construct the product handle using the main product and color {% endcomment %}
-                                        {% if product_handle == blank %}
-                                            {% assign product_handle = product.handle | append: '-' | append: color_name %}
-                                            {% unless all_products[product_handle].featured_image %}
-                                                {% assign product_handle = '' %}
-                                            {% endunless %}
-                                        {% endif %}
+                                        {% assign product_handle = product.handle | append: '-' | append: color_name %}
+                                        {% unless all_products[product_handle].featured_image %}
+                                            {% assign product_handle = '' %}
+                                        {% endunless %}
                                         
                                         {% if product_handle != blank %}
                                             {% assign variant_product = all_products[product_handle] %}
@@ -250,6 +226,7 @@
                                                     >
                                                 </div>
                                             {% endif %}
+                                            DEBUG: {{ color_name }} => {{ product_handle }} => {{ variant_product.title }}
                                         {% endif %}
                                     {% endif %}
                                 </div>

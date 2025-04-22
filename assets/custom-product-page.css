@@ -112,7 +112,8 @@
 }
 
 .product-title-reviews {
-  display: flex;
+  display: grid;
+  grid-template-columns: 60% 40%;
   align-items: start;
   justify-content: space-between;
 }

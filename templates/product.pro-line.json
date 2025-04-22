@@ -17,7 +17,7 @@
           "settings": {
             "location": "sizeguide_help",
             "title": "Wide Width Sizing",
-            "content": "<div class=\"js-popup-button\" data-js-popup-button=\"size-guide\" style=\"display: grid;font-size:16px;grid-template-columns: 100%;text-align: left;margin-top: 16px;\">\n<div>\n<strong>Wide Width</strong><span> True to Size</span>\n</div>\n<div style=\"font-weight: 700;\" class=\"btn-link\">\n<i style=\"vertical-align: bottom;\">[icon:theme-078]</i>\nSIZE GUIDE\n</div>\n</div>\n\n<div style=\"text-align: center;\">\nNeed Regular Width? Order 1/2 Size Down\n</div>",
+            "content": "<div class=\"js-popup-button\" data-js-popup-button=\"size-guide\" style=\"display: grid;font-size:16px;grid-template-columns: 100%;text-align: left;margin-top: 16px;\">\n<div>\n<strong>Wide Width</strong><span> True to Size</span>\n</div>\n<div style=\"font-weight: 700;\" class=\"btn-link\">\n<i style=\"vertical-align: bottom;\">[icon:theme-078]</i>\nSIZE GUIDE\n</div>\n</div>\n\n<div style=\"text-align: left;\">\nNeed Regular Width? Order 1/2 Size Down\n</div>",
             "overlay": false,
             "text_color": "#000000",
             "text_align_vert": "top",
@@ -95,7 +95,7 @@
         "tab_custom_U84MQB": {
           "type": "tab_custom",
           "settings": {
-            "title": "*CUSTOM MOLDED FIT",
+            "title": "CUSTOM MOLDED FIT",
             "content": "No two feet are alike, that’s why STAND+ shoes are designed to custom form to your foot!\nIf they they arrive feeling tight, use a hair dryer on high heat for 15-30 seconds, insert your foot with a sock on (being careful not to burn yourself) and your new shoes will instantly form to your specific foot shape! They will naturally form to your foot with wear as well! <a href=\"/pages/custom-moldable\">Learn More</a>",
             "page_content": ""
           }
@@ -1075,7 +1075,9 @@
         "margins_for_columns": "none",
         "align_of_columns": "top_center",
         "disable_column_paddings": false,
-        "precedence": "1,2,4,3,6,5,7,8",
+        "sliding_text": true,
+        "sliding_texts": "All Day Comfort",
+        "precedence": "1,2,4,3,5,6,8,7",
         "customization_class": "",
         "url": ""
       }

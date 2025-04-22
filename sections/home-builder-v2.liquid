@@ -88,18 +88,19 @@
                 {%- endif -%}
             {%- endfor -%}
         </div>
+        {%- if section.settings.sliding_text -%}
         <div class="bottom-text-slide">
             <div class="marquee-container">
                 <div class="marquee-content">
-                    <span class="marquee-item">All Day Comfort *</span>
-                    <span class="marquee-item">All Day Comfort *</span>
-                    <span class="marquee-item">All Day Comfort *</span>
-                    <span class="marquee-item">All Day Comfort *</span>
-                    <span class="marquee-item">All Day Comfort *</span>
-                    <span class="marquee-item">All Day Comfort *</span>
+                    <span class="marquee-item">{{section.settings.sliding_texts}} *</span>
+                    <span class="marquee-item">{{section.settings.sliding_texts}} *</span>
+                    <span class="marquee-item">{{section.settings.sliding_texts}} *</span>
+                    <span class="marquee-item">{{section.settings.sliding_texts}} *</span>
+                    <span class="marquee-item">{{section.settings.sliding_texts}} *</span>
                 </div>
             </div>
-        </div>
+          </div>
+        {%- endif -%}
     </div>
 {% endcapture %}
 <div {% if section.settings.customization_class != blank %}class="{{ section.settings.customization_class }}"{% endif %}
@@ -297,6 +298,19 @@
       "label": "Disable column paddings",
       "default": false
     },
+    {
+      "type": "checkbox",
+      "id": "sliding_text",
+      "label": "Sliding text",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sliding_texts",
+      "label": "Sliding texts",
+      "default": "All Day Comfort",
+    },
+
     {
       "type": "text",
       "id": "precedence",
@@ -3388,17 +3402,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Get the video element
     const video = document.querySelector('.promobox-container video');
+    const image = document.querySelector('.promobox-container img');
     
-    if (video) {
-      // Get computed height of the video
-      const videoHeight = video.offsetHeight;
+    if (video || image) {
+      // Get computed height of the video or image
+      const mediaHeight = video ? video.offsetHeight : image.offsetHeight;
       
       // Get all promobox content elements and set height for each
       const promoboxContents = document.querySelectorAll('.promobox__content');
       
       promoboxContents.forEach(promoboxContent => {
         // Set the promobox content height to match
-        promoboxContent.style.height = videoHeight + 'px';
+        promoboxContent.style.height = mediaHeight + 'px';
         
         // Find the first child div of promobox__content and add the centering class
         const contentInnerDiv = promoboxContent.querySelector('div');
@@ -3419,6 +3434,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     }
+
   }
   
   // Initial height setting

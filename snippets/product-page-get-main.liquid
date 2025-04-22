@@ -107,7 +107,7 @@
         </div>
     </single-product>
 {%- elsif template_layout == '3' -%}
-    <single-product class="ss product-page-main d-block"{% include 'product-get-attributes' %} data-js-product-clone-id="footbar">
+    <single-product class="product-page-main d-block"{% include 'product-get-attributes' %} data-js-product-clone-id="footbar">
         <div class="row">
             <div class="col-12 col-md-{{ gallery_size }}{% if enable_sticky_gallery %} index-10 sticky-sidebar js-sticky-sidebar{% endif %}">
                 {%- if enable_sticky_gallery -%}

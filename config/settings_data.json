@@ -268,7 +268,7 @@
       "frontline-mint"
     ],
     "popup_cart_upsell_collection": "shopify://products/bogo-50-off-sale",
-    "popup_cart_upsell_title": "",
+    "popup_cart_upsell_title": "Limited Edition",
     "popup_cart_upsell_image": "shopify://shop_images/BOGO_Select_SKUs2.png",
     "popup_cart_upsell_button": "Shop Now",
     "cart_show_vendor": false,
