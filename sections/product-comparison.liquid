@@ -1,0 +1,199 @@
+<link rel="stylesheet" href="{{ 'product-comparison.css' | asset_url }}">
+
+<div class="product-comparison-section" id="product-comparison-{{ section.id }}">
+  <div class="container">
+    {% if section.settings.title != blank %}
+      <h2 class="comparison-title">{{ section.settings.title }}</h2>
+    {% endif %}
+    {% assign products_string = '' %}
+    {% for block in section.blocks %}
+        {% assign product = all_products[block.settings.product] %}
+        {% if product != empty %}
+            {% assign mid_sole_drop = block.settings.mid_sole_drop %}
+            {% assign weight = block.settings.weight %}
+            {% assign support_level = block.settings.support_level %}
+
+            {% assign product_data = product.title | append: '::' | append: mid_sole_drop | append: '::' | append: weight | append: '::' | append: support_level %}
+            {% if products_string == empty %}
+                {% assign products_string = product_data %}
+            {% else %}
+                {% assign products_string = products_string | append: '|||' | append: product_data %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    {% assign products_array = products_string | split: '|||' %}
+    <div class="comparison-container">
+      <div class="comparison-products">
+        {% for block in section.blocks %}
+          {% assign product = all_products[block.settings.product] %}
+          {% if product != empty %}
+            <div class="comparison-product">
+              <a href="{{ product.url }}" class="comparison-product-image">
+                {% if block.settings.image != blank %}
+                  <img src="{{ block.settings.image | img_url: '300x300', crop: 'center' }}" alt="{{ product.title | escape }}" width="128" height="128">
+                {% else %}
+                  <img src="{{ product.featured_image | img_url: '300x300', crop: 'center' }}" alt="{{ product.title | escape }}" width="128" height="128">
+                {% endif %}
+              </a>
+              {% if block.settings.title != blank %}
+                <h3 class="comparison-product-title">{{ block.settings.title }}</h3>
+              {% else %}
+                <h3 class="comparison-product-title">{{ product.title }}</h3>
+              {% endif %}
+              <div class="comparison-product-price">
+                {% if product.price_varies %}
+                  {{ product.price_min | money_without_trailing_zeros }} - {{ product.price_max | money }} {{shop.currency}}
+                {% else %}
+                  {{ product.price | money_without_trailing_zeros }} {{shop.currency}}
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Attribute Rows -->
+      {% if section.settings.attribute_1 != blank %}
+        <div class="comparison-row">
+          <div class="comparison-attribute-label">{{ section.settings.attribute_1 }}</div>
+          <div class="comparison-values">
+            {% for item in products_array %}
+              {% assign values = item | split: '::' %}
+              <div class="comparison-value">{{ values[1] }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+      
+      {% if section.settings.attribute_2 != blank %}
+        <div class="comparison-row">
+          <div class="comparison-attribute-label">{{ section.settings.attribute_2 }}</div>
+          <div class="comparison-values">
+            {% for item in products_array %}
+              {% assign values = item | split: '::' %}
+              <div class="comparison-value">{{ values[2] }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+      
+      {% if section.settings.attribute_3 != blank %}
+        <div class="comparison-row">
+          <div class="comparison-attribute-label">{{ section.settings.attribute_3 }}</div>
+          <div class="comparison-values">
+            {% for item in products_array %}
+              {% assign values = item | split: '::' %}
+              <div class="comparison-value">{{ values[3] }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Comparison",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "COMPARE"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare_attributes",
+      "label": "Show comparison attributes",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Comparison Attributes"
+    },
+    {
+      "type": "text",
+      "id": "attribute_1",
+      "label": "Attribute 1",
+      "default": "MID SOLE DROP"
+    },
+    {
+      "type": "text",
+      "id": "attribute_2",
+      "label": "Attribute 2",
+      "default": "WEIGHT"
+    },
+    {
+      "type": "text",
+      "id": "attribute_3",
+      "label": "Attribute 3",
+      "default": "SUPPORT LEVEL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "This image will be used to represent the product in the comparison table."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "This title will be used to represent the product in the comparison table."
+        },
+        {
+          "type": "header",
+          "content": "Product Attributes"
+        },
+        {
+          "type": "text",
+          "id": "mid_sole_drop",
+          "label": "Mid Sole Drop",
+          "info": "Example: 10mm"
+        },
+        {
+          "type": "text",
+          "id": "weight",
+          "label": "Weight",
+          "info": "Example: 8.8oz / 249.5g"
+        },
+        {
+          "type": "text",
+          "id": "support_level",
+          "label": "Support Level",
+          "info": "Example: Ultimate Cushioning"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison",
+      "category": "Products",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

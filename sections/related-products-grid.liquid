@@ -1,0 +1,155 @@
+<link rel="stylesheet" href="{{ 'related-products-grid.css' | asset_url }}">
+{% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"> {% endcomment %}
+
+<div class="related-products-wrapper">
+    <div class="related-products-container container mb-30">
+        <div class="related-products-header">
+            <h2 class="related-products-title">{{ section.settings.title | default: 'You May Also Like' }}</h2>
+        </div>
+        <div class="related-products-grid {% if section.settings.mobile-slider %}mobile-slider{% endif %}">
+          {% for block in section.blocks %}
+            {% assign product = all_products[block.settings.product] %}
+            {% assign product_url = product.url %}
+            {% assign product_image = product.featured_image %}
+            {% assign product_title = product.title %}
+            {% assign custom_image = block.settings.image %}
+            {% assign custom_title = block.settings.title %}
+            {% assign custom_url = block.settings.product-url %}
+            <div class="related-products-item">
+              <a href="{% if custom_url != blank %}{{ custom_url }}{% else %}{{ product_url }}{% endif %}" class="related-products-item-link">
+                {% if custom_image != blank %}
+                  <img src="{{ custom_image | img_url: '300x300', crop: 'center' }}" alt="{{ custom_title }}" class="related-products-item-image">
+                {% else %}
+                  <img src="{{ product_image | img_url: '300x300', crop: 'center' }}" alt="{{ product_title }}" class="related-products-item-image">
+                {% endif %}
+              </a>
+                <div class="related-products-item-content">
+                  <div class="related-products-item-title">
+                    {% if custom_title != blank %}
+                      {{ custom_title }}
+                    {% else %}
+                    {{ product_title }}
+                    {% endif %}
+                  </div>
+                  <div class="related-products-item-price">
+                    {% if product.compare_at_price > product.price %}
+                      <span class="related-products-item-price-old">{{ product.compare_at_price | money_without_trailing_zeros }}  {{shop.currency}}</span>
+                      <span class="related-products-item-price-new">{{ product.price | money_without_trailing_zeros }}  {{shop.currency}}</span>
+                    {% else %}
+                      {{ product.price | money_without_trailing_zeros }}  {{shop.currency}}
+                    {% endif %}
+                  </div>
+                  <a href="{% if custom_url != blank %}{{ custom_url }}{% else %}{{ product_url }}{% endif %}" class="related-products-item-link-btn">
+                    {{ section.settings.btn-label | default: 'View Options' }}
+                  </a>
+                </div>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Make sure jQuery is available before using Slick
+    if (typeof jQuery === 'undefined') {
+      // Load jQuery if not available
+      const script = document.createElement('script');
+      script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+      script.onload = initializeSlick;
+      document.head.appendChild(script);
+    } else {
+      initializeSlick();
+    }
+    
+    function initializeSlick() {
+      if (window.innerWidth < 768 && document.querySelector('.mobile-slider')) {
+        jQuery('.mobile-slider').slick({
+          slidesToShow: 1.5,
+          slidesToScroll: 1,
+          arrows: false,
+          dots: false,
+          infinite: false,
+          swipeToSlide: true
+        });
+      }
+      
+      window.addEventListener('resize', function() {
+        if (window.innerWidth < 768) {
+          if (!jQuery('.mobile-slider').hasClass('slick-initialized')) {
+            jQuery('.mobile-slider').slick({
+              slidesToShow: 1.5,
+              slidesToScroll: 1,
+              arrows: true,
+              dots: false,
+              infinite: false,
+              swipeToSlide: true
+            });
+          }
+        } else {
+          if (jQuery('.mobile-slider').hasClass('slick-initialized')) {
+            jQuery('.mobile-slider').slick('unslick');
+          }
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+    "name": "Related Products Grid",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Section Title"
+        },
+        {
+            "type": "text",
+            "id": "btn-label",
+            "label": "Button Label"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile-slider",
+          "label": "Use Slider on Mobile",
+          "default": true
+        }
+    ],
+    "blocks": [
+        {
+            "type": "product",
+            "name": "Product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Product"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "url",
+                    "id": "product-url",
+                    "label": "Product URL"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Related Products Grid"
+        }
+    ]
+}
+{% endschema %}

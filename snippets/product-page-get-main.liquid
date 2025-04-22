@@ -70,6 +70,22 @@
                 {%- else -%}
                     {% include 'product-page-get-info' %}
                 {%- endif -%}
+                {%- if section.settings.show_HSA_text -%}
+                    {%- render 'hsa-text' -%}
+                {%- endif-%}
+                {%- if section.settings.bottom_description -%}
+                    <div class="js-variant-descriptions mt-20">
+                        {%- if description != blank -%}
+                            <div data-option1="">
+                                <div class="overflow-hidden">
+                                    {% include 'parse-for-icons' content: description %}
+                                </div>
+                            </div>
+                        {%- endif -%}
+                
+                        {{ descriptions }}
+                    </div>
+                {%- endif -%}
                 {%- if section.settings.show_tabs -%}
                     {% render 'er-iconography', blocks: section.blocks %}
                     <div class="product-page__tabs mt-30 mb-40">
@@ -91,7 +107,7 @@
         </div>
     </single-product>
 {%- elsif template_layout == '3' -%}
-    <single-product class="ss product-page-main d-block"{% include 'product-get-attributes' %} data-js-product-clone-id="footbar">
+    <single-product class="product-page-main d-block"{% include 'product-get-attributes' %} data-js-product-clone-id="footbar">
         <div class="row">
             <div class="col-12 col-md-{{ gallery_size }}{% if enable_sticky_gallery %} index-10 sticky-sidebar js-sticky-sidebar{% endif %}">
                 {%- if enable_sticky_gallery -%}

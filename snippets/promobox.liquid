@@ -484,7 +484,9 @@
                             {% if url != blank %}<a href="{{ url }}">{% endif %}<p class="promobox__text-2 h3{% if text_line_1 != blank %} mt-5{% endif %}{% if url != blank %} text-underline-hover{% endif %}">{{ text_line_2 }}</p>{% if url != blank %}</a>{% endif %}
                         {%- endif -%}
                         {%- if text_line_3 != blank -%}
-                            <p class="promobox__text-3 fs-lg{% if text_line_1 != blank or text_line_2 != blank %} mt-15{% endif %}">{{ text_line_3 }}</p>
+                            <div class="promobox__text-3 fs-lg{% if text_line_1 != blank or text_line_2 != blank %} mt-15{% endif %}">
+                                {{ text_line_3 }}
+                            </div>
                         {%- endif -%}
                         {%- if list_1 != blank -%}
                             {{ pages[list_1].content | replace: '<ul', '<ul class="promobox__list-1 list-lg mt-15"' }}
