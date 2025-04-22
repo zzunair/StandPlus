@@ -443,6 +443,7 @@
         {% endif %} {% endcomment %}
         {{ content_for_layout }}
       </main>
+      {% section 'newsletter-signup' %}
       {% section 'footer' %}
       {% include 'popups' %}
       {% render 'er-modal-atc', anchor: 'atcModal' %}
@@ -624,7 +625,7 @@
       {% endif %} {% endcomment %}
       {% render 'cart-attributes-update' %}
       <!-- GoAudience pixels -->
-      <img src='https://rdcdn.com/rt?aid=26546&e=1&img=1' height='1' width='1' referrerpolicy='no-referrer-when-downgrade' />
+      {% comment %} <img src='https://rdcdn.com/rt?aid=26546&e=1&img=1' height='1' width='1' referrerpolicy='no-referrer-when-downgrade' /> {% endcomment %}
       {%  if page.handle == "groups-and-wholesale" %}
         <img src='https://rdcdn.com/rt?aid=26547&e=1&img=1' height='1' width='1' referrerpolicy='no-referrer-when-downgrade' />
       {% endif %}

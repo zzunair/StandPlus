@@ -654,6 +654,7 @@
           },
           "1586284608625": {
             "type": "subscription",
+            "disabled": true,
             "settings": {
               "title": "Subscribe",
               "paragraph": "",
@@ -663,12 +664,14 @@
           },
           "5fbc7291-35c7-47dc-8b93-d8ddfb3920fa": {
             "type": "search",
+            "disabled": true,
             "settings": {
               "title": "Search"
             }
           },
           "1586284588048": {
             "type": "social_media",
+            "disabled": true,
             "settings": {
               "title": "",
               "show_facebook": true,
@@ -721,6 +724,8 @@
           "type": "2",
           "style": "2",
           "show_logo": true,
+          "show_logo_on_mobile": false,
+          "footer_logo": "shopify://shop_images/STAND_Logo_250w.png",
           "show_button_back_to_top": false,
           "enable_fixed": false
         }
@@ -2018,6 +2023,19 @@
         "settings": {
           "name": "Custom Liquid",
           "custom_liquid": "<div class='jdgm-carousel-wrapper' data-auto-install='false' >\n{% assign jm_metafields = shop.metafields.judgeme %}\n<div class='jdgm-carousel-title-and-link'>\n<h2 class='jdgm-carousel-title'>Let customers speak for us</h2>\n<span class='jdgm-all-reviews-rating-wrapper' href='javascript:void(0)'>\n<span style='display:block' data-score='{{ jm_metafields.all_reviews_rating }}' class='jdgm-all-reviews-rating' aria-label='{{ jm_metafields.all_reviews_rating }} stars' tabindex='0' role='img'></span>\n<span style='display: block' class='jdgm-carousel-number-of-reviews' data-number-of-reviews='{{ jm_metafields.all_reviews_count }}'>\nfrom {{ shop.metafields.judgeme.all_reviews_count }} reviews\n</span>\n</span>\n</div>\n{{ jm_metafields.featured_carousel }}\n</div>"
+        }
+      },
+      "newsletter-signup": {
+        "type": "newsletter-signup",
+        "settings": {
+          "heading": "JOIN OUR NEWSLETTER",
+          "subtext": "Sign up for our email list to get exclusive news, announcements, and promotions.",
+          "placeholder": "Enter your email",
+          "button_text": "SUBMIT",
+          "border_radius": 0,
+          "input_border_radius": 0,
+          "button_border_radius": 0,
+          "width": "standard"
         }
       }
     },

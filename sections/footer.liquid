@@ -247,6 +247,7 @@
         <i>{% render 'icon-theme-188' %}</i>
     </div>
 {%- endcapture -%}
+
 {%- if section.settings.show_logo -%}
     {%- if section.settings.type == '1' or section.settings.type == '2' or section.settings.type == '6' -%}
         {%- assign logo_footer_svg_file = settings.logo_footer_svg_file | default: settings.logo_svg_file -%}
@@ -574,7 +575,19 @@
             <div class="footer__content {% if footer_content_offsets == 1 %}pt-lg-55 pb-lg-90{% else %}pt-lg-80 pb-lg-75{% endif %}">
                 <div class="container">
                     <div class="row">
-                        <div class="footer__border-top w-100 mb-45 d-lg-none"></div>
+                        <div class="col-lg-4">
+                            {%- assign showOnMobile = section.settings.show_logo_on_mobile -%}
+
+                            {%- if section.settings.show_logo -%}
+                                {%- assign footer_logo = section.settings.footer_logo -%}
+                                {%- if footer_logo != blank -%}
+                                    <div class="footer__logo m-auto {% unless showOnMobile %}hideOnMobile{% endunless %}">
+                                        <img src="{{ footer_logo | img_url: 'master' }}" alt="{{ footer_logo.alt }}" width="100" height="100">
+                                    </div>
+                                {%- endif -%}
+                            {%-endif-%}
+                        </div>
+                        {% comment %} <div class="footer__border-top w-100 mb-45 d-lg-none"></div> {% endcomment %}
                         <div class="col-lg-8 order-1 order-lg-0">
                             {{ menus }}
                         </div>
@@ -830,351 +843,367 @@
 
 {% schema %}
 {
-"name": "Footer",
-"settings": [
-{
-"type": "select",
-"id": "type",
-"label": "Type",
-"default": "5",
-"options": [
-{
-"value": "1",
-"label": "Type #1"
-},
-{
-"value": "2",
-"label": "Type #2"
-},
-{
-"value": "3",
-"label": "Type #3"
-},
-{
-"value": "4",
-"label": "Type #4"
-},
-{
-"value": "5",
-"label": "Type #5"
-},
-{
-"value": "6",
-"label": "Type #6"
-},
-{
-"value": "7",
-"label": "Type #7"
-}
-]
-},
-{
-"type": "select",
-"id": "style",
-"label": "Colorize style",
-"info": "You can colorize the section in detail. To do this, add a block to \"Add block -> Colorize\"",
-"default": "1",
-"options": [
-{
-"value": "1",
-"label": "Style #1"
-},
-{
-"value": "2",
-"label": "Style #2"
-}
-]
-},
-{
-"type": "checkbox",
-"id": "show_logo",
-"label": "Show logo",
-"default": true
-},
-{
-"type": "checkbox",
-"id": "show_button_back_to_top",
-"label": "Show button 'Back to top'",
-"default": true
-},
-{
-"type": "checkbox",
-"id": "enable_fixed",
-"label": "Enable fixed footer",
-"default": true
-},
-{
-"type": "header",
-"content": "User manual"
-},
-{
-"type": "paragraph",
-"content": "[Footer](https://mpthemes.net/shella-shopify-theme/documentation-version4/doc01-02-general-footer.php#footer)"
-}
-],
-"blocks": [
-{
-"type": "menu",
-"name": "Menu",
-"settings": [
-{
-"type": "text",
-"id": "title",
-"label": "Title"
-},
-{
-"type": "checkbox",
-"id": "show_title_on_desktop",
-"label": "Show title on the desktop",
-"default": true
-},
-{
-"type": "link_list",
-"id": "menu",
-"label": "Menu"
-},
-{
-"type": "range",
-"id": "size",
-"min": 0,
-"max": 12,
-"step": 1,
-"label": "Column size",
-"info": "0 - is auto size",
-"default": 0
-},
-{
-"type": "range",
-"id": "rows_limit",
-"min": 0,
-"max": 20,
-"step": 1,
-"label": "Rows limit",
-"info": "0 - disable",
-"default": 0
-}
-]
-},
-{
-"type": "custom_html",
-"name": "Custom html",
-"limit": 1,
-"settings": [
-{
-"type": "text",
-"id": "title",
-"label": "Title",
-"default": "Here to help"
-},
-{
-"type": "checkbox",
-"id": "show_title_on_desktop",
-"label": "Show title on the desktop",
-"default": true
-},
-{
-"type": "page",
-"id": "page_content",
-"label": "Page content",
-"info": "Default page: 'Include Footer Custom HTML'"
-}
-]
-},
-{
-"type": "social_media",
-"name": "Social media",
-"limit": 1,
-"settings": [
-{
-"type": "text",
-"id": "title",
-"label": "Title",
-"default": "Follow us"
-},
-{
-"type": "checkbox",
-"id": "show_facebook",
-"label": "Show facebook",
-"default": true
-},
-{
-"type": "checkbox",
-"id": "show_twitter",
-"label": "Show twitter",
-"default": true
-},
-{
-"type": "checkbox",
-"id": "show_instagram",
-"label": "Show instagram",
-"default": true
-},
-{
-"type": "checkbox",
-"id": "show_pinterest",
-"label": "Show pinterest",
-"default": true
-},
-{
-"type": "checkbox",
-"id": "show_youtube",
-"label": "Show youtube",
-"default": true
-},
-{
-"type": "checkbox",
-"id": "show_behance",
-"label": "Show behance",
-"default": true
-},
-{
-"type": "checkbox",
-"id": "show_skype",
-"label": "Show skype",
-"default": true
-}
-]
-},
-{
-"type": "subscription",
-"name": "Subscription",
-"limit": 1,
-"settings": [
-{
-"type": "text",
-"id": "title",
-"label": "Title",
-"default": "Newsletter subscription"
-},
-{
-"type": "text",
-"id": "paragraph",
-"label": "Paragraph",
-"default": "Sign up for updates to receive information about new arrivals, future events and specials."
-},
-{
-"type": "text",
-"id": "placeholder",
-"label": "Placeholder",
-"default": "Enter Your Email Address"
-},
-{
-"type": "text",
-"id": "button_text",
-"label": "Button text",
-"default": "SUBSCRIBE!"
-}
-]
-},
-{
-    "type": "search",
-    "name": "Search",
-    "limit": 1,
-    "settings": [
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "select",
+      "id": "type",
+      "label": "Type",
+      "default": "5",
+      "options": [
         {
-        "type": "text",
-        "id": "title",
-        "label": "Title",
-        "default": "Search"
+          "value": "1",
+          "label": "Type #1"
+        },
+        {
+          "value": "2",
+          "label": "Type #2"
+        },
+        {
+          "value": "3",
+          "label": "Type #3"
+        },
+        {
+          "value": "4",
+          "label": "Type #4"
+        },
+        {
+          "value": "5",
+          "label": "Type #5"
+        },
+        {
+          "value": "6",
+          "label": "Type #6"
+        },
+        {
+          "value": "7",
+          "label": "Type #7"
         }
-    ]
-},
-{
-"type": "copyright",
-"name": "Copyright",
-"limit": 1,
-"settings": [
-{
-"type": "page",
-"id": "page_content",
-"label": "Page content",
-"info": "Default page: 'Include Footer Copyright'"
-}
-]
-},
-{
-"type": "payments",
-"name": "Payments",
-"limit": 1,
-"settings": [
-]
-},
-{
-    "type": "colorize",
-    "name": "Colorize",
-    "limit": 1,
-    "settings": [
+      ]
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Colorize style",
+      "info": "You can colorize the section in detail. To do this, add a block to \"Add block -> Colorize\"",
+      "default": "1",
+      "options": [
         {
-            "type": "color",
-            "id": "bg",
-            "label": "Background"
+          "value": "1",
+          "label": "Style #1"
         },
         {
-            "type": "color",
-            "id": "bd",
-            "label": "Border"
-        },
-        {
-            "type": "color",
-            "id": "c",
-            "label": "Text"
-        },
-        {
-            "type": "select",
-            "id": "subscription_btn_type",
-            "label": "Search button type",
-            "default": "auto",
-            "options": [
-              {
-                "value": "auto",
-                "label": "Auto"
-              },
-              {
-                "value": "default",
-                "label": "Default"
-              },
-              {
-                "value": "invert",
-                "label": "Invert"
-              },
-              {
-                "value": "secondary",
-                "label": "Secondary"
-              },
-              {
-                "value": "clean",
-                "label": "Clean"
-              }
-            ]
-        },
-        {
-            "type": "color",
-            "id": "links_c",
-            "label": "Links"
-        },
-        {
-            "type": "color",
-            "id": "links_h_c",
-            "label": "Hover links"
-        },
-        {
-            "type": "color",
-            "id": "title_c",
-            "label": "Title"
-        },
-        {
-            "type": "color",
-            "id": "icons_c",
-            "label": "Icons"
-        },
-        {
-            "type": "color",
-            "id": "icons_h_c",
-            "label": "Hover icons"
+          "value": "2",
+          "label": "Style #2"
         }
-    ]
+      ]
+    },
+    {
+        "type": "header",
+        "content": "Footer Logo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show logo",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo_on_mobile",
+      "label": "Show logo on mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer Logo"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_button_back_to_top",
+      "label": "Show button 'Back to top'",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_fixed",
+      "label": "Enable fixed footer",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "User manual"
+    },
+    {
+      "type": "paragraph",
+      "content": "[Footer](https://mpthemes.net/shella-shopify-theme/documentation-version4/doc01-02-general-footer.php#footer)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_title_on_desktop",
+          "label": "Show title on the desktop",
+          "default": true
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        },
+        {
+          "type": "range",
+          "id": "size",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "label": "Column size",
+          "info": "0 - is auto size",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "rows_limit",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "label": "Rows limit",
+          "info": "0 - disable",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "custom_html",
+      "name": "Custom html",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Here to help"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_title_on_desktop",
+          "label": "Show title on the desktop",
+          "default": true
+        },
+        {
+          "type": "page",
+          "id": "page_content",
+          "label": "Page content",
+          "info": "Default page: 'Include Footer Custom HTML'"
+        }
+      ]
+    },
+    {
+      "type": "social_media",
+      "name": "Social media",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Follow us"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_facebook",
+          "label": "Show facebook",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_twitter",
+          "label": "Show twitter",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_instagram",
+          "label": "Show instagram",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_pinterest",
+          "label": "Show pinterest",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_youtube",
+          "label": "Show youtube",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_behance",
+          "label": "Show behance",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_skype",
+          "label": "Show skype",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "subscription",
+      "name": "Subscription",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Newsletter subscription"
+        },
+        {
+          "type": "text",
+          "id": "paragraph",
+          "label": "Paragraph",
+          "default": "Sign up for updates to receive information about new arrivals, future events and specials."
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder",
+          "default": "Enter Your Email Address"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "SUBSCRIBE!"
+        }
+      ]
+    },
+    {
+      "type": "search",
+      "name": "Search",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Search"
+        }
+      ]
+    },
+    {
+      "type": "copyright",
+      "name": "Copyright",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "page",
+          "id": "page_content",
+          "label": "Page content",
+          "info": "Default page: 'Include Footer Copyright'"
+        }
+      ]
+    },
+    {
+      "type": "payments",
+      "name": "Payments",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "colorize",
+      "name": "Colorize",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "color",
+          "id": "bg",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "bd",
+          "label": "Border"
+        },
+        {
+          "type": "color",
+          "id": "c",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "subscription_btn_type",
+          "label": "Search button type",
+          "default": "auto",
+          "options": [
+            {
+              "value": "auto",
+              "label": "Auto"
+            },
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "invert",
+              "label": "Invert"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "clean",
+              "label": "Clean"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "links_c",
+          "label": "Links"
+        },
+        {
+          "type": "color",
+          "id": "links_h_c",
+          "label": "Hover links"
+        },
+        {
+          "type": "color",
+          "id": "title_c",
+          "label": "Title"
+        },
+        {
+          "type": "color",
+          "id": "icons_c",
+          "label": "Icons"
+        },
+        {
+          "type": "color",
+          "id": "icons_h_c",
+          "label": "Hover icons"
+        }
+      ]
+    }
+  ]
 }
-]
-}
+
 {% endschema %}
 

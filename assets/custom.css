@@ -2632,10 +2632,64 @@ button.shopify-payment-button__more-options {
   background-color: #333;
 }
 #footer.footer a:link,
-#footer.footer a:visited,
-#footer.footer div {
+#footer.footer a:visited {
   color: #F6F6F6;
 }
+#footer.footer div{
+  color: #CCC;
+}
+.footer__section-head.position-relative {
+  display: flex;
+}
+.footer__section-head.position-relative h5 {
+  color: #FFF;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.footer__copyright > div {
+  color: #CCC;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.footer__section {
+  padding: 24px 0px;
+}
+
+.footer__logo img {
+  width: 200px;
+  padding-top: 24px;
+}
+
+@media all and (max-width: 768px) {
+  .footer__section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  }
+  .hideOnMobile {
+    display: none;
+  }
+  .footer__logo {
+    width: 150px !important;
+  }
+  .footer__section-btn svg {
+    width: 40px;
+  }
+}
+
+.footer__section-content ul.list-unstyled {
+  text-align: left;
+}
+
+.footer__menus .col-lg {
+  padding: 0 16px;
+}
+
 #footer.footer a:hover {
   color: #aaaaaa !important;
 }

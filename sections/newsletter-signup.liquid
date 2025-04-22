@@ -1,0 +1,150 @@
+<link rel="stylesheet" href="{{ 'newsletter-signup.css' | asset_url }}">
+
+<section class="newsletter-section" id="newsletter-{{ section.id }}">
+  <div class="newsletter-container">
+    <div class="newsletter-section__content">
+      {% if section.settings.heading != blank %}
+        <h2 class="newsletter-section__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+    
+    {% if section.settings.subtext != blank %}
+      <p class="newsletter-section__subtext">{{ section.settings.subtext }}</p>
+    {% endif %}
+    </div>  
+    <div class="newsletter-form-wrapper">
+      {% if settings.subscription_method == 'shopify' %}
+        {% form 'customer', id: null, class: 'newsletter-form' %}
+          {% render 'form-get-check-error-popup' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input 
+            type="email" 
+            name="contact[email]" 
+            class="newsletter-form__input" 
+            placeholder="{{ section.settings.placeholder }}" 
+            required="required"
+            {% if form.errors %} class="input--error"{% endif %}
+          >
+          <button type="submit" class="newsletter-form__submit">
+            {{ section.settings.button_text }}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 5h12M9 1l4 4-4 4"/>
+            </svg>
+          </button>
+        {% endform %}
+      {% elsif settings.subscription_method == 'mailchimp' %}
+        <form action="{{ settings.subscription_mailchimp_form_action }}" method="post" class="newsletter-form" target="_blank">
+          <input 
+            type="email" 
+            name="EMAIL" 
+            id="NewsletterSignup-{{ section.id }}" 
+            class="newsletter-form__input" 
+            placeholder="{{ section.settings.placeholder }}" 
+            required="required"
+          >
+          <button type="submit" class="newsletter-form__submit">
+            {{ section.settings.button_text }}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 5h12M9 1l4 4-4 4"/>
+            </svg>
+          </button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter Signup",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "JOIN OUR NEWSLETTER"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Sign up for our email list to get exclusive news, announcements, and promotions."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input placeholder text",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "SUBMIT"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Container border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Input border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "standard"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Signup",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %} 
