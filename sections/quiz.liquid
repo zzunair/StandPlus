@@ -1,0 +1,571 @@
+<link rel="stylesheet" href="{{ 'quiz.css' | asset_url }}">
+
+<div class="quiz">
+    <div class="quiz__container">
+        <div class="quiz__loading-bar">
+            <div class="quiz__loading-progress"></div>
+        </div>
+
+        <div class="quiz__slides">
+            <!-- Intro Slide -->
+            <div class="quiz__slide quiz__slide--intro active" data-slide="intro">
+                <div class="quiz__slide-content">
+                    <img src="{{ section.settings.slide_1_image | image_url: width: 200 }}" alt="Shoe image" class="quiz__product-image">
+                    <h2 class="quiz__heading">{{ section.settings.slide_1_title }}</h2>
+                    <p class="quiz__subheading">{{ section.settings.slide_1_subheading }}</p>
+                    <p class="quiz__description">{{ section.settings.slide_1_description }}</p>
+                    <button class="quiz__button quiz__start-button" data-action="next">GET STARTED</button>
+                </div>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="quiz__slide" data-slide="1">
+                <div class="quiz__slide-content">
+                    <h2 class="quiz__question">Q1. What do you need these shoes for?</h2>
+
+                    <div class="quiz__options quiz__options--checkbox">
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question1" value="Recovery">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Recovery</span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question1" value="errands">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Long work shifts</span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question1" value="travel">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Travel</span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question1" value="comfort">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Everyday Comfort</span>
+                        </label>
+                    </div>
+                    <div class="quiz__button-container">
+                        <button class="quiz__button quiz__back-button" data-action="back">
+                            BACK
+                        </button>
+                        <button class="quiz__button quiz__continue-button" data-action="next" disabled>CONTINUE</button>
+                    </div>
+
+                    <p class="quiz__info-text"><b>Fast Fact:</b> If your feet ache after a long day, it might not be you — it's your shoes. Most athletic shoes and clogs aren't built for standing. STAND+ is. Engineered to reduce pressure, absorb shock, and support all-day movement.</p>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz__slide" data-slide="2">
+                <div class="quiz__slide-content">
+                    <h2 class="quiz__question">Q2. What's your foot width?</h2>
+
+                    <div class="quiz__options">
+                        <label class="quiz__option">
+                            <input type="radio" name="question2" value="narrow">
+                            <span class="quiz__option-text">Narrow</span>
+                            <span class="quiz__option-checkmark"></span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="radio" name="question2" value="standard">
+                            <span class="quiz__option-text">Standard/Regular</span>
+                            <span class="quiz__option-checkmark"></span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="radio" name="question2" value="wide">
+                            <span class="quiz__option-text">Wide</span>
+                            <span class="quiz__option-checkmark"></span>
+                        </label>
+                    </div>
+
+                    <div class="quiz__button-container">
+                        <button class="quiz__button quiz__back-button" data-action="back">
+                            BACK
+                        </button>
+                        <button class="quiz__button quiz__continue-button" data-action="next">CONTINUE</button>
+                    </div>
+                    <p class="quiz__info-text">Foot width plays a huge role in comfort. Many brands run narrow or wide — and that mismatch can lead to blisters or aches. We're here to get it just right.</p>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz__slide" data-slide="3">
+                <div class="quiz__slide-content">
+                    <h2 class="quiz__question">Q3. What kind of fit do you prefer?</h2>
+
+                    <div class="quiz__options">
+                        <label class="quiz__option">
+                            <input type="radio" name="question3" value="snug">
+                            <span class="quiz__option-text">Snug and secure</span>
+                            <span class="quiz__option-checkmark"></span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="radio" name="question3" value="relaxed">
+                            <span class="quiz__option-text">Relaxed and roomy</span>
+                            <span class="quiz__option-checkmark"></span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="radio" name="question3" value="unsure">
+                            <span class="quiz__option-text">I'm not sure</span>
+                            <span class="quiz__option-checkmark"></span>
+                        </label>
+                    </div>
+
+                    <div class="quiz__button-container">
+                        <button class="quiz__button quiz__back-button" data-action="back">
+                            BACK
+                        </button>
+                        <button class="quiz__button quiz__continue-button" data-action="next">CONTINUE</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz__slide" data-slide="4">
+                <div class="quiz__slide-content">
+                    <h2 class="quiz__question">Q4. What's your usual shoe size?</h2>
+
+                    <div class="size-selector-tabs w-100 mb-3">
+                        <div class="tab-container">
+                            <button type="button" class="size-tab-btn men-tab active" data-gender="men">Men</button>
+                            <button type="button" class="size-tab-btn women-tab" data-gender="women">Women</button>
+                        </div>
+                    </div>
+
+                    <div class="quiz__size-grid">
+                        <div class="size-row">
+                            <div class="size-option" data-men-size="3" data-women-size="5">
+                                <span class="men-size">3</span>
+                                <span class="women-size d-none">5</span>
+                            </div>
+                            <div class="size-option" data-men-size="3.5" data-women-size="5.5">
+                                <span class="men-size">3.5</span>
+                                <span class="women-size d-none">5.5</span>
+                            </div>
+                            <div class="size-option" data-men-size="4" data-women-size="6">
+                                <span class="men-size">4</span>
+                                <span class="women-size d-none">6</span>
+                            </div>
+                            <div class="size-option" data-men-size="4.5" data-women-size="6.5">
+                                <span class="men-size">4.5</span>
+                                <span class="women-size d-none">6.5</span>
+                            </div>
+
+                            <div class="size-option" data-men-size="5" data-women-size="7">
+                                <span class="men-size">5</span>
+                                <span class="women-size d-none">7</span>
+                            </div>
+                            <div class="size-option" data-men-size="5.5" data-women-size="7.5">
+                                <span class="men-size">5.5</span>
+                                <span class="women-size d-none">7.5</span>
+                            </div>
+                            <div class="size-option" data-men-size="6" data-women-size="8">
+                                <span class="men-size">6</span>
+                                <span class="women-size d-none">8</span>
+                            </div>
+                            <div class="size-option" data-men-size="6.5" data-women-size="8.5">
+                                <span class="men-size">6.5</span>
+                                <span class="women-size d-none">8.5</span>
+                            </div>
+
+                            <div class="size-option" data-men-size="7" data-women-size="9">
+                                <span class="men-size">7</span>
+                                <span class="women-size d-none">9</span>
+                            </div>
+                            <div class="size-option" data-men-size="7.5" data-women-size="9.5">
+                                <span class="men-size">7.5</span>
+                                <span class="women-size d-none">9.5</span>
+                            </div>
+                            <div class="size-option" data-men-size="8" data-women-size="10">
+                                <span class="men-size">8</span>
+                                <span class="women-size d-none">10</span>
+                            </div>
+                            <div class="size-option" data-men-size="8.5" data-women-size="10.5">
+                                <span class="men-size">8.5</span>
+                                <span class="women-size d-none">10.5</span>
+                            </div>
+
+                            <div class="size-option" data-men-size="9" data-women-size="11">
+                                <span class="men-size">9</span>
+                                <span class="women-size d-none">11</span>
+                            </div>
+                            <div class="size-option" data-men-size="9.5" data-women-size="11.5">
+                                <span class="men-size">9.5</span>
+                                <span class="women-size d-none">11.5</span>
+                            </div>
+                            <div class="size-option" data-men-size="10" data-women-size="12">
+                                <span class="men-size">10</span>
+                                <span class="women-size d-none">12</span>
+                            </div>
+                            <div class="size-option" data-men-size="10.5" data-women-size="12.5">
+                                <span class="men-size">10.5</span>
+                                <span class="women-size d-none">12.5</span>
+                            </div>
+
+                            <div class="size-option" data-men-size="11" data-women-size="13">
+                                <span class="men-size">11</span>
+                                <span class="women-size d-none">13</span>
+                            </div>
+                            <div class="size-option" data-men-size="11.5" data-women-size="13.5">
+                                <span class="men-size">11.5</span>
+                                <span class="women-size d-none">13.5</span>
+                            </div>
+                            <div class="size-option" data-men-size="12" data-women-size="14">
+                                <span class="men-size">12</span>
+                                <span class="women-size d-none">14</span>
+                            </div>
+                            <div class="size-option" data-men-size="12.5" data-women-size="14.5">
+                                <span class="men-size">12.5</span>
+                                <span class="women-size d-none">14.5</span>
+                            </div>
+
+                            <div class="size-option" data-men-size="13" data-women-size="15">
+                                <span class="men-size">13</span>
+                                <span class="women-size d-none">15</span>
+                            </div>
+                            <div class="size-option" data-men-size="14" data-women-size="16">
+                                <span class="men-size">14</span>
+                                <span class="women-size d-none">16</span>
+                            </div>
+                            <div class="size-option" data-men-size="15" data-women-size="17">
+                                <span class="men-size">15</span>
+                                <span class="women-size d-none">17</span>
+                            </div>
+                        </div>
+
+                        <div class="size-guide-link">
+                            <a href="#" class="size-guide-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                </svg>
+                                Size Guide
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="quiz__button-container">
+                        <button class="quiz__button quiz__back-button" data-action="back">
+                            BACK
+                        </button>
+                        <button class="quiz__button quiz__continue-button" data-action="next">CONTINUE</button>
+                    </div>
+                    <p class="quiz__info-text">Getting the size right is key — and our sizing system is built to reduce confusion caused by other brands. We'll suggest the best fit based on your preferences and foot shape.</p>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz__slide" data-slide="5">
+                <div class="quiz__slide-content">
+                    <h2 class="quiz__question">Q5. What size do you order in athletic shoes?</h2>
+                    <div class="quiz__text-input-container">
+                        <textarea class="quiz__text-input" rows="6" placeholder="Regular size, Size up, Size down..."></textarea>
+                    </div>
+                    <div class="quiz__button-container">
+                        <button class="quiz__button quiz__back-button" data-action="back">
+                            BACK
+                        </button>
+                        <button class="quiz__button quiz__continue-button" data-action="next" disabled>CONTINUE</button>
+                    </div>
+                    <p class="quiz__info-text">Foot width plays a huge role in comfort. Many brands run narrow or wide — and that mismatch can lead to blisters or aches. We're here to get it just right.</p>
+                </div>
+            </div>
+
+
+            <!-- Question 6 -->
+            <div class="quiz__slide" data-slide="6">
+                <div class="quiz__slide-content">
+                    <h2 class="quiz__question">Q6. What features are most important to you?</h2>
+
+                    <div class="quiz__options quiz__options--checkbox">
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question6" value="comfort">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">All-Day Comfort</span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question6" value="Recovery">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Recovery</span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question6" value="Slip-Resistance">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Slip Resistance</span>
+                        </label>
+
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question6" value="breathability">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Breathability</span>
+                        </label>
+                    </div>
+                    <div class="quiz__button-container">
+                        <button class="quiz__button quiz__back-button" data-action="back">
+                            BACK
+                        </button>
+                        <button class="quiz__button quiz__continue-button" data-action="next" disabled>CONTINUE</button>
+                    </div>
+
+                    <p class="quiz__info-text">Every foot has different priorities. Whether you want cool, airy comfort, solid grip on slick floors, or support that helps you recover faster — we've got a shoe that works hard for you.</p>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="quiz__slide" data-slide="7">
+                <div class="quiz__slide-content">
+                    <h2 class="quiz__question">Q7. Any specific environment you'll use them in?</h2>
+
+                    <div class="quiz__options quiz__options--checkbox">
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question7" value="Gym">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Gym</span>
+                        </label>
+                    </div>
+                    <div class="quiz__options quiz__options--checkbox">
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question7" value="Work">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Work</span>
+                        </label>
+                    </div>
+                    <div class="quiz__options quiz__options--checkbox">
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question7" value="Travel">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Travel</span>
+                        </label>
+                    </div>
+                    <div class="quiz__options quiz__options--checkbox">
+                        <label class="quiz__option">
+                            <input type="checkbox" name="question7" value="Everyday">
+                            <span class="quiz__option-checkmark"></span>
+                            <span class="quiz__option-text">Home / Everyday</span>
+                        </label>
+                    </div>
+                    <div class="quiz__button-container">
+                        <button class="quiz__button quiz__back-button" data-action="back">
+                            BACK
+                        </button>
+                        <button class="quiz__button quiz__continue-button" data-action="next" disabled>CONTINUE</button>
+                    </div>
+                    <p class="quiz__info-text">Environment matters. A shoe for slick hospital floors needs different traction than one for walks on pavement or errands around town. We'll recommend what works where you live and move.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="{{ 'quiz.js' | asset_url }}" defer></script>
+
+<!-- Size Guide Popup -->
+<div id="sizeguide-popup" class="sizeguide-popup">
+  <div class="sizeguide-popup__content">
+    <div class="sizeguide-popup__header">
+      <h2>Size Guide</h2>
+      <button class="sizeguide-popup__close">&times;</button>
+    </div>
+    <div class="sizeguide-popup__body">
+      <table class="sizeguide">
+        <thead>
+          <tr>
+            <th>WOMEN</th>
+            <th>MEN</th>
+            <th>LENGTH<br>(in)</th>
+            <th>WIDTH<br>(in)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5</td>
+            <td>3</td>
+            <td>8 ¹¹⁄₁₆</td>
+            <td>3 ³⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>5.5</td>
+            <td>3.5</td>
+            <td>8 ⅞</td>
+            <td>3 ¼</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>4</td>
+            <td>9 ¹⁄₁₆</td>
+            <td>3 ⁵⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>6.5</td>
+            <td>4.5</td>
+            <td>9 ³⁄₁₆</td>
+            <td>3 ⁵⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>5</td>
+            <td>9 ⅜</td>
+            <td>3 ⅜</td>
+          </tr>
+          <tr>
+            <td>7.5</td>
+            <td>5.5</td>
+            <td>9 ⁹⁄₁₆</td>
+            <td>3 ⁷⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>6</td>
+            <td>9 ¹¹⁄₁₆</td>
+            <td>3 ⁷⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>8.5</td>
+            <td>6.5</td>
+            <td>9 ⅞</td>
+            <td>3 ½</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>7</td>
+            <td>10 ¹⁄₁₆</td>
+            <td>3 ⁹⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>9.5</td>
+            <td>7.5</td>
+            <td>10 ³⁄₁₆</td>
+            <td>3 ⁹⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>8</td>
+            <td>10 ⅜</td>
+            <td>3 ⅝</td>
+          </tr>
+          <tr>
+            <td>10.5</td>
+            <td>8.5</td>
+            <td>10 ⁹⁄₁₆</td>
+            <td>3 ¹¹⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>9</td>
+            <td>10 ¹¹⁄₁₆</td>
+            <td>3 ¹¹⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>11.5</td>
+            <td>9.5</td>
+            <td>10 ⅞</td>
+            <td>3 ¾</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>10</td>
+            <td>11 ¹⁄₁₆</td>
+            <td>3 ¹³⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>12.5</td>
+            <td>10.5</td>
+            <td>11 ³⁄₁₆</td>
+            <td>3 ¹³⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td>11</td>
+            <td>11 ⅜</td>
+            <td>3 ⅞</td>
+          </tr>
+          <tr>
+            <td>13.5</td>
+            <td>11.5</td>
+            <td>11 ⁹⁄₁₆</td>
+            <td>3 ¹⁵⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td>12</td>
+            <td>11 ¹¹⁄₁₆</td>
+            <td>3 ¹⁵⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>14.5</td>
+            <td>12.5</td>
+            <td>11 ⅞</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>13</td>
+            <td>12 ¹⁄₁₆</td>
+            <td>4 ¹⁄₁₆</td>
+          </tr>
+          <tr>
+            <td>16</td>
+            <td>14</td>
+            <td>12 ⅜</td>
+            <td>4 ⅛</td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td>15</td>
+            <td>12 ¹¹⁄₁₆</td>
+            <td>4 ³⁄₁₆</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Quiz",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "slide_1_image",
+        "label": "Slide 1 Image"
+      },
+      {
+        "type": "text",
+        "id": "slide_1_title",
+        "label": "Slide 1 Title"
+      },
+      {
+        "type": "text", 
+        "id": "slide_1_subheading",
+        "label": "Slide 1 Subheading"
+      },
+      {
+        "type": "text",
+        "id": "slide_1_description",
+        "label": "Slide 1 Description"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Quiz",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

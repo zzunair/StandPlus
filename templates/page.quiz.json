@@ -1,0 +1,18 @@
+
+ {
+    "sections": {
+      "quiz_P4Ti6E": {
+        "type": "quiz",
+        "settings": {
+          "slide_1_image": "shopify://shop_images/image-Photoroom_19_1.png",
+          "slide_1_title": "Not Sure Which Shoe is Right for You?",
+          "slide_1_subheading": "Let’s help you find your perfect pair.",
+          "slide_1_description": "Answer a few quick questions and we’ll match you with the best shoe based on your fit, needs, and lifestyle."
+        }
+      }
+    },
+    "order": [
+      "quiz_P4Ti6E"
+    ]
+  }
+  
