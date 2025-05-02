@@ -1,0 +1,153 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": true,
+        "show_content": true
+      }
+    },
+    "np_banner_qazNqx": {
+      "type": "NP-Banner",
+      "name": "NP Banner",
+      "settings": {
+        "background_image": "shopify://shop_images/Frame_136_76ace1d1-6a2e-4a27-b783-338941dc3c0b.png",
+        "m-background_image": "shopify://shop_images/Frame_132_6db516f0-c0da-4326-b7a1-d47882a42803.png",
+        "link": "",
+        "title": "Nurse's Week",
+        "description": "<p> buy one pair of any style at full price, get <span> 50% off </span> a second pair </p>",
+        "content_position": "bottom"
+      }
+    },
+    "np_gales_pl_N3gwQa": {
+      "type": "NP-Gales-PL",
+      "name": "NP Gales PL",
+      "settings": {
+        "title": "Gales Pro Line",
+        "description": "Gales® Pro Line by STAND+ are comfortable, orthopedic standing shoes with a wide toebox, industrial rubber bottoms and breathable ventillation to keep your feet cool on the job.",
+        "link_text": "",
+        "link": "shopify://products/pro-line",
+        "product": "pro-line",
+        "custom-image": "shopify://shop_images/image_28.png",
+        "product_list": [
+          "pro-line-white-black",
+          "pro-line-alexs-lemonade-stand-lemon",
+          "pro-line-black-black",
+          "pro-line-charcoal-black",
+          "pro-line-nurse-blake-black-pink",
+          "pro-line-nurse-blake-teal-pink",
+          "pro-line-orange-white",
+          "pro-line-tan-white",
+          "pro-line-white-white"
+        ],
+        "image": "shopify://shop_images/image_29.png"
+      }
+    },
+    "np_gales_pl_LJpr3Y": {
+      "type": "NP-Gales-PL",
+      "name": "NP Gales PL",
+      "settings": {
+        "title": "Gales Frontline",
+        "description": "Gales® Frontline by STAND+ are the ultimate footwear solution for professionals who spend long hours on their feet. Designed with nurses and healthcare professionals, Frontlines shoes offer unparalleled comfort, support, and protection to for all-day standing comfort.",
+        "link_text": "Shop Now",
+        "link": "shopify://products/frontline",
+        "product": "frontline",
+        "custom-image": "shopify://shop_images/image_28_1.png",
+        "product_list": [
+          "frontline-white",
+          "frontline-black",
+          "frontline-charcoal",
+          "frontline-lavender",
+          "frontline-mint",
+          "frontline-navy",
+          "frontline-pink"
+        ],
+        "image": "shopify://shop_images/image_29_1.png"
+      }
+    },
+    "np_fa_qs_Cgtphr": {
+      "type": "NP-FAQs",
+      "blocks": {
+        "faq_ETfgCe": {
+          "type": "faq",
+          "settings": {
+            "question": "Are STAND+ shoes good for all-day wear?",
+            "answer": "<p>Yes! STAND+ shoes are specifically designed for 12+ hour shifts — lightweight, cushioned, and breathable to keep you comfortable all day long.</p>"
+          }
+        },
+        "faq_QeMVeH": {
+          "type": "faq",
+          "settings": {
+            "question": "Are these shoes slip-resistant?",
+            "answer": "<p>Yes! STAND+ shoes are specifically designed for 12+ hour shifts — lightweight, cushioned, and breathable to keep you comfortable all day long.</p>"
+          }
+        },
+        "faq_dFBLth": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I wear them with orthotics or insoles?",
+            "answer": "<p>Yes! STAND+ shoes are specifically designed for 12+ hour shifts — lightweight, cushioned, and breathable to keep you comfortable all day long.</p>"
+          }
+        },
+        "faq_zt4VHX": {
+          "type": "faq",
+          "settings": {
+            "question": "What’s your return policy?",
+            "answer": "<p>Yes! STAND+ shoes are specifically designed for 12+ hour shifts — lightweight, cushioned, and breathable to keep you comfortable all day long.</p>"
+          }
+        },
+        "faq_XEeMtH": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I clean my STAND+ shoes?",
+            "answer": "<p>Yes! STAND+ shoes are specifically designed for 12+ hour shifts — lightweight, cushioned, and breathable to keep you comfortable all day long.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_ETfgCe",
+        "faq_QeMVeH",
+        "faq_dFBLth",
+        "faq_zt4VHX",
+        "faq_XEeMtH"
+      ],
+      "name": "NP FAQs",
+      "settings": {
+        "heading": "FREQUENTLY ASKED QUESTIONS"
+      }
+    },
+    "np_newsletter_bBHrtQ": {
+      "type": "NP-Newsletter",
+      "name": "NP-Newsletter",
+      "settings": {
+        "title": "JOIN OUR NEWSLETTER",
+        "description": "Sign up for our email list to get exclusive news, announcements, and promotions.",
+        "placeholder": "Enter your email",
+        "button_text": "SUBMIT",
+        "show_arrow": true,
+        "background_color": "#f5f5f5",
+        "text_color": "#000000",
+        "button_color": "#000000",
+        "button_text_color": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "np_banner_qazNqx",
+    "np_gales_pl_N3gwQa",
+    "np_gales_pl_LJpr3Y",
+    "np_fa_qs_Cgtphr",
+    "np_newsletter_bBHrtQ"
+  ]
+}

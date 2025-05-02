@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="{{ 'NP-Newsletter.css' | asset_url }}">
+
+<div class="newsletter-section">
+  <div class="newsletter-container container">
+    <div class="newsletter-content">
+      <div class="newsletter-text">
+        <div class="newsletter-title">{{ section.settings.title }}</div>
+        <p class="newsletter-description">{{ section.settings.description }}</p>
+      </div>
+      <div class="newsletter-form">
+        {% if settings.subscription_method == 'shopify' %}
+          {% form 'customer', id: 'newsletter-form', class: 'form-newsletter' %}
+            {% render 'form-get-check-error-popup' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="email" name="contact[email]" class="newsletter-input" placeholder="{{ section.settings.placeholder }}" required="required">
+            <button type="submit" class="newsletter-submit">
+              {{ section.settings.button_text }}
+              {% if section.settings.show_arrow %}
+                <span class="arrow-icon">→</span>
+              {% endif %}
+            </button>
+          {% endform %}
+        {% elsif settings.subscription_method == 'mailchimp' %}
+          <form action="{{ settings.subscription_mailchimp_form_action }}" method="post" class="form-newsletter" target="_blank">
+            <input type="email" name="EMAIL" class="newsletter-input" placeholder="{{ section.settings.placeholder }}" required="required">
+            <button type="submit" class="newsletter-submit">
+              {{ section.settings.button_text }}
+              {% if section.settings.show_arrow %}
+                <span class="arrow-icon">→</span>
+              {% endif %}
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "NP-Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Sign up for our email list to get exclusive news, announcements, and promotions."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "SUBMIT"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show arrow on button",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "NP-Newsletter",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

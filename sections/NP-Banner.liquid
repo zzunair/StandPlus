@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="{{ 'NP-Banner.css' | asset_url }}">
+
+<section class="NP-Banner">
+    {% if section.settings.link %}
+        <a href="{{ section.settings.link }}" class="NP-Banner__link">
+    {% endif %}
+        <div class="NP-Banner__container">
+            <img class="NP-Banner__image" src="{{ section.settings.background_image | image_url: width: 1920 }}" alt="">
+            <img class="NP-Banner__image-m" src="{{ section.settings.m-background_image | image_url: width: 768 }}" alt="">
+        
+
+        {%- if section.settings.title != blank -%}
+            <h2>{{section.settings.title}}</h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+            {{section.settings.description}}
+        {%- endif -%}
+        </div>
+    {% if section.settings.link %}
+        </a>
+    {% endif %}
+</section>
+
+
+{% schema %}
+{
+    "name": "NP Banner",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "background_image",
+            "label": "Background Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "m-background_image",
+            "label": "Mobile Background Image"
+        },
+        {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "html",
+            "id": "description",
+            "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content Position",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "bottom"
+        }
+    ],
+    "presets": [
+        {
+            "name": "NP Banner"
+        }
+    ]
+}
+{% endschema %}

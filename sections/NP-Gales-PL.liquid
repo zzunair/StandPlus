@@ -1,0 +1,167 @@
+
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> {% endcomment %}
+<link rel="stylesheet" href="{{ 'NP-Gales-PL.css' | asset_url }}">
+
+<section class="NP-Gales-PL" id="{{section.id}}">
+    <div class="NP-Gales-PL__container container">
+        <div class="NP-Gales-PL__content">
+            <div class="NP-Gales-PL__item1 grey-border">
+                <div class="NP-Gales-PL__item1-content">
+                    {% if section.settings.title != blank %}
+                        <h2 class="NP-Gales-PL__item1-title">
+                            {{ section.settings.title }}
+                        </h2>
+                    {% endif %}
+                    {% if section.settings.description != blank %}
+                        <p class="NP-Gales-PL__item1-description">
+                            {{ section.settings.description }}
+                        </p>
+                    {% endif %}
+                    {% if section.settings.link != blank %}
+                        <a href="{{ section.settings.link }}" class="NP-Gales-PL__item1-link">
+                            {{ section.settings.link_text | default: "Shop Now" }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="NP-Gales-PL__item2">
+                {%- assign product_list = section.settings.product_list -%}
+                {% assign main_product = section.settings.product %}
+                {% comment %} <a href="{{ main_product.url }}"> {% endcomment %}
+                 <div class="image-wrapper">
+                    {% if section.settings.custom-image != blank %}
+                        <img class="NP-Gales-PL__item2-main-product" src="{{ section.settings.custom-image | img_url: 'master' }}" alt="{{ section.settings.custom-image.alt }}">
+                    {% else %}
+                        <img class="NP-Gales-PL__item2-main-product" src="{{ main_product.featured_image | img_url: 'master' }}" alt="{{ main_product.title }}" width="100%" height="100%">
+                    {% endif %}
+                </div>
+                {% comment %} </a> {% endcomment %}
+                <div class="thumbnails-products">
+                    {% for product in product_list %}
+                        <div class="NP-Gales-PL__item2-product" data-prod-url="{{product.url}}" data-img-src = "{{product.featured_image |  img_url: 'master'}}" >
+                            {% comment %} <a href="{{ product.url }}"> {% endcomment %}
+                                <img src="{{ product.featured_image | img_url: 'master' }}" data-img-src = "{{product.featured_image |  img_url: 'master'}}" data-prod-url="{{product.url}} alt="{{ product.title }}">
+                            {% comment %} </a> {% endcomment %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="NP-Gales-PL__item3">
+                <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sectionID = '{{ section.id }}';
+    // Get all thumbnail products
+    const thumbnails = document.querySelectorAll(`#${sectionID} .NP-Gales-PL__item2-product`);
+    // Get the main product image
+    const mainProductImage = document.querySelector(`#${sectionID} .NP-Gales-PL__item2-main-product`);
+    // Get the shop now link
+    const shopNowLink = document.querySelector(`#${sectionID} .NP-Gales-PL__item1-link`);
+    
+    // Add click event listener to each thumbnail
+    thumbnails.forEach(thumbnail => {
+      thumbnail.addEventListener('click', function() {
+        // 1. Update the shop now link URL
+        const productUrl = this.getAttribute('data-prod-url');
+        if (shopNowLink && productUrl) {
+          shopNowLink.href = productUrl;
+        }
+        
+        // 2. Update the main product image
+        const imgSrc = this.getAttribute('data-img-src');
+        if (mainProductImage && imgSrc) {
+          mainProductImage.src = imgSrc;
+          mainProductImage.alt = this.querySelector('img').alt;
+        }
+        
+        // 3. Highlight the selected thumbnail
+        // First, remove highlight from all thumbnails
+        thumbnails.forEach(item => {
+          item.classList.remove('selected-thumbnail');
+        });
+
+        this.classList.add('selected-thumbnail');
+      });
+    });
+    
+
+    if (thumbnails.length > 0) {
+      thumbnails[0].classList.add('selected-thumbnail');
+      
+
+      thumbnails[0].click();
+    }
+  });
+</script>
+
+{% schema %}
+{
+    "name": "NP Gales PL",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Content"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "description",
+            "label": "Description"
+        },
+        {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link Text",
+        },
+        {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+        },
+        {
+            "type": "header",
+            "content": "Product"
+        },
+        {
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom-image",
+          "label": "Custom Image"
+        },
+        {
+          "type": "product_list",
+          "id": "product_list",
+          "label": "Product List",
+          "limit": 10
+        },
+        {
+            "type": "header",
+            "content": "Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        }
+        
+    ],
+    "presets": [
+        {"name": "NP Gales PL"}
+    ]
+}
+{% endschema %}
