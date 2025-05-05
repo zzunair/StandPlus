@@ -1,14 +1,17 @@
 .quiz {
     width: 100%;
-    max-width: 600px;
+    max-width: 1440px;
     margin: 0 auto;
 }
+
 
 .quiz__container {
     background-color: #ffffff;
     border-radius: 0;
     overflow: hidden;
     position: relative;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 /* Loading Bar */
@@ -31,6 +34,8 @@
     display: block;
   }
 
+
+
 /* Slides */
 .quiz__slides {
     position: relative;
@@ -51,16 +56,22 @@
 
 /* Intro Slide */
 .quiz__product-image {
-    max-width: 200px;
+    max-width: 290px;
     margin: 0 auto 20px;
     display: block;
+    width: 100%;
+}
+
+.quiz__slide--intro h2.quiz__heading {
+    max-width: 488px;
+    margin: 0 auto 16px;
 }
 
 .quiz__heading {
     margin-bottom: 15px;
     color: #0D0D0D;
     text-align: center;
-    font-size: 28px;
+    font-size: 40px;
     font-style: normal;
     font-weight: 900;
     line-height: normal;
@@ -78,7 +89,7 @@
 
 .quiz__description {
     margin-bottom: 30px;
-    max-width: 400px;
+    max-width: 560px;
     margin-left: auto;
     margin-right: auto;
     color: #0D0D0D;
@@ -94,7 +105,7 @@
     margin-bottom: 16px;
     text-align: left;
     color: #0D0D0D;
-    font-size: 20px;
+    font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -103,6 +114,11 @@
 /* Options */
 .quiz__options {
     margin-bottom: 30px;
+}
+.quiz__options.quiz-radio {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
 }
 
 .quiz__option {
@@ -177,9 +193,6 @@
     margin-left: 30px;
 }
 
-/* span.quiz__option-checkmark{
-    background-color: #FF7A45
-} */
 
 .quiz__option input[type="radio"]:checked~.quiz__option-checkmark{
     background-color: #fff;
@@ -188,7 +201,6 @@
 
 .quiz__option input[type="checkbox"]:checked~.quiz__option-checkmark {
     background-color: #FF7A45;
-    /* background-color: #fff; */
     border-color: #FF7A45;
 }
 
@@ -456,16 +468,6 @@ button.size-tab-btn.active {
     border: 2px solid #F17848;
     background: rgba(241, 120, 72, 0.05);
 }
-
-/* .quiz-result__product:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background: linear-gradient(90deg, #FF7A45, #FF5722);
-} */
 
 .quiz-result__product-image {
   text-align: center;
@@ -744,6 +746,11 @@ button.size-tab-btn.active {
   .sizeguide td {
     padding: 8px 5px;
   }
+
+  .quiz__heading {
+    font-size: 28px;
+  }
+  
 }
 
 @media (max-width: 480px) {
@@ -758,5 +765,15 @@ button.size-tab-btn.active {
   
   .sizeguide-popup__header h2 {
     font-size: 18px;
+  }
+  .quiz__product-image {
+    max-width: 200px;
+    width: 100%;
+  }
+  .quiz__question {
+    font-size: 20px;
+  }
+  .quiz__options.quiz-radio {
+    grid-template-columns: 1fr !important;
   }
 }

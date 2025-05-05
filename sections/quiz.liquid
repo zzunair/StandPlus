@@ -1,17 +1,17 @@
 <link rel="stylesheet" href="{{ 'quiz.css' | asset_url }}">
 
+<div class="quiz__loading-bar">
+    <div class="quiz__loading-progress"></div>
+</div>
 <div class="quiz">
     <div class="quiz__container">
-        <div class="quiz__loading-bar">
-            <div class="quiz__loading-progress"></div>
-        </div>
 
         <div class="quiz__slides">
             <!-- Intro Slide -->
             <div class="quiz__slide quiz__slide--intro active" data-slide="intro">
                 <div class="quiz__slide-content">
                     <img src="{{ section.settings.slide_1_image | image_url: width: 200 }}" alt="Shoe image" class="quiz__product-image">
-                    <h2 class="quiz__heading">{{ section.settings.slide_1_title }}</h2>
+                    <h2 class="quiz__heading">Not Sure Which Shoe is Right for You?</h2>
                     <p class="quiz__subheading">{{ section.settings.slide_1_subheading }}</p>
                     <p class="quiz__description">{{ section.settings.slide_1_description }}</p>
                     <button class="quiz__button quiz__start-button" data-action="next">GET STARTED</button>
@@ -23,7 +23,7 @@
                 <div class="quiz__slide-content">
                     <h2 class="quiz__question">Q1. What do you need these shoes for?</h2>
 
-                    <div class="quiz__options quiz__options--checkbox">
+                    <div class="quiz__options quiz-checkbox quiz__options--checkbox">
                         <label class="quiz__option">
                             <input type="checkbox" name="question1" value="Recovery">
                             <span class="quiz__option-checkmark"></span>
@@ -64,7 +64,7 @@
                 <div class="quiz__slide-content">
                     <h2 class="quiz__question">Q2. What's your foot width?</h2>
 
-                    <div class="quiz__options">
+                    <div class="quiz__options quiz-radio">
                         <label class="quiz__option">
                             <input type="radio" name="question2" value="narrow">
                             <span class="quiz__option-text">Narrow</span>
@@ -99,7 +99,7 @@
                 <div class="quiz__slide-content">
                     <h2 class="quiz__question">Q3. What kind of fit do you prefer?</h2>
 
-                    <div class="quiz__options">
+                    <div class="quiz__options quiz-radio">
                         <label class="quiz__option">
                             <input type="radio" name="question3" value="snug">
                             <span class="quiz__option-text">Snug and secure</span>
@@ -363,6 +363,22 @@
                         <button class="quiz__button quiz__continue-button" data-action="next" disabled>CONTINUE</button>
                     </div>
                     <p class="quiz__info-text">Environment matters. A shoe for slick hospital floors needs different traction than one for walks on pavement or errands around town. We'll recommend what works where you live and move.</p>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="quiz__slide" data-slide="8">
+                <div class="quiz__slide-content">
+                    <h2 class="quiz__question">Q8. Email</h2>
+                    <div class="quiz__text-input-container">
+                        <input type="email" class="quiz__text-input" placeholder="Enter your email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Please enter a valid email address" required />
+                    </div>
+                    <div class="quiz__button-container">
+                        <button class="quiz__button quiz__back-button" data-action="back">
+                            BACK
+                        </button>
+                        <button class="quiz__button quiz__continue-button" data-action="next" disabled>CONTINUE</button>
+                    </div>
                 </div>
             </div>
 

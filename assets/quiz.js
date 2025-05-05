@@ -52,6 +52,19 @@ const quiz = {
         }
         return;
       }
+      
+      // Add validation for email field on slide 8
+      if (slideNumber === "8") {
+        const emailInput = slide.querySelector('input[type="email"]');
+        if (emailInput) {
+          emailInput.addEventListener("input", function () {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isValid = emailPattern.test(emailInput.value.trim());
+            continueButton.disabled = !isValid;
+          });
+        }
+        return;
+      }
 
       const slideInputs = slide.querySelectorAll(
         'input[type="radio"], input[type="checkbox"]'
@@ -170,6 +183,17 @@ const quiz = {
     if (textAreaInput) {
       this.answers.additionalInfo = textAreaInput.value.trim();
     }
+    
+    // Collect email from slide 8
+    const emailInput = document.querySelector(
+      '.quiz__slide[data-slide="8"] input[type="email"]'
+    );
+    if (emailInput) {
+      this.answers.email = emailInput.value.trim();
+    }
+    
+    // Save answers to local storage
+    localStorage.setItem('quizAnswers', JSON.stringify(this.answers));
   },
 
   nextSlide: function () {
@@ -348,7 +372,7 @@ const quiz = {
   },
 };
 
-// Initialize the quiz when the document is loaded
+
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".quiz__slide--intro").classList.add("active");
 
